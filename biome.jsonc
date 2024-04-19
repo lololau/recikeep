@@ -1,7 +1,7 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.7.0/schema.json",
 	"files": {
-		"include": ["src/**/*.{ts,tsx}"]
+		"include": ["src/*"]
 	},
 	"organizeImports": {
 		"enabled": true
@@ -11,5 +11,8 @@
 		"rules": {
 			"recommended": true
 		}
+	},
+	"formatter": {
+		"enabled": true
 	}
 }
