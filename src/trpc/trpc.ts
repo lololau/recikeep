@@ -1,8 +1,11 @@
 import { initTRPC } from "@trpc/server";
+import { db } from "recikeep/database";
 import superjson from "superjson";
 
 export const createTRPCContext = () => {
-	return {};
+	return {
+		db,
+	};
 };
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
