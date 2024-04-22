@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1713620528341,
-      "tag": "0000_round_franklin_storm",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1713623741350,
-      "tag": "0001_sleepy_puck",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1713624458839,
-      "tag": "0002_black_screwball",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1713629499801,
-      "tag": "0003_lonely_jetstream",
+      "when": 1713822006131,
+      "tag": "0000_faulty_sugar_man",
       "breakpoints": true
     }
   ]
