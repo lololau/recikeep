@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { lucia, validateRequest } from "recikeep/auth";
+import { ClientSideProfile } from "recikeep/components/ClientSideProfile";
 
 export default async function ProfilePage() {
 	const { session } = await validateRequest();
@@ -8,11 +9,14 @@ export default async function ProfilePage() {
 
 	if (session) {
 		return (
-			<div>
+			<div className="border border-blue-500">
+				<h4>Server component</h4>
 				<p>{JSON.stringify(session, undefined, 2)}</p>
 				<form action={logout}>
 					<button type="submit">Log out</button>
 				</form>
+
+				<ClientSideProfile />
 			</div>
 		);
 	}
