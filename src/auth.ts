@@ -4,6 +4,8 @@ import { sessions, users } from "./database/schema";
 import { db } from "./database";
 import { cookies } from "next/headers";
 import { cache } from "react";
+import { redirect } from "next/navigation";
+import { api } from "./trpc/server";
 
 const adapter = new DrizzleSQLiteAdapter(db, sessions, users); // your adapter
 

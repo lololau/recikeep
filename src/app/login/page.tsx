@@ -1,11 +1,12 @@
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { lucia } from "recikeep/auth";
-import { api } from "recikeep/trpc/server";
+"use client";
+import { useFormState } from "react-dom";
+import { signIn } from "recikeep/actions";
 
 export default function LoginPage() {
+	const [state, formAction] = useFormState(signIn, { error: "" });
 	return (
-		<form action={signIn}>
+		<form action={formAction}>
+			<p>{JSON.stringify(state, undefined, 2)}</p>
 			<label htmlFor="email">Email</label>
 			<input type="email" name="email" id="email" required />
 			<label htmlFor="password">Password</label>
@@ -13,35 +14,4 @@ export default function LoginPage() {
 			<button type="submit">Sign in</button>
 		</form>
 	);
-}
-
-async function signIn(formData: FormData) {
-	"use server";
-	const email = formData.get("email");
-	const password = formData.get("password");
-
-	if (email == null || password == null) {
-		return { error: "Invalid credentials" };
-	}
-
-	try {
-		const user = await api.auth.signIn({
-			email: email.toString(),
-			password: password.toString(),
-		});
-
-		// new session
-		const session = await lucia.createSession(user.id, {});
-		const sessionCookie = lucia.createSessionCookie(session.id);
-
-		cookies().set(
-			sessionCookie.name,
-			sessionCookie.value,
-			sessionCookie.attributes,
-		);
-	} catch (error) {
-		return { error: "Invalid credentials" };
-	}
-
-	return redirect("/profile");
 }
