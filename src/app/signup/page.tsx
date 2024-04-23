@@ -3,19 +3,19 @@ import { redirect } from "next/navigation";
 import { lucia } from "recikeep/auth";
 import { api } from "recikeep/trpc/server";
 
-export default function LoginPage() {
+export default function SignUpPage() {
 	return (
-		<form action={signIn}>
+		<form action={signUp}>
 			<label htmlFor="email">Email</label>
 			<input type="email" name="email" id="email" required />
 			<label htmlFor="password">Password</label>
 			<input type="password" name="password" id="password" required />
-			<button type="submit">Sign in</button>
+			<button type="submit">Sign up</button>
 		</form>
 	);
 }
 
-async function signIn(formData: FormData) {
+async function signUp(formData: FormData) {
 	"use server";
 	const email = formData.get("email");
 	const password = formData.get("password");
@@ -24,24 +24,20 @@ async function signIn(formData: FormData) {
 		return { error: "Invalid credentials" };
 	}
 
-	try {
-		const user = await api.auth.signIn({
-			email: email.toString(),
-			password: password.toString(),
-		});
+	const user = await api.auth.signUp({
+		email: email.toString(),
+		password: password.toString(),
+	});
 
-		// new session
-		const session = await lucia.createSession(user.id, {});
-		const sessionCookie = lucia.createSessionCookie(session.id);
+	// new session
+	const session = await lucia.createSession(user.id, {});
+	const sessionCookie = lucia.createSessionCookie(session.id);
 
-		cookies().set(
-			sessionCookie.name,
-			sessionCookie.value,
-			sessionCookie.attributes,
-		);
-	} catch (error) {
-		return { error: "Invalid credentials" };
-	}
+	cookies().set(
+		sessionCookie.name,
+		sessionCookie.value,
+		sessionCookie.attributes,
+	);
 
 	return redirect("/profile");
 }

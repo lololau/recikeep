@@ -3,6 +3,7 @@ import { publicProcedure } from "../trpc";
 import { z } from "zod";
 import { users } from "recikeep/database/schema";
 import { eq } from "drizzle-orm";
+import { Argon2id } from "oslo/password";
 
 export const authRouter = {
 	signUp: publicProcedure
@@ -15,9 +16,12 @@ export const authRouter = {
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
+			// new argon2Id instance
+			const argon2Id = new Argon2id();
+			const hashPassword = await argon2Id.hash(input.password);
 			const user = await ctx.db
 				.insert(users)
-				.values({ email: input.email, password: input.password })
+				.values({ email: input.email, password: hashPassword })
 				.returning();
 			return user[0];
 		}),
@@ -34,12 +38,25 @@ export const authRouter = {
 			const user = await ctx.db.query.users.findFirst({
 				where: eq(users.email, input.email),
 			});
-			if (user?.password === input.password) {
-				return user;
+			if (user == null) {
+				throw new TRPCError({
+					message: "Email or password incorrect",
+					code: "UNAUTHORIZED",
+				});
 			}
-			throw new TRPCError({
-				message: "Email or password incorrect",
-				code: "UNAUTHORIZED",
-			});
+			const argon2Id = new Argon2id();
+			const isPasswordValid = await argon2Id.verify(
+				user.password,
+				input.password,
+			);
+
+			if (!isPasswordValid) {
+				throw new TRPCError({
+					message: "Email or password incorrect",
+					code: "UNAUTHORIZED",
+				});
+			}
+
+			return user;
 		}),
 } satisfies TRPCRouterRecord;
