@@ -31,7 +31,7 @@ export async function signIn(_: unknown, formData: FormData) {
 		);
 	} catch (error) {
 		console.log(error);
-		return { error: "Invalid credentials" };
+		return { error: "Email or password incorrect" };
 	}
 
 	return redirect("/profile");

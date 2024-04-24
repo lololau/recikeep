@@ -1,5 +1,5 @@
 import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
-import { protectedProcedure, publicProcedure } from "../trpc";
+import { authenticationProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { users } from "recikeep/database/schema";
 import { eq } from "drizzle-orm";
@@ -59,5 +59,5 @@ export const authRouter = {
 
 			return user;
 		}),
-	getMe: protectedProcedure.query(async ({ ctx }) => {}),
+	getMe: authenticationProcedure.query(async ({ ctx }) => {}),
 } satisfies TRPCRouterRecord;
