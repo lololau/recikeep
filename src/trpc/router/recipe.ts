@@ -1,8 +1,9 @@
 import type { TRPCRouterRecord } from "@trpc/server";
-import { publicProcedure } from "../trpc";
+import { authenticationProcedure } from "../trpc";
+import { z } from "zod";
 
 export const recipeRouter = {
-	getRecipes: publicProcedure.query(({ ctx }) => {
+	getRecipes: authenticationProcedure.query(({ ctx }) => {
 		return { message: "hello world", recipes: [] };
 	}),
 } satisfies TRPCRouterRecord;

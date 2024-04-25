@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { lucia, validateRequest } from "recikeep/auth";
+import { lucia, validateRequest } from "recikeep/auth/auth";
+import { Button } from "recikeep/components/Button";
 
 async function logout() {
 	"use server";
@@ -29,7 +30,7 @@ export default async function ProfilePage() {
 			<div>
 				<p>Session: {JSON.stringify(session, undefined, 2)}</p>
 				<form action={logout}>
-					<button type="submit">Sign out</button>
+					<Button text="Sign out" />
 				</form>
 			</div>
 		);

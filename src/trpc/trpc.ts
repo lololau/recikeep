@@ -1,5 +1,5 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-import { validateRequest } from "recikeep/auth";
+import { validateRequest } from "recikeep/auth/auth";
 import { db } from "recikeep/database";
 import superjson from "superjson";
 

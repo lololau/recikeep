@@ -1,6 +1,6 @@
 "use server";
 import { redirect } from "next/navigation";
-import { api } from "./trpc/server";
+import { api } from "../trpc/server";
 import { lucia } from "./auth";
 import { cookies } from "next/headers";
 
@@ -18,8 +18,6 @@ export async function signIn(_: unknown, formData: FormData) {
 			password: password.toString(),
 		});
 
-		console.log("user", user);
-
 		// new session
 		const session = await lucia.createSession(user.id, {});
 		const sessionCookie = lucia.createSessionCookie(session.id);
@@ -34,7 +32,7 @@ export async function signIn(_: unknown, formData: FormData) {
 		return { error: "Email or password incorrect" };
 	}
 
-	return redirect("/profile");
+	return redirect("/");
 }
 
 export async function signUp(_: unknown, formData: FormData) {
@@ -60,5 +58,5 @@ export async function signUp(_: unknown, formData: FormData) {
 		sessionCookie.attributes,
 	);
 
-	return redirect("/profile");
+	return redirect("/");
 }
