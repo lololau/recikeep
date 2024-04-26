@@ -6,8 +6,19 @@ import { signUp } from "recikeep/auth/auth_actions";
 import { Button } from "recikeep/components/Button";
 import { InputLabel } from "recikeep/components/InputLabel";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
+// import { api } from "recikeep/trpc/react";
+// import { toast } from "sonner";
 
 export default async function SignUpPage() {
+	// TODO: error handling
+	// const { mutate } = api.auth.signUp.useMutation({
+	// 	onError: (err) => {
+	// 		if (err.data?.code === "CONFLICT") {
+	// 			toast.error("This email is already registered. Sign in instead?");
+	// 		}
+	// 	},
+	// });
+
 	const [state, formAction] = useFormState(signUp, { error: "" });
 
 	return (

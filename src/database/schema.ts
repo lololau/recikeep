@@ -18,16 +18,7 @@ export const sessions = sqliteTable("session", {
 	expiresAt: integer("expires_at").notNull(),
 });
 
-export const ingredients = sqliteTable("ingredients", {
-	id: text("id")
-		.notNull()
-		.primaryKey()
-		.$default(() => createId()),
-	name: text("name").unique().notNull(),
-	quantity: text("quantity").unique().notNull(),
-});
-
-export const tags = sqliteTable("tags", {
+export const ingredients = sqliteTable("ingredient", {
 	id: text("id")
 		.notNull()
 		.primaryKey()
@@ -35,7 +26,15 @@ export const tags = sqliteTable("tags", {
 	name: text("name").unique().notNull(),
 });
 
-export const recipes = sqliteTable("recipes", {
+export const tags = sqliteTable("tag", {
+	id: text("id")
+		.notNull()
+		.primaryKey()
+		.$default(() => createId()),
+	name: text("name").unique().notNull(),
+});
+
+export const recipes = sqliteTable("recipe", {
 	id: text("id")
 		.notNull()
 		.primaryKey()
@@ -43,20 +42,24 @@ export const recipes = sqliteTable("recipes", {
 	title: text("title").unique().notNull(),
 	preparation: text("preparation"),
 	portions: integer("portions").notNull(),
-	glucides: integer("glucides"),
+	glucides: text("glucides"),
+	userId: text("user_id")
+		.notNull()
+		.references(() => users.id),
 });
 
 export const ingredientsToRecipes = sqliteTable("ingredientsToRecipes", {
-	ingredients: text("ingredient_id")
+	ingredientId: text("ingredient_id")
 		.notNull()
 		.references(() => ingredients.id),
 	recipeId: text("recipe_id")
 		.notNull()
 		.references(() => recipes.id),
+	quantity: text("quantity").notNull(),
 });
 
 export const tagsToRecipes = sqliteTable("tagsToRecipes", {
-	tags: text("tag_id")
+	tagId: text("tag_id")
 		.notNull()
 		.references(() => tags.id),
 	recipeId: text("recipe_id")

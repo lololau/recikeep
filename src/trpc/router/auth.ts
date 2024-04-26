@@ -6,6 +6,7 @@ import { eq } from "drizzle-orm";
 import { Argon2id } from "oslo/password";
 
 export const authRouter = {
+	// new account
 	signUp: publicProcedure
 		.input(
 			z.object({
@@ -19,12 +20,15 @@ export const authRouter = {
 			// new argon2Id instance
 			const argon2Id = new Argon2id();
 			const hashPassword = await argon2Id.hash(input.password);
+
 			const user = await ctx.db
 				.insert(users)
 				.values({ email: input.email, password: hashPassword })
 				.returning();
 			return user[0];
 		}),
+
+	// login
 	signIn: publicProcedure
 		.input(
 			z.object({
@@ -59,5 +63,7 @@ export const authRouter = {
 
 			return user;
 		}),
+
+	// get informations about connected user
 	getMe: authenticationProcedure.query(async ({ ctx }) => {}),
 } satisfies TRPCRouterRecord;
