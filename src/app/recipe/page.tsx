@@ -74,24 +74,36 @@ export default function Recipe() {
 								/>
 							</div>
 						</div>
-						<div className="pt-2">
-							<p className="font-semibold pb-1">Ingrédients</p>
-							<div className="flex flex-row items-center gap-2">
-								<Input
-									placeholder="Quel ingrédient ?"
-									name="ingredient"
-									required={false}
-								/>
-								<Input
-									placeholder="Combien ?"
-									name="quantity"
-									required={false}
-								/>
-								<button type="button">
-									<IoIosAddCircle color="green" size="25px" />
-								</button>
+						<div className="grid gap-2">
+							<div className="gap-1 py-2">
+								<p className="font-semibold pb-1">Ingrédients</p>
+								<div className="flex flex-row items-center gap-2">
+									<Input
+										placeholder="Quel ingrédient ?"
+										name="ingredient"
+										required={false}
+									/>
+									<Input
+										placeholder="Quelle quantité ?"
+										name="quantity"
+										required={false}
+									/>
+									<button type="button">
+										<IoIosAddCircle color="green" size="25px" />
+									</button>
+								</div>
+								{/* <IngredientsTable /> */}
 							</div>
-							{/* <IngredientsTable /> */}
+							<div className="gap-1 py-2">
+								<p className="font-semibold pb-1">Tags</p>
+								<div className="flex flex-row items-center gap-2">
+									<Input placeholder="Quel tag ?" name="tag" required={false} />
+									<button type="button">
+										<IoIosAddCircle color="green" size="25px" />
+									</button>
+								</div>
+								{/* <TagsTable /> */}
+							</div>
 						</div>
 					</div>
 					<div className="text-center mt-3">
