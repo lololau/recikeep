@@ -4,10 +4,12 @@ import { useFormState } from "react-dom";
 import { PiCookingPotFill } from "react-icons/pi";
 import { signUp } from "recikeep/auth/auth_actions";
 import { Button } from "recikeep/components/Button";
+import { InputLabel } from "recikeep/components/InputLabel";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 
-export default function SignUpPage() {
+export default async function SignUpPage() {
 	const [state, formAction] = useFormState(signUp, { error: "" });
+
 	return (
 		<MaxWidthWrapper>
 			<div className="py-20 mx-auto grid gap-3 items-center max-w-md">
@@ -22,34 +24,20 @@ export default function SignUpPage() {
 				<form action={formAction}>
 					<div className="grid gap-2">
 						<div className="grid gap-1 py-2">
-							<label htmlFor="email" className="text-lg">
-								Email
-							</label>
-							<div className="rounded-md shadow-sm border-2 sm:max-w-md">
-								<input
-									type="email"
-									name="email"
-									id="email"
-									required
-									className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
-									placeholder="you@example.com"
-								/>
-							</div>
+							<InputLabel
+								name="email"
+								placeholder="you@example.com"
+								label="Email"
+								required={true}
+							/>
 						</div>
 						<div className="grid gap-1 py-2">
-							<label htmlFor="password" className="text-lg">
-								Mot de passe
-							</label>
-							<div className="rounded-md shadow-sm border-2 sm:max-w-md">
-								<input
-									type="password"
-									name="password"
-									id="password"
-									required
-									className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full focus-within:ring-green-700"
-									placeholder="Mot de passe"
-								/>
-							</div>
+							<InputLabel
+								name="password"
+								placeholder="Mot de passe"
+								label="Mot de passe"
+								required={true}
+							/>
 						</div>
 						<div className="text-center mt-3">
 							<Button text="Créer" />

@@ -1,10 +1,8 @@
-import type { IconType } from "react-icons/lib";
-
 export const Button = ({
 	text,
-	icon,
 	className,
-}: { text: string; icon?: IconType; className?: string }) => {
+	children,
+}: { text?: string; className?: string; children?: React.ReactNode }) => {
 	return (
 		<div>
 			<button
@@ -12,10 +10,13 @@ export const Button = ({
 				className={
 					className
 						? className
-						: "bg-green-700 text-white rounded-2xl p-2 w-max text-sm sm:text-base"
+						: "bg-green-700 text-white rounded-md py-1.5 px-2 w-max text-sm sm:text-base"
 				}
 			>
-				{text}
+				<div className="flex flex-row items-center gap-2">
+					<div>{text}</div>
+					<div>{children}</div>
+				</div>
 			</button>
 		</div>
 	);
