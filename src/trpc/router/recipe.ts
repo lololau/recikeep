@@ -128,10 +128,13 @@ export const recipeRouter = {
 		return recipesList;
 	}),
 
-	// TODO: comment passer un argument du path en query ? mutation ? comment le donner via le front ?
-	// getRecipeById: authenticationProcedure.query(async ({ ctx, input }) => {
-	// 	const recipe = await ctx.db.query.recipes.findFirst({
-	// 		where: eq(recipes.id, input.)
-	// 	})
-	// })
+	// TODO: bonne façon du path en query ?
+	getRecipeById: authenticationProcedure
+		.input(z.string())
+		.query(async ({ ctx, input }) => {
+			const recipe = await ctx.db.query.recipes.findFirst({
+				where: eq(recipes.id, input),
+			});
+			return recipe;
+		}),
 } satisfies TRPCRouterRecord;

@@ -8,7 +8,7 @@ import { Input } from "recikeep/components/Input";
 import { InputLabel } from "recikeep/components/InputLabel";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 
-export default function Recipe() {
+export default function NewRecipePage() {
 	return (
 		<MaxWidthWrapper>
 			<div className="pb-10 mx-auto text-center flex flex-col items-center">

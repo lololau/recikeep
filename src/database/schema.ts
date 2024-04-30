@@ -1,5 +1,6 @@
 import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
 import { createId } from "@paralleldrive/cuid2";
+import { relations } from "drizzle-orm";
 
 export const users = sqliteTable("user", {
 	id: text("id")
@@ -48,7 +49,9 @@ export const recipes = sqliteTable("recipe", {
 		.references(() => users.id),
 });
 
-export const ingredientsToRecipes = sqliteTable("ingredientsToRecipes", {
+export type IRecipe = typeof recipes.$inferInsert;
+
+export const ingredientsToRecipes = sqliteTable("ingredients_to_recipes", {
 	ingredientId: text("ingredient_id")
 		.notNull()
 		.references(() => ingredients.id),
@@ -58,7 +61,7 @@ export const ingredientsToRecipes = sqliteTable("ingredientsToRecipes", {
 	quantity: text("quantity").notNull(),
 });
 
-export const tagsToRecipes = sqliteTable("tagsToRecipes", {
+export const tagsToRecipes = sqliteTable("tags_to_recipes", {
 	tagId: text("tag_id")
 		.notNull()
 		.references(() => tags.id),
@@ -66,3 +69,24 @@ export const tagsToRecipes = sqliteTable("tagsToRecipes", {
 		.notNull()
 		.references(() => recipes.id),
 });
+
+export const userRelations = relations(users, ({ many }) => ({
+	recipes: many(recipes),
+}));
+
+export const recipesRelations = relations(recipes, ({ one, many }) => ({
+	user: one(users, {
+		fields: [recipes.userId],
+		references: [users.id],
+	}),
+	ingredientsToRecipes: many(ingredientsToRecipes),
+	tagsToRecipes: many(tagsToRecipes),
+}));
+
+export const tagsRelations = relations(tags, ({ many }) => ({
+	tagsToRecipes: many(tagsToRecipes),
+}));
+
+export const ingredientsRelations = relations(ingredients, ({ many }) => ({
+	ingredientsToRecipes: many(ingredientsToRecipes),
+}));
