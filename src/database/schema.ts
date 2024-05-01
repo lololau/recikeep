@@ -1,4 +1,9 @@
-import { integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import {
+	integer,
+	primaryKey,
+	sqliteTable,
+	text,
+} from "drizzle-orm/sqlite-core";
 import { createId } from "@paralleldrive/cuid2";
 import { relations } from "drizzle-orm";
 
@@ -51,24 +56,36 @@ export const recipes = sqliteTable("recipe", {
 
 export type IRecipe = typeof recipes.$inferInsert;
 
-export const ingredientsToRecipes = sqliteTable("ingredients_to_recipes", {
-	ingredientId: text("ingredient_id")
-		.notNull()
-		.references(() => ingredients.id),
-	recipeId: text("recipe_id")
-		.notNull()
-		.references(() => recipes.id),
-	quantity: text("quantity").notNull(),
-});
+export const ingredientsToRecipes = sqliteTable(
+	"ingredients_to_recipes",
+	{
+		ingredientId: text("ingredient_id")
+			.notNull()
+			.references(() => ingredients.id),
+		recipeId: text("recipe_id")
+			.notNull()
+			.references(() => recipes.id),
+		quantity: text("quantity").notNull(),
+	},
+	(table) => ({
+		pk: primaryKey({ columns: [table.ingredientId, table.recipeId] }),
+	}),
+);
 
-export const tagsToRecipes = sqliteTable("tags_to_recipes", {
-	tagId: text("tag_id")
-		.notNull()
-		.references(() => tags.id),
-	recipeId: text("recipe_id")
-		.notNull()
-		.references(() => recipes.id),
-});
+export const tagsToRecipes = sqliteTable(
+	"tags_to_recipes",
+	{
+		tagId: text("tag_id")
+			.notNull()
+			.references(() => tags.id),
+		recipeId: text("recipe_id")
+			.notNull()
+			.references(() => recipes.id),
+	},
+	(table) => ({
+		pk: primaryKey({ columns: [table.tagId, table.recipeId] }),
+	}),
+);
 
 export const userRelations = relations(users, ({ many }) => ({
 	recipes: many(recipes),
@@ -79,14 +96,29 @@ export const recipesRelations = relations(recipes, ({ one, many }) => ({
 		fields: [recipes.userId],
 		references: [users.id],
 	}),
-	ingredientsToRecipes: many(ingredientsToRecipes),
-	tagsToRecipes: many(tagsToRecipes),
 }));
 
-export const tagsRelations = relations(tags, ({ many }) => ({
-	tagsToRecipes: many(tagsToRecipes),
+export const tagsToRecipesRelations = relations(tagsToRecipes, ({ one }) => ({
+	tag: one(tags, {
+		fields: [tagsToRecipes.tagId],
+		references: [tags.id],
+	}),
+	recipe: one(recipes, {
+		fields: [tagsToRecipes.recipeId],
+		references: [recipes.id],
+	}),
 }));
 
-export const ingredientsRelations = relations(ingredients, ({ many }) => ({
-	ingredientsToRecipes: many(ingredientsToRecipes),
-}));
+export const ingredientsToRecipesRelations = relations(
+	ingredientsToRecipes,
+	({ one }) => ({
+		ingredient: one(ingredients, {
+			fields: [ingredientsToRecipes.ingredientId],
+			references: [ingredients.id],
+		}),
+		recipe: one(recipes, {
+			fields: [ingredientsToRecipes.recipeId],
+			references: [recipes.id],
+		}),
+	}),
+);
