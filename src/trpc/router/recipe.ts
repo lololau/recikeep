@@ -1,6 +1,7 @@
-import type { TRPCRouterRecord } from "@trpc/server";
+import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
 import { authenticationProcedure } from "../trpc";
 import { z } from "zod";
+import { first } from "radash";
 import {
 	recipes,
 	ingredients as ingredientsTable,
@@ -15,108 +16,118 @@ const ingredientsSchema = z.object({
 	quantity: z.string(),
 });
 
-const tagsSchema = z.object({
-	name: z.string(),
-});
-
 export const recipeRouter = {
 	// new recipe (which may include new ingredient and new tag)
 	createRecipe: authenticationProcedure
 		.input(
 			z.object({
 				title: z.string(),
-				preparation: z.string(),
+				preparation: z.string().optional(),
 				portions: z.number(),
-				glucides: z.string(),
+				glucides: z.string().optional(),
 				ingredients: z.array(ingredientsSchema),
-				tags: z.array(tagsSchema),
+				tags: z.array(z.string()),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { title, preparation, portions, glucides, ingredients, tags } =
 				input;
 
-			// New recipe created
-			const recipe = await ctx.db
-				.insert(recipes)
-				.values({ title, preparation, portions, glucides, userId: ctx.user.id })
-				.returning();
+			return await ctx.db.transaction(async (tx) => {
+				// New recipe created
+				const recipe = first(
+					await tx
+						.insert(recipes)
+						.values({
+							title,
+							preparation,
+							portions,
+							glucides,
+							userId: ctx.user.id,
+						})
+						.returning(),
+				);
 
-			// Ingredients part
-			for (let i = 0; i < ingredients.length; i++) {
-				// Get ingredient with its quantity
-				const ingredientName = ingredients[i].name.toLowerCase().trim();
-				const quantity = ingredients[i].quantity;
-
-				// Check if ingredient already exist in db
-				const ingredientAlreadyInTable =
-					await ctx.db.query.ingredients.findFirst({
-						where: eq(ingredientsTable.name, ingredientName),
-					});
-
-				// Already exist :
-				// Create link between recipe, ingredient and quantity
-				if (ingredientAlreadyInTable !== undefined) {
-					await ctx.db.insert(ingredientsToRecipes).values({
-						ingredientId: ingredientAlreadyInTable.id,
-						recipeId: recipe[0].id,
-						quantity,
+				if (recipe == null) {
+					tx.rollback();
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Recipe insert but not returning ?",
 					});
 				}
 
-				// Ingredient not exist :
-				// New ingredient into table
-				const ingredient = await ctx.db
-					.insert(ingredientsTable)
-					.values({
-						name: ingredientName,
-					})
-					.returning();
+				// Ingredients part
+				for (const el of ingredients) {
+					// Get ingredient with its quantity
+					const ingredientName = el.name.toLowerCase().trim();
+					const quantity = el.quantity;
 
-				// Create link between recipe, ingredient and quantity
-				await ctx.db.insert(ingredientsToRecipes).values({
-					ingredientId: ingredient[0].id,
-					recipeId: recipe[0].id,
-					quantity,
-				});
-			}
+					// Create ingredient if not exist or do nothing if already exist
+					const ingredient = first(
+						await tx
+							.insert(ingredientsTable)
+							.values({
+								name: ingredientName,
+							})
+							.onConflictDoNothing()
+							.returning(),
+					);
 
-			// Tags part
-			for (let i = 0; i < tags.length; i++) {
-				// Get ingredient with its quantity
-				const tagName = tags[i].name.toLowerCase().trim();
+					if (ingredient == null) {
+						tx.rollback();
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Ingredient insert but not returning ?",
+						});
+					}
 
-				// Check if ingredient already exist in db
-				const tagAlreadyInTable = await ctx.db.query.tags.findFirst({
-					where: eq(tagsTable.name, tagName),
-				});
-
-				// Already exist :
-				// Create link between recipe and tag
-				if (tagAlreadyInTable !== undefined) {
-					await ctx.db.insert(tagsToRecipes).values({
-						tagId: tagAlreadyInTable.id,
-						recipeId: recipe[0].id,
-					});
+					// Create link between recipe, ingredient and quantity
+					await tx
+						.insert(ingredientsToRecipes)
+						.values({
+							ingredientId: ingredient.id,
+							recipeId: recipe.id,
+							quantity,
+						})
+						.onConflictDoNothing();
 				}
 
-				// Tag not exist :
-				// New tag into table
-				const tag = await ctx.db
-					.insert(tagsTable)
-					.values({
-						name: tagName,
-					})
-					.returning();
+				// Tags part
+				for (const el in tags) {
+					// Get ingredient with its quantity
+					const tagName = el.toLowerCase().trim();
 
-				// Create link between recipe, ingredient and quantity
-				await ctx.db.insert(tagsToRecipes).values({
-					tagId: tag[0].id,
-					recipeId: recipe[0].id,
-				});
-			}
+					// Tag insert :
+					const tag = first(
+						await tx
+							.insert(tagsTable)
+							.values({
+								name: tagName,
+							})
+							.onConflictDoNothing()
+							.returning(),
+					);
 
-			return recipe[0];
+					if (tag == null) {
+						tx.rollback();
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: "Tag insert but not returning ?",
+						});
+					}
+
+					// Create link between recipe, ingredient and quantity
+					await tx
+						.insert(tagsToRecipes)
+						.values({
+							tagId: tag.id,
+							recipeId: recipe.id,
+						})
+						.onConflictDoNothing();
+				}
+
+				return recipe;
+			});
 		}),
 
 	// get all recipes

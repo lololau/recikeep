@@ -3,7 +3,9 @@ import { authenticationProcedure, publicProcedure } from "../trpc";
 import { z } from "zod";
 import { users } from "recikeep/database/schema";
 import { eq } from "drizzle-orm";
+import { SqliteError } from "better-sqlite3";
 import { Argon2id } from "oslo/password";
+import { first } from "radash";
 
 export const authRouter = {
 	// new account
@@ -21,11 +23,37 @@ export const authRouter = {
 			const argon2Id = new Argon2id();
 			const hashPassword = await argon2Id.hash(input.password);
 
-			const user = await ctx.db
-				.insert(users)
-				.values({ email: input.email, password: hashPassword })
-				.returning();
-			return user[0];
+			try {
+				const user = first(
+					await ctx.db
+						.insert(users)
+						.values({ email: input.email, password: hashPassword })
+						.returning(),
+				);
+
+				if (user == null) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "User insert but not return?",
+					});
+				}
+
+				return user;
+			} catch (err) {
+				if (err instanceof SqliteError) {
+					if (err.code === "SQLITE_CONSTRAINT_UNIQUE") {
+						throw new TRPCError({
+							code: "CONFLICT",
+							message: "Email already exists.",
+						});
+					}
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: err.message,
+					});
+				}
+				throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
+			}
 		}),
 
 	// login

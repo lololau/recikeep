@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { api } from "../trpc/server";
 import { lucia } from "./auth";
 import { cookies } from "next/headers";
+import { TRPCError } from "@trpc/server";
 
 export async function signIn(_: unknown, formData: FormData) {
 	const email = formData.get("email");
@@ -43,20 +44,24 @@ export async function signUp(_: unknown, formData: FormData) {
 		return { error: "Invalid credentials" };
 	}
 
-	const user = await api.auth.signUp({
-		email: email.toString(),
-		password: password.toString(),
-	});
+	try {
+		const user = await api.auth.signUp({
+			email: email.toString(),
+			password: password.toString(),
+		});
+		// new session
+		const session = await lucia.createSession(user.id, {});
+		const sessionCookie = lucia.createSessionCookie(session.id);
 
-	// new session
-	const session = await lucia.createSession(user.id, {});
-	const sessionCookie = lucia.createSessionCookie(session.id);
-
-	cookies().set(
-		sessionCookie.name,
-		sessionCookie.value,
-		sessionCookie.attributes,
-	);
-
+		cookies().set(
+			sessionCookie.name,
+			sessionCookie.value,
+			sessionCookie.attributes,
+		);
+	} catch (error) {
+		console.log("========= ERROR =======", error);
+		if (error instanceof TRPCError) return { error: error.message };
+		return { error: "Unknown error" };
+	}
 	return redirect("/");
 }

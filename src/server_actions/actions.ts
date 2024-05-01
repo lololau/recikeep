@@ -15,7 +15,7 @@ export async function createRecipe(_: unknown, formData: FormData) {
 		name: string;
 		quantity: string;
 	}>;
-	const tags = formData.get("tags") as unknown as Array<{ name: string }>;
+	const tags = formData.get("tags") as unknown as Array<string>;
 
 	if (
 		title == null ||
@@ -58,13 +58,13 @@ export async function createRecipe(_: unknown, formData: FormData) {
 // 	}
 // }
 
-export async function getRecipeById(id: string) {
-	const recipe = await api.recipes.getRecipeById(id);
-	try {
-		const recipe = await api.recipes.getRecipeById(id);
-		console.log(recipe);
-		return recipe;
-	} catch (err) {
-		console.error(err);
-	}
-}
+// export async function getRecipeById(id: string) {
+// 	const recipe = await api.recipes.getRecipeById(id);
+// 	try {
+// 		const recipe = await api.recipes.getRecipeById(id);
+// 		console.log(recipe);
+// 		return recipe;
+// 	} catch (err) {
+// 		console.error(err);
+// 	}
+// }
