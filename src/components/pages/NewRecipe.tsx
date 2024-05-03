@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { IoIosAddCircle } from "react-icons/io";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
-import { useForm, type SubmitHandler } from "react-hook-form";
+import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
 
 import { Button } from "recikeep/components/Button";
 import { IngredientsTable } from "recikeep/components/IngredientsTable";
@@ -19,69 +19,45 @@ interface IFormRecipe {
 	preparation?: string;
 	portions: number;
 	glucides?: string;
-	ingredients: { name: string; quantity: string }[];
-	tags: string[];
-}
-interface IIngredient {
-	name: string;
-	quantity: string;
+	ingredients?: { name: string; quantity: string }[];
+	tags?: { name: string }[];
 }
 
 export default function NewRecipeForm() {
-	const router = useRouter();
+	// const router = useRouter();
 	const {
 		register,
+		control,
 		handleSubmit,
-		watch,
 		formState: { errors },
-	} = useForm<IFormRecipe>();
-
-	const onSubmitRecipe: SubmitHandler<IFormRecipe> = (data) =>
-		console.log("recipe", data);
-	const { mutateAsync, mutate, isPending, error } =
-		api.recipes.createRecipe.useMutation({
-			onSuccess(data, variables, context) {
-				router.push(`/recipe/${data.id}`);
-				toast.success("Recette créée.");
-			},
-			onError(error) {
-				toast.error(error.message);
-			},
-		});
-
-	// TODO; check read hook form, data typé selon le formulaire fait via react hook form
-	// async function handleSubmit() {
-	// await mutateAsync()
-	// }
-
-	// Cas suppr => use mutate au lieu de mutateAsync
-	// function clickOnerror() {
-	// 	mutate({ ingredients: })
-	// }
-
-	const [tag, setTag] = useState("");
-	const [tags, setTags] = useState([]);
-	const [ingredient, setIngredient] = useState<IIngredient>({
-		name: "",
-		quantity: "",
+	} = useForm<IFormRecipe>({
+		defaultValues: {
+			title: "",
+			preparation: "",
+			ingredients: [{ name: "", quantity: "" }],
+			tags: [{ name: "" }],
+		},
 	});
-	const [ingredients, setIngredients] = useState([
-		{ name: "Courgettes", quantity: "2" },
-	]);
+	const {
+		fields: fieldsTag,
+		append: appendTag,
+		remove: removeTag,
+	} = useFieldArray({
+		control,
+		name: "tags",
+	});
 
-	const append = () => {
-		setIngredients([
-			...ingredients,
-			{ name: ingredient.name, quantity: ingredient.quantity },
-		]);
-	};
+	const {
+		fields: fieldsIngredients,
+		append: appendIngredient,
+		remove: removeIngredient,
+	} = useFieldArray({
+		control,
+		name: "ingredients",
+	});
 
-	const remove = (index: number) => {
-		setIngredients([
-			...ingredients.slice(0, index),
-			...ingredients.slice(index + 1),
-		]);
-	};
+	const onSubmit: SubmitHandler<IFormRecipe> = (data) =>
+		console.log("recipe", data);
 
 	return (
 		<MaxWidthWrapper>
@@ -94,7 +70,7 @@ export default function NewRecipeForm() {
 				</div>
 			</div>
 			<div>
-				<form onSubmit={handleSubmit(onSubmitRecipe)}>
+				<form onSubmit={handleSubmit(onSubmit)}>
 					<div className="grid grid-cols-2">
 						<div className="grid gap-2">
 							{/* === Title === */}
@@ -110,6 +86,7 @@ export default function NewRecipeForm() {
 										placeholder="Ton titre"
 										{...register("title", { required: true })}
 									/>
+									<p>{errors.title?.message}</p>
 								</div>
 							</div>
 
@@ -128,6 +105,7 @@ export default function NewRecipeForm() {
 										placeholder="Décris les étapes de ta recette"
 										{...register("preparation", { required: false })}
 									/>
+									<p>{errors.preparation?.message}</p>
 								</div>
 							</div>
 
@@ -143,6 +121,7 @@ export default function NewRecipeForm() {
 										placeholder="2"
 										{...register("portions", { required: true })}
 									/>
+									<p>{errors.portions?.message}</p>
 								</div>
 							</div>
 
@@ -158,92 +137,109 @@ export default function NewRecipeForm() {
 										placeholder="30g"
 										{...register("glucides", { required: false })}
 									/>
+									<p>{errors.glucides?.message}</p>
 								</div>
 							</div>
 						</div>
 						<div className="grid gap-2">
 							<div className="gap-1 py-2 whitespace-nowrap min-w-full">
-								<p className="font-semibold pb-1">Ingrédients</p>
-								<div className="flex flex-row items-center gap-2">
-									<div className="rounded-md shadow-sm border-2 sm:max-w-md">
-										<input
-											value={ingredient.name}
-											onChange={(e) =>
-												setIngredient({ ...ingredient, name: e.target.value })
+								{/* === Ingrédients === */}
+								<div className="flex flex-row gap-6">
+									<p className="font-semibold">Ingrédients</p>
+									<div className="text-center">
+										<button
+											type="button"
+											onClick={() =>
+												appendIngredient({ name: "", quantity: "" })
 											}
-											required={false}
-											className={
-												"border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
-											}
-											placeholder="Quel ingrédient ?"
-										/>
+										>
+											<IoIosAddCircle color="green" size="25px" />
+										</button>
 									</div>
-									<div className="rounded-md shadow-sm border-2 sm:max-w-md">
-										<input
-											value={ingredient.quantity}
-											onChange={(e) =>
-												setIngredient({
-													...ingredient,
-													quantity: e.target.value,
-												})
-											}
-											required={false}
-											className={
-												"border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
-											}
-											placeholder="Quelle quantité ?"
-										/>
-									</div>
-									<button type="button" className="text-end" onClick={append}>
-										<IoIosAddCircle color="green" size="25px" />
-									</button>
 								</div>
-								<div className="py-2">
-									<div
-										className="border border-slate-300 rounded-lg overflow-hidden"
-										{...register("ingredients")}
-									>
-										<table className="min-w-full divide-y divide-gray-200">
-											<tbody className="divide-y divide-gray-200">
-												{ingredients.map((ingredient, index) => (
-													<tr key={`${ingredient.name}_${index}`}>
-														<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-															{ingredient.name}
-														</td>
-														<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
-															{ingredient.quantity}
-														</td>
-														<td className="px-6 py-4 whitespace-nowrap text-end font-medium">
-															<button
-																onClick={() => {
-																	remove(index);
-																}}
-																type="button"
-																className="inline-flex items-center gap-x-2 font-semibold rounded-lg border border-transparent text-green-600 hover:text-green-800 disabled:opacity-50 disabled:pointer-events-none"
-															>
-																<MdDeleteOutline />
-															</button>
-														</td>
-													</tr>
-												))}
-											</tbody>
-										</table>
-									</div>
+								<p>{errors.ingredients?.message}</p>
+								<div className="items-center gap-2">
+									<ul>
+										{fieldsIngredients.map((item, index) => {
+											return (
+												<li key={item.id} className="grid grid-cols-5 gap-2">
+													<div className="rounded-md shadow-sm border-2 sm:max-w-md col-span-2 px-1">
+														<input
+															{...register(`ingredients.${index}.name`, {
+																required: true,
+															})}
+															placeholder="Quel ingrédient ?"
+															className="w-full text-sm"
+														/>
+													</div>
+
+													<div className="rounded-md shadow-sm border-2 sm:max-w-md col-span-2 px-1">
+														<input
+															placeholder="Quelle quantité ?"
+															{...register(`ingredients.${index}.quantity`, {
+																required: true,
+															})}
+															className="w-full text-sm"
+														/>
+													</div>
+
+													<div className="text-center self-center">
+														<button
+															onClick={() => {
+																removeIngredient(index);
+															}}
+															type="button"
+															className="items-center pt-1 gap-x-2 font-semibold text-green-600 hover:text-green-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
+														>
+															<MdDeleteOutline />
+														</button>
+													</div>
+												</li>
+											);
+										})}
+									</ul>
 								</div>
 							</div>
 							<div className="gap-1 py-2">
-								<p className="font-semibold pb-1">Tags</p>
-								<div className="flex flex-row items-center gap-2">
-									<Input placeholder="Healthy" name="tag" required={false} />
-									<button type="button">
+								<div className="flex flex-row gap-6">
+									<p className="font-semibold pb-1">Tags</p>
+									<button type="button" onClick={() => appendTag({ name: "" })}>
 										<IoIosAddCircle color="green" size="25px" />
 									</button>
 								</div>
-								{/* <TagsTable /> */}
+								<div className="flex flex-row items-center gap-2 py-2">
+									<ul>
+										{fieldsTag.map((item, index) => {
+											return (
+												<li key={item.id} className="grid grid-cols-5 gap-2">
+													<div className="rounded-md shadow-sm border-2 sm:max-w-md col-span-2 px-1 flex flex-row">
+														<input
+															{...register(`tags.${index}.name`, {
+																required: true,
+															})}
+															placeholder="Healthy ?"
+															className="w-full text-sm"
+														/>
+
+														<button
+															onClick={() => {
+																removeTag(index);
+															}}
+															type="button"
+															className="items-center pt-1 gap-x-2 font-semibold text-green-600 hover:text-green-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
+														>
+															<MdDeleteOutline />
+														</button>
+													</div>
+												</li>
+											);
+										})}
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div className="text-center mt-3">
+					<div className="text-center py-20">
 						<Button text="Valider la recette" />
 					</div>
 				</form>
@@ -251,3 +247,24 @@ export default function NewRecipeForm() {
 		</MaxWidthWrapper>
 	);
 }
+
+// const { mutateAsync, mutate, isPending, error } =
+// 	api.recipes.createRecipe.useMutation({
+// 		onSuccess(data, variables, context) {
+// 			router.push(`/recipe/${data.id}`);
+// 			toast.success("Recette créée.");
+// 		},
+// 		onError(error) {
+// 			toast.error(error.message);
+// 		},
+// 	});
+
+// TODO; check read hook form, data typé selon le formulaire fait via react hook form
+// async function handleSubmit() {
+// await mutateAsync()
+// }
+
+// Cas suppr => use mutate au lieu de mutateAsync
+// function clickOnerror() {
+// 	mutate({ ingredients: })
+// }
