@@ -9,7 +9,7 @@ import {
 	ingredientsToRecipes,
 	tagsToRecipes,
 } from "recikeep/database/schema";
-import { eq } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 
 const ingredientsSchema = z.object({
 	name: z.string(),
@@ -26,12 +26,14 @@ export const recipeRouter = {
 				portions: z.number(),
 				glucides: z.string().optional(),
 				ingredients: z.array(ingredientsSchema),
-				tags: z.array(z.string()),
+				tags: z.array(z.string()).optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
 			const { title, preparation, portions, glucides, ingredients, tags } =
 				input;
+
+			const tagsList: string[] = [];
 
 			return await ctx.db.transaction(async (tx) => {
 				// New recipe created
@@ -55,75 +57,116 @@ export const recipeRouter = {
 						message: "Recipe insert but not returning ?",
 					});
 				}
+				tagsList.push(recipe.title);
 
 				// Ingredients part
 				for (const el of ingredients) {
 					// Get ingredient with its quantity
 					const ingredientName = el.name.toLowerCase().trim();
 					const quantity = el.quantity;
+					tagsList.push(ingredientName);
 
-					// Create ingredient if not exist or do nothing if already exist
-					const ingredient = first(
+					// Check if ingredient already exist
+					const ingredientAlreadyExist = await tx.query.ingredients.findFirst({
+						where: eq(ingredientsTable.name, ingredientName),
+					});
+
+					// Create ingredient if not exist
+					if (ingredientAlreadyExist == null) {
+						const ingredient = first(
+							await tx
+								.insert(ingredientsTable)
+								.values({
+									name: ingredientName,
+								})
+								.returning(),
+						);
+
+						if (ingredient == null) {
+							tx.rollback();
+							throw new TRPCError({
+								code: "INTERNAL_SERVER_ERROR",
+								message: "Ingredient insert but not returning ?",
+							});
+						}
+
+						// Link between recipe, ingredient, quantity
 						await tx
-							.insert(ingredientsTable)
+							.insert(ingredientsToRecipes)
 							.values({
-								name: ingredientName,
+								ingredientId: ingredient.id,
+								recipeId: recipe.id,
+								quantity,
 							})
 							.onConflictDoNothing()
-							.returning(),
-					);
-
-					if (ingredient == null) {
-						tx.rollback();
-						throw new TRPCError({
-							code: "INTERNAL_SERVER_ERROR",
-							message: "Ingredient insert but not returning ?",
-						});
+							.returning();
+					} else {
+						// Link between recipe, ingredient, quantity
+						await tx
+							.insert(ingredientsToRecipes)
+							.values({
+								ingredientId: ingredientAlreadyExist.id,
+								recipeId: recipe.id,
+								quantity,
+							})
+							.onConflictDoNothing()
+							.returning();
 					}
-
-					// Create link between recipe, ingredient and quantity
-					await tx
-						.insert(ingredientsToRecipes)
-						.values({
-							ingredientId: ingredient.id,
-							recipeId: recipe.id,
-							quantity,
-						})
-						.onConflictDoNothing();
 				}
 
 				// Tags part
-				for (const el in tags) {
-					// Get ingredient with its quantity
-					const tagName = el.toLowerCase().trim();
+				if (tags) {
+					for (let i = 0; i < tags.length; i++) {
+						tagsList.push(tags[i]);
+					}
+				}
+
+				for (let i = 0; i < tagsList.length; i++) {
+					// Get tag name
+					const tagName = tagsList[i].toLowerCase().trim();
 
 					// Tag insert :
-					const tag = first(
+					const tagAlreadyExist = await tx.query.tags.findFirst({
+						where: eq(tagsTable.name, tagName),
+					});
+
+					if (tagAlreadyExist == null) {
+						const tag = first(
+							await tx
+								.insert(tagsTable)
+								.values({
+									name: tagName,
+								})
+								.onConflictDoNothing()
+								.returning(),
+						);
+
+						if (tag == null) {
+							tx.rollback();
+							throw new TRPCError({
+								code: "INTERNAL_SERVER_ERROR",
+								message: "Tag insert but not returning ?",
+							});
+						}
+
+						// Create link between recipe, ingredient and quantity
 						await tx
-							.insert(tagsTable)
+							.insert(tagsToRecipes)
 							.values({
-								name: tagName,
+								tagId: tag.id,
+								recipeId: recipe.id,
 							})
-							.onConflictDoNothing()
-							.returning(),
-					);
-
-					if (tag == null) {
-						tx.rollback();
-						throw new TRPCError({
-							code: "INTERNAL_SERVER_ERROR",
-							message: "Tag insert but not returning ?",
-						});
+							.onConflictDoNothing();
+					} else {
+						// Create link between recipe, ingredient and quantity
+						await tx
+							.insert(tagsToRecipes)
+							.values({
+								tagId: tagAlreadyExist.id,
+								recipeId: recipe.id,
+							})
+							.onConflictDoNothing();
 					}
-
-					// Create link between recipe, ingredient and quantity
-					await tx
-						.insert(tagsToRecipes)
-						.values({
-							tagId: tag.id,
-							recipeId: recipe.id,
-						})
-						.onConflictDoNothing();
 				}
 
 				return recipe;

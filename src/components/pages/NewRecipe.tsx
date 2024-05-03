@@ -1,17 +1,13 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { IoIosAddCircle } from "react-icons/io";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
 import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
 
 import { Button } from "recikeep/components/Button";
-import { IngredientsTable } from "recikeep/components/IngredientsTable";
-import { Input } from "recikeep/components/Input";
-import { InputLabel } from "recikeep/components/InputLabel";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
-import { useState } from "react";
 import { MdDeleteOutline } from "react-icons/md";
 
 interface IFormRecipe {
@@ -19,23 +15,25 @@ interface IFormRecipe {
 	preparation?: string;
 	portions: number;
 	glucides?: string;
-	ingredients?: { name: string; quantity: string }[];
+	ingredients: { name: string; quantity: string }[];
 	tags?: { name: string }[];
 }
 
 export default function NewRecipeForm() {
-	// const router = useRouter();
+	const router = useRouter();
+
 	const {
 		register,
 		control,
 		handleSubmit,
+		getValues,
 		formState: { errors },
 	} = useForm<IFormRecipe>({
 		defaultValues: {
 			title: "",
 			preparation: "",
 			ingredients: [{ name: "", quantity: "" }],
-			tags: [{ name: "" }],
+			tags: [],
 		},
 	});
 	const {
@@ -56,8 +54,39 @@ export default function NewRecipeForm() {
 		name: "ingredients",
 	});
 
-	const onSubmit: SubmitHandler<IFormRecipe> = (data) =>
+	const { mutateAsync, mutate, isPending, error } =
+		api.recipes.createRecipe.useMutation({
+			onSuccess(data, variables, context) {
+				router.push(`/recipe/${data.id}`);
+				toast.success("Recette créée.");
+			},
+			onError(error) {
+				toast.error(error.data?.code);
+			},
+		});
+
+	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
+		const tags = getValues("tags")?.map((el) => el.name);
+		const portions = Number(getValues("portions"));
+
+		const values = getValues();
+
+		// Cast tags into string[]
+		const valuesToReturn = { ...values, tags, portions };
+
+		await mutateAsync(valuesToReturn);
 		console.log("recipe", data);
+	};
+
+	// TODO; check read hook form, data typé selon le formulaire fait via react hook form
+	// async function handleSubmit() {
+	// await mutateAsync()
+	// }
+
+	// Cas suppr => use mutate au lieu de mutateAsync
+	// function clickOnerror() {
+	// 	mutate({ ingredients: })
+	// }
 
 	return (
 		<MaxWidthWrapper>
@@ -249,24 +278,3 @@ export default function NewRecipeForm() {
 		</MaxWidthWrapper>
 	);
 }
-
-// const { mutateAsync, mutate, isPending, error } =
-// 	api.recipes.createRecipe.useMutation({
-// 		onSuccess(data, variables, context) {
-// 			router.push(`/recipe/${data.id}`);
-// 			toast.success("Recette créée.");
-// 		},
-// 		onError(error) {
-// 			toast.error(error.message);
-// 		},
-// 	});
-
-// TODO; check read hook form, data typé selon le formulaire fait via react hook form
-// async function handleSubmit() {
-// await mutateAsync()
-// }
-
-// Cas suppr => use mutate au lieu de mutateAsync
-// function clickOnerror() {
-// 	mutate({ ingredients: })
-// }
