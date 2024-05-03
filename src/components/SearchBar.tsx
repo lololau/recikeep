@@ -4,17 +4,16 @@ import { FaSearch } from "react-icons/fa";
 
 export const SearchBar = () => {
 	function handleChangeSearch(e: React.ChangeEvent<HTMLInputElement>) {
-		console.log("search text: ", e.target.value);
 		setText(e.target.value);
 	}
 
 	const [text, setText] = useState("");
 	return (
-		<div className="flex flex-row gap-2 sm:w-96 w-60">
+		<div className="flex flex-row gap-2 w-3/5">
 			<input
 				type="text"
-				placeholder={""}
-				className=" text-gray-400 text-center border gap-2 rounded-xl px-2 w-full"
+				placeholder={"Quelle recette veux-tu cuisiner ?"}
+				className=" text-sm border gap-2 rounded-xl px-2 py-1 w-full"
 				value={text}
 				onChange={handleChangeSearch}
 			/>

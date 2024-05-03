@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { IoIosAddCircle } from "react-icons/io";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";

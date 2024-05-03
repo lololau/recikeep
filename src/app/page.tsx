@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { MdDeleteOutline } from "react-icons/md";
 import { validateRequest } from "recikeep/auth/auth";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
+import { FaPencilAlt } from "react-icons/fa";
 import { SearchBar } from "recikeep/components/SearchBar";
 import { api } from "recikeep/trpc/server";
 
@@ -11,15 +13,7 @@ export default async function HomePage() {
 		redirect("/login");
 	}
 
-	const recipes = [
-		{ title: "Tarte poireaux lardons", createdAt: new Date(), id: 1 },
-		{
-			title: "Risotto courgettes pistaches",
-			createdAt: new Date("2024-03-12"),
-			id: 2,
-		},
-	];
-	// const { recipes } = await api.recipes.getRecipesByUserId()
+	const recipes = await api.recipes.getRecipesByUserId();
 
 	return (
 		<MaxWidthWrapper>
@@ -32,22 +26,38 @@ export default async function HomePage() {
 						Toutes tes recettes à disposition pour t'inspirer en cuisine.
 					</p>
 				</div>
-				<div className="flex flex-col gap-4 mt-10">
-					<p>Quelle recette veux-tu cuisiner ?</p>
-					<div className="self-center">
-						<SearchBar />
-					</div>
+				<div className="flex flex-col gap-4 w-full py-20 items-center">
+					<SearchBar />
 				</div>
-				<div>
-					{recipes.map((recipe) => (
-						<div key={`${recipe.id}_${recipe.title}`}>
-							<Link href={`/recipe/${recipe.id}`}>
-								<div>
-									<p>{recipe.title}</p>
-								</div>
-							</Link>
-						</div>
-					))}
+
+				<div className="border border-slate-300 rounded-lg w-full">
+					<ul className="min-w-full divide-y divide-gray-200">
+						{recipes.map((recipe, index) => {
+							return (
+								<li key={recipe.id} className="p-4 grid grid-cols-8">
+									<div className="font-medium text-gray-800 text-start px-2 grid col-span-6">
+										<p>{recipe.title}</p>
+									</div>
+									<div>
+										<button
+											type="button"
+											className="items-center text-lg font-semibold text-green-600 hover:text-green-800 disabled:opacity-50 disabled:pointer-events-none"
+										>
+											<FaPencilAlt />
+										</button>
+									</div>
+									<div>
+										<button
+											type="button"
+											className="items-center text-lg font-semibold text-green-600 hover:text-green-800 disabled:opacity-50 disabled:pointer-events-none"
+										>
+											<MdDeleteOutline />
+										</button>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
 				</div>
 			</div>
 		</MaxWidthWrapper>
