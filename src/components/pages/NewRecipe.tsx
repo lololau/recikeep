@@ -142,8 +142,8 @@ export default function NewRecipeForm() {
 							</div>
 						</div>
 						<div className="grid gap-2">
+							{/* === Ingrédients === */}
 							<div className="gap-1 py-2 whitespace-nowrap min-w-full">
-								{/* === Ingrédients === */}
 								<div className="flex flex-row gap-6">
 									<p className="font-semibold">Ingrédients</p>
 									<div className="text-center">
@@ -200,6 +200,8 @@ export default function NewRecipeForm() {
 									</ul>
 								</div>
 							</div>
+
+							{/* === Tags === */}
 							<div className="gap-1 py-2">
 								<div className="flex flex-row gap-6">
 									<p className="font-semibold pb-1">Tags</p>
@@ -212,7 +214,7 @@ export default function NewRecipeForm() {
 										{fieldsTag.map((item, index) => {
 											return (
 												<li key={item.id} className="grid grid-cols-5 gap-2">
-													<div className="rounded-md shadow-sm border-2 sm:max-w-md col-span-2 px-1 flex flex-row">
+													<div className="rounded-md shadow-sm border-2 sm:max-w-md col-span-2 px-1 flex flex-row py-1">
 														<input
 															{...register(`tags.${index}.name`, {
 																required: true,
@@ -226,7 +228,7 @@ export default function NewRecipeForm() {
 																removeTag(index);
 															}}
 															type="button"
-															className="items-center pt-1 gap-x-2 font-semibold text-green-600 hover:text-green-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
+															className="items-center gap-x-2 font-semibold text-green-600 hover:text-green-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
 														>
 															<MdDeleteOutline />
 														</button>
