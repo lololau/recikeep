@@ -8,10 +8,8 @@ interface IIngredients {
 
 export const IngredientsTable = ({
 	ingredients,
-	remove,
 }: {
 	ingredients: { name: string; quantity: string }[];
-	remove: (index: number) => IIngredients;
 }) => {
 	return (
 		<div className="border border-slate-300 rounded-lg overflow-hidden">
@@ -24,17 +22,6 @@ export const IngredientsTable = ({
 							</td>
 							<td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800">
 								{ingredient.quantity}
-							</td>
-							<td className="px-6 py-4 whitespace-nowrap text-end font-medium">
-								<button
-									onClick={() => {
-										remove(index);
-									}}
-									type="button"
-									className="inline-flex items-center gap-x-2 font-semibold rounded-lg border border-transparent text-green-600 hover:text-green-800 disabled:opacity-50 disabled:pointer-events-none"
-								>
-									<MdDeleteOutline />
-								</button>
 							</td>
 						</tr>
 					))}

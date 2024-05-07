@@ -12,6 +12,7 @@ import { MdDeleteOutline } from "react-icons/md";
 
 interface IFormRecipe {
 	title: string;
+	description?: string;
 	preparation?: string;
 	portions: number;
 	glucides?: string;
@@ -57,10 +58,12 @@ export default function NewRecipeForm() {
 	const { mutateAsync, mutate, isPending, error } =
 		api.recipes.createRecipe.useMutation({
 			onSuccess(data, variables, context) {
-				router.push(`/recipe/${data.id}`);
+				// TODO: toast success do not work
 				toast.success("Recette créée.");
+				router.push(`/recipe/${data.id}`);
 			},
 			onError(error) {
+				// TODO: get error message
 				toast.error(error.data?.code);
 			},
 		});
@@ -75,7 +78,6 @@ export default function NewRecipeForm() {
 		const valuesToReturn = { ...values, tags, portions };
 
 		await mutateAsync(valuesToReturn);
-		console.log("recipe", data);
 	};
 
 	// TODO; check read hook form, data typé selon le formulaire fait via react hook form
@@ -118,6 +120,22 @@ export default function NewRecipeForm() {
 									<p>{errors.title?.message}</p>
 								</div>
 							</div>
+							{/* === Description === */}
+							<div className="grid gap-1 py-2">
+								<label htmlFor="title" className="text-base font-semibold">
+									Description
+								</label>
+								<div className="rounded-md shadow-sm border-2 sm:max-w-md">
+									<input
+										id="title"
+										aria-invalid={errors.description ? "true" : "false"}
+										className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
+										placeholder="Courte description"
+										{...register("description", { required: false })}
+									/>
+									<p>{errors.description?.message}</p>
+								</div>
+							</div>
 
 							{/* === Preparation details === */}
 							<div className="grid gap-1 py-2">
@@ -125,7 +143,7 @@ export default function NewRecipeForm() {
 									htmlFor="preparation"
 									className="text-base font-semibold"
 								>
-									Préparation
+									Étapes de préparation
 								</label>
 								<div className="rounded-md shadow-sm border-2 sm:max-w-md">
 									<textarea

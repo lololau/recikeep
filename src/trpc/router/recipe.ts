@@ -9,7 +9,7 @@ import {
 	ingredientsToRecipes,
 	tagsToRecipes,
 } from "recikeep/database/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 
 const ingredientsSchema = z.object({
 	name: z.string(),
@@ -22,6 +22,7 @@ export const recipeRouter = {
 		.input(
 			z.object({
 				title: z.string(),
+				description: z.string().optional(),
 				preparation: z.string().optional(),
 				portions: z.number(),
 				glucides: z.string().optional(),
@@ -30,8 +31,15 @@ export const recipeRouter = {
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
-			const { title, preparation, portions, glucides, ingredients, tags } =
-				input;
+			const {
+				title,
+				description,
+				preparation,
+				portions,
+				glucides,
+				ingredients,
+				tags,
+			} = input;
 
 			const tagsList: string[] = [];
 
@@ -42,6 +50,7 @@ export const recipeRouter = {
 						.insert(recipes)
 						.values({
 							title,
+							description,
 							preparation,
 							portions,
 							glucides,
@@ -182,7 +191,7 @@ export const recipeRouter = {
 		return recipesList;
 	}),
 
-	// TODO: bonne façon du path en query ?
+	// get recipe by recipeId
 	getRecipeById: authenticationProcedure
 		.input(z.string())
 		.query(async ({ ctx, input }) => {
@@ -190,5 +199,33 @@ export const recipeRouter = {
 				where: eq(recipes.id, input),
 			});
 			return recipe;
+		}),
+
+	// get recipe by recipeId
+	getIngredientsByRecipeId: authenticationProcedure
+		.input(z.string())
+		.query(async ({ ctx, input }) => {
+			const ingredientsByRecipeId =
+				await ctx.db.query.ingredientsToRecipes.findMany({
+					where: eq(ingredientsToRecipes.recipeId, input),
+				});
+			const ingredientsList = [];
+			for (const el of ingredientsByRecipeId) {
+				const ingr = await ctx.db.query.ingredients.findFirst({
+					where: eq(ingredientsTable.id, el.ingredientId),
+				});
+
+				if (ingr == null) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Ingredient in db with no name ??",
+					});
+				}
+
+				const ingredient = { ...el, name: ingr.name };
+				ingredientsList.push(ingredient);
+			}
+			console.log(ingredientsList);
+			return ingredientsList;
 		}),
 } satisfies TRPCRouterRecord;

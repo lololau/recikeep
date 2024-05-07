@@ -45,8 +45,9 @@ export const recipes = sqliteTable("recipe", {
 		.notNull()
 		.primaryKey()
 		.$defaultFn(() => createId()),
-	title: text("title").unique().notNull(),
+	title: text("title").notNull(),
 	preparation: text("preparation"),
+	description: text("description"),
 	portions: integer("portions").notNull(),
 	glucides: text("glucides"),
 	userId: text("user_id")
