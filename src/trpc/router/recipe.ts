@@ -41,8 +41,6 @@ export const recipeRouter = {
 				tags,
 			} = input;
 
-			const tagsList: string[] = [];
-
 			return await ctx.db.transaction(async (tx) => {
 				// New recipe created
 				const recipe = first(
@@ -66,14 +64,12 @@ export const recipeRouter = {
 						message: "Recipe insert but not returning ?",
 					});
 				}
-				tagsList.push(recipe.title);
 
 				// Ingredients part
 				for (const el of ingredients) {
 					// Get ingredient with its quantity
 					const ingredientName = el.name.toLowerCase().trim();
 					const quantity = el.quantity;
-					tagsList.push(ingredientName);
 
 					// Check if ingredient already exist
 					const ingredientAlreadyExist = await tx.query.ingredients.findFirst({
@@ -123,6 +119,7 @@ export const recipeRouter = {
 					}
 				}
 
+				const tagsList: string[] = [];
 				// Tags part
 				if (tags) {
 					for (let i = 0; i < tags.length; i++) {
@@ -201,7 +198,7 @@ export const recipeRouter = {
 			return recipe;
 		}),
 
-	// get recipe by recipeId
+	// get ingredients by recipeId
 	getIngredientsByRecipeId: authenticationProcedure
 		.input(z.string())
 		.query(async ({ ctx, input }) => {
@@ -225,7 +222,31 @@ export const recipeRouter = {
 				const ingredient = { ...el, name: ingr.name };
 				ingredientsList.push(ingredient);
 			}
-			console.log(ingredientsList);
 			return ingredientsList;
+		}),
+	// get tags by recipeId
+	getTagsByRecipeId: authenticationProcedure
+		.input(z.string())
+		.query(async ({ ctx, input }) => {
+			const tagsByRecipeId = await ctx.db.query.tagsToRecipes.findMany({
+				where: eq(tagsToRecipes.recipeId, input),
+			});
+			const tagsList = [];
+			for (const el of tagsByRecipeId) {
+				const tag = await ctx.db.query.tags.findFirst({
+					where: eq(tagsTable.id, el.tagId),
+				});
+
+				if (tag == null) {
+					throw new TRPCError({
+						code: "INTERNAL_SERVER_ERROR",
+						message: "Tag in db with no name ??",
+					});
+				}
+
+				const tagToReturn = { ...el, name: tag.name };
+				tagsList.push(tagToReturn);
+			}
+			return tagsList;
 		}),
 } satisfies TRPCRouterRecord;

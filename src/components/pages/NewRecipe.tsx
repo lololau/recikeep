@@ -5,15 +5,18 @@ import { IoIosAddCircle } from "react-icons/io";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
 import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 import { Button } from "recikeep/components/Button";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import { MdDeleteOutline } from "react-icons/md";
+import { useState } from "react";
+import QuillEditorComponent from "../QuillEditor";
 
 interface IFormRecipe {
 	title: string;
 	description?: string;
-	preparation?: string;
 	portions: number;
 	glucides?: string;
 	ingredients: { name: string; quantity: string }[];
@@ -32,7 +35,6 @@ export default function NewRecipeForm() {
 	} = useForm<IFormRecipe>({
 		defaultValues: {
 			title: "",
-			preparation: "",
 			ingredients: [{ name: "", quantity: "" }],
 			tags: [],
 		},
@@ -68,6 +70,8 @@ export default function NewRecipeForm() {
 			},
 		});
 
+	const [preparation, setPreparation] = useState("");
+
 	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
 		const tags = getValues("tags")?.map((el) => el.name);
 		const portions = Number(getValues("portions"));
@@ -75,7 +79,7 @@ export default function NewRecipeForm() {
 		const values = getValues();
 
 		// Cast tags into string[]
-		const valuesToReturn = { ...values, tags, portions };
+		const valuesToReturn = { ...values, tags, portions, preparation };
 
 		await mutateAsync(valuesToReturn);
 	};
@@ -102,7 +106,7 @@ export default function NewRecipeForm() {
 			</div>
 			<div>
 				<form onSubmit={handleSubmit(onSubmit)}>
-					<div className="grid grid-cols-2">
+					<div className="grid grid-cols-2 mb-2 gap-2">
 						<div className="grid gap-2">
 							{/* === Title === */}
 							<div className="grid gap-1 py-2">
@@ -122,37 +126,21 @@ export default function NewRecipeForm() {
 							</div>
 							{/* === Description === */}
 							<div className="grid gap-1 py-2">
-								<label htmlFor="title" className="text-base font-semibold">
+								<label
+									htmlFor="description"
+									className="text-base font-semibold"
+								>
 									Description
 								</label>
 								<div className="rounded-md shadow-sm border-2 sm:max-w-md">
 									<input
-										id="title"
+										id="description"
 										aria-invalid={errors.description ? "true" : "false"}
 										className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
 										placeholder="Courte description"
 										{...register("description", { required: false })}
 									/>
 									<p>{errors.description?.message}</p>
-								</div>
-							</div>
-
-							{/* === Preparation details === */}
-							<div className="grid gap-1 py-2">
-								<label
-									htmlFor="preparation"
-									className="text-base font-semibold"
-								>
-									Étapes de préparation
-								</label>
-								<div className="rounded-md shadow-sm border-2 sm:max-w-md">
-									<textarea
-										id="preparation"
-										className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
-										placeholder="Décris les étapes de ta recette"
-										{...register("preparation", { required: false })}
-									/>
-									<p>{errors.preparation?.message}</p>
 								</div>
 							</div>
 
@@ -216,7 +204,7 @@ export default function NewRecipeForm() {
 																required: true,
 															})}
 															placeholder="Quel ingrédient ?"
-															className="w-full text-sm"
+															className="w-full text-sm py-1.5 pl-1"
 														/>
 													</div>
 
@@ -226,7 +214,7 @@ export default function NewRecipeForm() {
 															{...register(`ingredients.${index}.quantity`, {
 																required: true,
 															})}
-															className="w-full text-sm"
+															className="w-full text-sm py-1.5 pl-1"
 														/>
 													</div>
 
@@ -287,6 +275,16 @@ export default function NewRecipeForm() {
 								</div>
 							</div>
 						</div>
+					</div>
+					<div className="grid gap-2 py-2">
+						{/* === Preparation details === */}
+						<label htmlFor="preparation" className="text-base font-semibold">
+							Étapes de préparation
+						</label>
+						<QuillEditorComponent
+							value={preparation}
+							setValue={setPreparation}
+						/>
 					</div>
 					<div className="text-center py-20">
 						<Button text="Valider la recette" />
