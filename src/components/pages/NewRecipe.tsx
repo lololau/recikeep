@@ -5,7 +5,6 @@ import { IoIosAddCircle } from "react-icons/io";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
 import { useForm, useFieldArray, type SubmitHandler } from "react-hook-form";
-import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 import { Button } from "recikeep/components/Button";
@@ -17,6 +16,7 @@ import QuillEditorComponent from "../QuillEditor";
 interface IFormRecipe {
 	title: string;
 	description?: string;
+	source: string;
 	portions: number;
 	glucides?: string;
 	ingredients: { name: string; quantity: string }[];
@@ -34,7 +34,6 @@ export default function NewRecipeForm() {
 		formState: { errors },
 	} = useForm<IFormRecipe>({
 		defaultValues: {
-			title: "",
 			ingredients: [{ name: "", quantity: "" }],
 			tags: [],
 		},
@@ -122,6 +121,22 @@ export default function NewRecipeForm() {
 										{...register("title", { required: true })}
 									/>
 									<p>{errors.title?.message}</p>
+								</div>
+							</div>
+							{/* === Title === */}
+							<div className="grid gap-1 py-2">
+								<label htmlFor="source" className="text-base font-semibold">
+									Source
+								</label>
+								<div className="rounded-md shadow-sm border-2 sm:max-w-md">
+									<input
+										id="source"
+										aria-invalid={errors.source ? "true" : "false"}
+										className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
+										placeholder="Ta source"
+										{...register("source", { required: true })}
+									/>
+									<p>{errors.source?.message}</p>
 								</div>
 							</div>
 							{/* === Description === */}

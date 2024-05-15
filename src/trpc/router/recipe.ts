@@ -8,6 +8,7 @@ import {
 	tags as tagsTable,
 	ingredientsToRecipes,
 	tagsToRecipes,
+	buckets,
 } from "recikeep/database/schema";
 import { eq } from "drizzle-orm";
 
@@ -24,10 +25,12 @@ export const recipeRouter = {
 				title: z.string(),
 				description: z.string().optional(),
 				preparation: z.string().optional(),
+				source: z.string(),
 				portions: z.number(),
 				glucides: z.string().optional(),
 				ingredients: z.array(ingredientsSchema),
 				tags: z.array(z.string()).optional(),
+				bucketId: z.string().optional(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -35,10 +38,12 @@ export const recipeRouter = {
 				title,
 				description,
 				preparation,
+				source,
 				portions,
 				glucides,
 				ingredients,
 				tags,
+				bucketId,
 			} = input;
 
 			return await ctx.db.transaction(async (tx) => {
@@ -50,6 +55,7 @@ export const recipeRouter = {
 							title,
 							description,
 							preparation,
+							source,
 							portions,
 							glucides,
 							userId: ctx.user.id,
@@ -63,6 +69,21 @@ export const recipeRouter = {
 						code: "INTERNAL_SERVER_ERROR",
 						message: "Recipe insert but not returning ?",
 					});
+				}
+
+				if (bucketId) {
+					const bucket = await tx
+						.update(buckets)
+						.set({ recipeId: recipe.id })
+						.where(eq(buckets.id, bucketId));
+
+					if (bucket == null) {
+						tx.rollback();
+						throw new TRPCError({
+							code: "INTERNAL_SERVER_ERROR",
+							message: `Bucket not find by id: ${bucketId}`,
+						});
+					}
 				}
 
 				// Ingredients part

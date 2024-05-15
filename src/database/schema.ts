@@ -47,6 +47,7 @@ export const recipes = sqliteTable("recipe", {
 		.$defaultFn(() => createId()),
 	title: text("title").notNull(),
 	preparation: text("preparation"),
+	source: text("source"),
 	description: text("description"),
 	portions: integer("portions").notNull(),
 	glucides: text("glucides"),
@@ -55,7 +56,20 @@ export const recipes = sqliteTable("recipe", {
 		.references(() => users.id),
 });
 
+export const buckets = sqliteTable("bucket", {
+	id: text("id")
+		.notNull()
+		.primaryKey()
+		.$defaultFn(() => createId()),
+	recipeTitle: text("recipe_title").notNull(),
+	source: text("source").notNull(),
+	recipeId: text("recipe_id").references(() => recipes.id),
+	userId: text("user_id").references(() => users.id),
+});
+
 export type IRecipe = typeof recipes.$inferInsert;
+
+export type IBucket = typeof buckets.$inferInsert;
 
 export const ingredientsToRecipes = sqliteTable(
 	"ingredients_to_recipes",
@@ -95,6 +109,17 @@ export const userRelations = relations(users, ({ many }) => ({
 export const recipesRelations = relations(recipes, ({ one, many }) => ({
 	user: one(users, {
 		fields: [recipes.userId],
+		references: [users.id],
+	}),
+}));
+
+export const bucketsRelations = relations(buckets, ({ one }) => ({
+	recipe: one(recipes, {
+		fields: [buckets.recipeId],
+		references: [recipes.id],
+	}),
+	user: one(users, {
+		fields: [buckets.userId],
 		references: [users.id],
 	}),
 }));
