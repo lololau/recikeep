@@ -13,7 +13,7 @@ export const SearchBar = () => {
 			<input
 				type="text"
 				placeholder={"Quelle recette veux-tu cuisiner ?"}
-				className=" text-sm border border-2 gap-2 rounded-xl px-2 py-1 w-full bg-gray-50"
+				className=" text-sm border-2 gap-2 rounded-3xl px-3 py-2 w-full"
 				value={text}
 				onChange={handleChangeSearch}
 			/>

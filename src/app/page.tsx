@@ -34,49 +34,47 @@ export default async function HomePage() {
 					Tes recettes
 				</h1>
 
-				{recipes.length > 0 && (
-					<div className="w-full">
-						<ul className="min-w-full grid grid-cols-3 gap-4">
-							<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800">
-								<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
-									<Link href={"/recipe"}>
-										<div className="flex flex-row gap-4 justify-between">
-											<p className="font-base text-white">Nouvelle recette</p>
-											<button type="button">
-												<IoIosAddCircle color="white" size="25px" />
-											</button>
-										</div>
-									</Link>
-								</div>
-							</li>
-							{recipes.map((recipe, index) => {
-								return (
-									<li
-										key={`${recipe.id}—${index}`}
-										className="p-3 flex flex-row items-center border border-slate-300 rounded-lg"
-									>
-										<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
-											<Link href={`/recipe/${recipe.id}`}>
-												<p>{recipe.title}</p>
-												<p className="font-base text-gray-500 text-xs">
-													Reference: {recipe.source}
-												</p>
-											</Link>
-										</div>
-										<div>
-											<button
-												type="button"
-												className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
-											>
-												<HiPencil color="#065f46" />
-											</button>
-										</div>
-									</li>
-								);
-							})}
-						</ul>
-					</div>
-				)}
+				<div className="w-full">
+					<ul className="min-w-full grid grid-cols-3 gap-4">
+						<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
+							<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
+								<Link href={"/recipe"}>
+									<div className="flex flex-row gap-4 justify-between">
+										<p className="font-base text-white">Nouvelle recette</p>
+										<button type="button">
+											<IoIosAddCircle color="white" size="25px" />
+										</button>
+									</div>
+								</Link>
+							</div>
+						</li>
+						{recipes.map((recipe, index) => {
+							return (
+								<li
+									key={`${recipe.id}—${index}`}
+									className="p-3 flex flex-row items-center border border-slate-300 rounded-lg hover:bg-gray-100"
+								>
+									<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
+										<Link href={`/recipe/${recipe.id}`}>
+											<p>{recipe.title}</p>
+											<p className="font-base text-gray-500 text-xs">
+												Reference: {recipe.source}
+											</p>
+										</Link>
+									</div>
+									<div>
+										<button
+											type="button"
+											className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
+										>
+											<HiPencil color="#065f46" />
+										</button>
+									</div>
+								</li>
+							);
+						})}
+					</ul>
+				</div>
 			</div>
 		</MaxWidthWrapper>
 	);

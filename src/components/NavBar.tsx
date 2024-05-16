@@ -40,12 +40,15 @@ export const NavBar = async () => {
 								</Link>
 							</div>
 							<div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch w-full">
-								<ul className="relative list-none flex gap-8 h-full items-center">
+								<ul className="relative list-none flex h-full items-center divide-x divide-gray-400 font-light text-gray-600">
 									<Link href="/">
-										<li>Mes recettes</li>
+										<li className="pr-4 hover:text-black">Mes recettes</li>
 									</Link>
 									<Link href="/recipe">
-										<li>Nouvelle recette</li>
+										<li className="px-4 hover:text-black">Nouvelle recette</li>
+									</Link>
+									<Link href="/bucket">
+										<li className="pl-4 hover:text-black">Backlog</li>
 									</Link>
 								</ul>
 							</div>
