@@ -203,7 +203,7 @@ export default function NewRecipeForm() {
 												appendIngredient({ name: "", quantity: "" })
 											}
 										>
-											<IoIosAddCircle color="green" size="25px" />
+											<IoIosAddCircle color="emerald" size="25px" />
 										</button>
 									</div>
 								</div>
@@ -239,7 +239,7 @@ export default function NewRecipeForm() {
 																removeIngredient(index);
 															}}
 															type="button"
-															className="items-center pt-1 gap-x-2 font-semibold text-green-600 hover:text-green-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
+															className="items-center pt-1 gap-x-2 font-semibold text-emerald-600 hover:text-emerald-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
 														>
 															<MdDeleteOutline />
 														</button>
@@ -256,7 +256,7 @@ export default function NewRecipeForm() {
 								<div className="flex flex-row gap-6">
 									<p className="font-semibold pb-1">Tags</p>
 									<button type="button" onClick={() => appendTag({ name: "" })}>
-										<IoIosAddCircle color="green" size="25px" />
+										<IoIosAddCircle color="emerald" size="25px" />
 									</button>
 								</div>
 								<div className="flex flex-row items-center gap-2 py-2">
@@ -278,7 +278,7 @@ export default function NewRecipeForm() {
 																removeTag(index);
 															}}
 															type="button"
-															className="items-center gap-x-2 font-semibold text-green-600 hover:text-green-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
+															className="items-center gap-x-2 font-semibold text-emerald-600 hover:text-emerald-800 text-lg disabled:opacity-50 disabled:pointer-events-none"
 														>
 															<MdDeleteOutline />
 														</button>

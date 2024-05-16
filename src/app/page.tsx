@@ -1,8 +1,7 @@
 import { redirect } from "next/navigation";
-import { MdDeleteOutline } from "react-icons/md";
 import { validateRequest } from "recikeep/auth/auth";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
-import { FaPencilAlt } from "react-icons/fa";
+import { HiPencil } from "react-icons/hi2";
 import { SearchBar } from "recikeep/components/SearchBar";
 import { api } from "recikeep/trpc/server";
 import Link from "next/link";
@@ -31,45 +30,45 @@ export default async function HomePage() {
 					<SearchBar />
 				</div>
 
-				<div className="flex flex-row items-center gap-4 self-start pb-2">
-					<h1 className="self-start text-lg font-semibold mb-2">
-						Tes recettes
-					</h1>
-					<Link href="/recipe">
-						<button type="button">
-							<IoIosAddCircle color="green" size="25px" />
-						</button>
-					</Link>
-				</div>
+				<h1 className="self-start text-xl font-light mb-2 pb-2 text-gray-800">
+					Tes recettes
+				</h1>
 
 				{recipes.length > 0 && (
 					<div className="w-full">
 						<ul className="min-w-full grid grid-cols-3 gap-4">
+							<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800">
+								<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
+									<Link href={"/recipe"}>
+										<div className="flex flex-row gap-4 justify-between">
+											<p className="font-base text-white">Nouvelle recette</p>
+											<button type="button">
+												<IoIosAddCircle color="white" size="25px" />
+											</button>
+										</div>
+									</Link>
+								</div>
+							</li>
 							{recipes.map((recipe, index) => {
 								return (
 									<li
 										key={`${recipe.id}—${index}`}
-										className="p-4 flex flex-row items-center border border-slate-300 rounded-lg"
+										className="p-3 flex flex-row items-center border border-slate-300 rounded-lg"
 									>
-										<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
+										<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
 											<Link href={`/recipe/${recipe.id}`}>
 												<p>{recipe.title}</p>
+												<p className="font-base text-gray-500 text-xs">
+													Reference: {recipe.source}
+												</p>
 											</Link>
 										</div>
 										<div>
 											<button
 												type="button"
-												className="flex-auto w-10 text-base font-semibold text-green-600 hover:text-green-800 disabled:opacity-50 disabled:pointer-events-none"
+												className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
 											>
-												<FaPencilAlt />
-											</button>
-										</div>
-										<div>
-											<button
-												type="button"
-												className="flex-auto text-base font-semibold text-green-600 hover:text-green-800 disabled:opacity-50 disabled:pointer-events-none"
-											>
-												<MdDeleteOutline />
+												<HiPencil color="#065f46" />
 											</button>
 										</div>
 									</li>

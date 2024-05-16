@@ -10,10 +10,10 @@ export const Button = ({
 				className={
 					className
 						? className
-						: "bg-green-700 text-white rounded-md py-1.5 px-2 w-max text-sm sm:text-base"
+						: "bg-emerald-800 text-white rounded-md py-1.5 px-2 w-max text-sm sm:text-base"
 				}
 			>
-				<div className="flex flex-row items-center gap-2">
+				<div className="flex flex-row items-center">
 					<div>{text}</div>
 					<div>{children}</div>
 				</div>

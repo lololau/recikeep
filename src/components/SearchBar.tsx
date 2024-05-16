@@ -13,12 +13,12 @@ export const SearchBar = () => {
 			<input
 				type="text"
 				placeholder={"Quelle recette veux-tu cuisiner ?"}
-				className=" text-sm border gap-2 rounded-xl px-2 py-1 w-full"
+				className=" text-sm border border-2 gap-2 rounded-xl px-2 py-1 w-full bg-gray-50"
 				value={text}
 				onChange={handleChangeSearch}
 			/>
 			<button type="button" onClick={() => setText("")}>
-				<FaSearch color="green" size="20px" />
+				<FaSearch color="#065f46" size="20px" />
 			</button>
 		</div>
 	);
