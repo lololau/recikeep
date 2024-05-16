@@ -1,16 +1,24 @@
+import { IoIosAddCircle } from "react-icons/io";
 import type { IBucket } from "recikeep/database/schema";
 
-export function BucketCard({ recipeTitle, source }: IBucket) {
+export function BucketCard({
+	recipeTitle,
+	source,
+}: { recipeTitle: string; source: string }) {
 	return (
-		<div className="min-h-22 rounded-xl bg-white text-black border border-gray-400">
-			<div className="flex flex-col w-full">
-				<div className="flex flex-row">
-					<p className="font-semibold pb-2 grow text-sm">{recipeTitle}</p>
-				</div>
-				<p className="text-xxs pr-1">
-					Source: <span className="text-gray-500">{source}</span>
-				</p>
+		<>
+			<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
+				<p>{recipeTitle}</p>
+				<p className="font-base text-gray-500 text-xs">Reference: {source}</p>
 			</div>
-		</div>
+			<div>
+				<button
+					type="button"
+					className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
+				>
+					<IoIosAddCircle color="#065f46" />
+				</button>
+			</div>
+		</>
 	);
 }
