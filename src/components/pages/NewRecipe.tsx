@@ -70,7 +70,7 @@ export default function NewRecipeForm() {
 
 	const [preparation, setPreparation] = useState("");
 
-	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
+	const onSubmit: SubmitHandler<IFormRecipe> = async () => {
 		const tags = getValues("tags")?.map((el) => el.name);
 		const portions = Number(getValues("portions"));
 

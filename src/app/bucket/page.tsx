@@ -1,8 +1,7 @@
-import Link from "next/link";
 import { redirect } from "next/navigation";
-import { IoIosAddCircle } from "react-icons/io";
 import { validateRequest } from "recikeep/auth/auth";
 import { BucketCard } from "recikeep/components/BucketCard";
+import { BucketModal } from "recikeep/components/BucketModal";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import NewRecipeForm from "recikeep/components/pages/NewRecipe";
 import { api } from "recikeep/trpc/server";
@@ -31,13 +30,8 @@ export default async function NewRecipePage() {
 				<div className="flex flex-col">
 					<ul className="flex-grow bg-gray-200 py-2 px-2">
 						<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
-							<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
-								<div className="flex flex-row gap-4 justify-between">
-									<p className="font-base text-white">Quick save</p>
-									<button type="button">
-										<IoIosAddCircle color="white" size="25px" />
-									</button>
-								</div>
+							<div className="font-medium  px-2 grid flex-grow">
+								<BucketModal />
 							</div>
 						</li>
 						{buckets.map((bucket, index) => {
