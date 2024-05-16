@@ -13,6 +13,7 @@ export default async function NewRecipePage() {
 	}
 
 	const buckets = await api.buckets.getBucketsByUserId();
+	console.log("buckets", buckets);
 
 	return (
 		<MaxWidthWrapper>

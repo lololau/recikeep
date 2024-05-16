@@ -22,7 +22,7 @@ export const bucketRouter = {
 				const bucket = first(
 					await ctx.db
 						.insert(buckets)
-						.values({ recipeTitle, source })
+						.values({ recipeTitle, source, userId: ctx.user.id })
 						.returning(),
 				);
 
