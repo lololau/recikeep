@@ -17,8 +17,8 @@ export default async function HomePage() {
 
 	return (
 		<MaxWidthWrapper>
-			<div className="pb-20 mx-auto text-center flex flex-col items-center">
-				<div className="py-20 w-full bg-pink-50">
+			<div className="pb-20 mx-auto flex flex-col">
+				<div className="py-20 w-full bg-pink-50 text-center">
 					<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
 						RECIKEEP.
 					</h1>
@@ -26,15 +26,18 @@ export default async function HomePage() {
 						Toutes tes recettes à disposition pour t'inspirer en cuisine.
 					</p>
 				</div>
-				<div className="flex flex-col gap-4 w-full py-20 items-center">
+				<div className="flex flex-col gap-4 w-full py-20 items-center text-center">
 					<SearchBar />
 				</div>
 
-				<h1 className="self-start text-xl font-light mb-2 pb-2 text-gray-800">
-					Tes recettes
-				</h1>
+				<div className="flex flex-row gap-3 items-center">
+					<h1 className="text-2xl font-semibold mb-2 pb-2 text-gray-800">
+						TES RECETTES
+					</h1>
+					<hr className="flex-grow border-gray-400" />
+				</div>
 
-				<div className="w-full">
+				<div className="w-full py-4">
 					<ul className="min-w-full grid grid-cols-3 gap-4">
 						<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
 							<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">

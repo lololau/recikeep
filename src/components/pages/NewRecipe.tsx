@@ -22,7 +22,7 @@ interface IFormRecipe {
 	tags?: { name: string }[];
 }
 
-export default function NewRecipeForm() {
+export default function NewRecipeForm({ bucketId }: { bucketId?: string }) {
 	const router = useRouter();
 
 	const {
@@ -77,8 +77,9 @@ export default function NewRecipeForm() {
 		const values = getValues();
 
 		// Cast tags into string[]
-		const valuesToReturn = { ...values, tags, portions, preparation };
+		const valuesToReturn = { ...values, tags, portions, preparation, bucketId };
 
+		console.log("values recipes", valuesToReturn);
 		await mutateAsync(valuesToReturn);
 	};
 

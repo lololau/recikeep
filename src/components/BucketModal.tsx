@@ -50,7 +50,7 @@ export function BucketModal() {
 	}
 	const onSubmit: SubmitHandler<IFormBucket> = async (data) => {
 		await mutateAsync(data);
-		setIsModalOpen(false);
+		closeModal();
 	};
 
 	return (

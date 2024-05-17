@@ -72,6 +72,7 @@ export const recipeRouter = {
 				}
 
 				if (bucketId) {
+					console.log("bucketId present");
 					const bucket = await tx
 						.update(buckets)
 						.set({ recipeId: recipe.id })
