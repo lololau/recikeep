@@ -5,10 +5,10 @@ import { BucketCard } from "recikeep/components/BucketCard";
 import { BucketModal } from "recikeep/components/BucketModal";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import NewRecipeForm from "recikeep/components/pages/NewRecipe";
+import { api } from "recikeep/trpc/react";
 
-export default function BucketForm({
-	buckets,
-}: { buckets: { recipeTitle: string; source: string; id: string }[] }) {
+export default function BucketForm() {
+	const { data: buckets } = api.buckets.getBucketsByUserId.useQuery();
 	const [bucketId, setBucketId] = useState("");
 
 	return (
@@ -32,7 +32,7 @@ export default function BucketForm({
 						<h1 className="text-emerald-800">RECETTES EN ATTENTE</h1>
 						<hr className="border-gray-500 flex-grow" />
 					</div>
-					{buckets.map((bucket, index) => {
+					{(buckets ?? []).map((bucket, index) => {
 						return (
 							<li
 								key={`${bucket.id}—${index}`}

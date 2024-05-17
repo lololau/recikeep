@@ -1,7 +1,8 @@
+import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { validateRequest } from "recikeep/auth/auth";
 import BucketForm from "recikeep/components/pages/Bucket";
-import { api } from "recikeep/trpc/server";
+import { api, createServerHelper } from "recikeep/trpc/server";
 
 export default async function BucketPage() {
 	const { session } = await validateRequest();
@@ -9,7 +10,14 @@ export default async function BucketPage() {
 		return redirect("/login");
 	}
 
-	const buckets = await api.buckets.getBucketsByUserId();
+	const helpers = await createServerHelper();
+	await helpers.buckets.getBucketsByUserId.prefetch();
 
-	return <BucketForm buckets={buckets} />;
+	const dehydratedState = dehydrate(helpers.queryClient);
+
+	return (
+		<HydrationBoundary state={dehydratedState}>
+			<BucketForm />
+		</HydrationBoundary>
+	);
 }

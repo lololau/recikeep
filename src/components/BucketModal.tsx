@@ -35,9 +35,11 @@ export function BucketModal() {
 		formState: { errors },
 	} = useForm<IFormBucket>();
 
+	const utils = api.useUtils();
 	const { mutateAsync } = api.buckets.createBucket.useMutation({
 		onSuccess() {
 			toast.success("Recette ajoutée à la liste d'attente");
+			utils.buckets.getBucketsByUserId.refetch();
 		},
 	});
 
