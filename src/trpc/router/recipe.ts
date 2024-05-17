@@ -1,5 +1,5 @@
 import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
-import { authenticationProcedure } from "../trpc";
+import { authenticationProcedure, isAuthentified, t } from "../trpc";
 import { z } from "zod";
 import { first } from "radash";
 import {
@@ -9,12 +9,20 @@ import {
 	ingredientsToRecipes,
 	tagsToRecipes,
 	buckets,
+	type IRecipe,
 } from "recikeep/database/schema";
 import { eq } from "drizzle-orm";
 
 const ingredientsSchema = z.object({
 	name: z.string(),
 	quantity: z.string(),
+});
+
+const loadUsersRecipes = isAuthentified.unstable_pipe(async ({ ctx, next }) => {
+	const recipesList = await ctx.db.query.recipes.findMany({
+		where: eq(recipes.userId, ctx.user.id),
+	});
+	return next({ ctx: { recipesList } });
 });
 
 export const recipeRouter = {
@@ -72,7 +80,6 @@ export const recipeRouter = {
 				}
 
 				if (bucketId) {
-					console.log("bucketId present");
 					const bucket = await tx
 						.update(buckets)
 						.set({ recipeId: recipe.id })
@@ -270,5 +277,28 @@ export const recipeRouter = {
 				tagsList.push(tagToReturn);
 			}
 			return tagsList;
+		}),
+	// get recipes by search
+	getRecipesBySearch: authenticationProcedure
+		.input(z.string())
+		.query(async ({ ctx, input }) => {
+			// Get recipes by user
+			const recipesByUser = await ctx.db.query.recipes.findMany({
+				where: eq(recipes.userId, ctx.user.id),
+				with: {
+					ingredientsToRecipes: {
+						with: {
+							ingredient: true,
+						},
+					},
+					tagsToRecipes: {
+						with: {
+							tag: true,
+						},
+					},
+				},
+			});
+
+			console.log("result === ", JSON.stringify(recipesByUser, null, 2));
 		}),
 } satisfies TRPCRouterRecord;

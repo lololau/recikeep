@@ -9,7 +9,15 @@ import { api } from "recikeep/trpc/react";
 
 export default function BucketForm() {
 	const { data: buckets } = api.buckets.getBucketsByUserId.useQuery();
-	const [bucketId, setBucketId] = useState("");
+
+	const [bucket, setBucket] = useState<
+		| {
+				bucketId: string;
+				recipeTitle: string;
+				source: string;
+		  }
+		| undefined
+	>(undefined);
 
 	return (
 		<MaxWidthWrapper>
@@ -42,8 +50,11 @@ export default function BucketForm() {
 									source={bucket.source}
 									recipeTitle={bucket.recipeTitle}
 									onClick={() => {
-										setBucketId(bucket.id);
-										console.log(bucketId);
+										setBucket({
+											bucketId: bucket.id,
+											source: bucket.source,
+											recipeTitle: bucket.recipeTitle,
+										});
 									}}
 								/>
 							</li>
@@ -52,7 +63,7 @@ export default function BucketForm() {
 				</ul>
 				<div className="flex flex-col justify-center flex-grow">
 					<div className="pl-3">
-						<NewRecipeForm bucketId={bucketId} />
+						{bucket != null && <NewRecipeForm initialData={bucket} />}
 					</div>
 				</div>
 			</div>

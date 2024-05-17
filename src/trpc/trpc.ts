@@ -12,7 +12,7 @@ export const createTRPCContext = async () => {
 	};
 };
 
-const t = initTRPC.context<typeof createTRPCContext>().create({
+export const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
 });
 
@@ -23,7 +23,7 @@ export const createTRPCRouter = t.router;
 export const publicProcedure = t.procedure;
 
 // middleware authentication
-const isAuthentified = t.middleware(({ ctx, next }) => {
+export const isAuthentified = t.middleware(({ ctx, next }) => {
 	if (ctx.session == null || ctx.user == null) {
 		throw new TRPCError({ code: "UNAUTHORIZED" });
 	}

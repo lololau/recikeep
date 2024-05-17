@@ -111,6 +111,8 @@ export const recipesRelations = relations(recipes, ({ one, many }) => ({
 		fields: [recipes.userId],
 		references: [users.id],
 	}),
+	ingredientsToRecipes: many(ingredientsToRecipes),
+	tagsToRecipes: many(tagsToRecipes),
 }));
 
 export const bucketsRelations = relations(buckets, ({ one }) => ({

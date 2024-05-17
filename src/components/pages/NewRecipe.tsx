@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import QuillEditorComponent from "../QuillEditor";
 
 interface IFormRecipe {
@@ -22,19 +22,30 @@ interface IFormRecipe {
 	tags?: { name: string }[];
 }
 
-export default function NewRecipeForm({ bucketId }: { bucketId?: string }) {
+type NewRecipeFormProps = {
+	initialData?: {
+		bucketId: string;
+		recipeTitle: string;
+		source: string;
+	};
+};
+
+export default function NewRecipeForm({ initialData }: NewRecipeFormProps) {
 	const router = useRouter();
 
 	const {
 		register,
 		control,
 		handleSubmit,
-		getValues,
+		reset,
+		setValue,
 		formState: { errors },
 	} = useForm<IFormRecipe>({
 		defaultValues: {
 			ingredients: [{ name: "", quantity: "" }],
 			tags: [],
+			title: initialData?.recipeTitle ?? "",
+			source: initialData?.source ?? "",
 		},
 	});
 	const {
@@ -63,26 +74,25 @@ export default function NewRecipeForm({ bucketId }: { bucketId?: string }) {
 				toast.success("Recette créée.");
 				router.push(`/recipe/${data.id}`);
 				utils.recipes.getRecipesByUserId.invalidate();
+				reset();
 			},
 			onError(error) {
-				// TODO: get error message
 				toast.error(error.data?.code);
 			},
 		});
 
 	const [preparation, setPreparation] = useState("");
 
-	const onSubmit: SubmitHandler<IFormRecipe> = async () => {
-		const tags = getValues("tags")?.map((el) => el.name);
-		const portions = Number(getValues("portions"));
-
-		const values = getValues();
+	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
+		const tags = data.tags?.map((el) => el.name);
 
 		// Cast tags into string[]
-		const valuesToReturn = { ...values, tags, portions, preparation, bucketId };
-
-		console.log("values recipes", valuesToReturn);
-		await mutateAsync(valuesToReturn);
+		const valuesToReturn = {
+			...data,
+			tags,
+			preparation,
+			bucketId: initialData?.bucketId,
+		};
 	};
 
 	// TODO; check read hook form, data typé selon le formulaire fait via react hook form
@@ -94,6 +104,11 @@ export default function NewRecipeForm({ bucketId }: { bucketId?: string }) {
 	// function clickOnerror() {
 	// 	mutate({ ingredients: })
 	// }
+
+	useEffect(() => {
+		setValue("title", initialData?.recipeTitle ?? "");
+		setValue("source", initialData?.source ?? "");
+	}, [initialData, setValue]);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -170,7 +185,10 @@ export default function NewRecipeForm({ bucketId }: { bucketId?: string }) {
 								id="portions"
 								className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
 								placeholder="2"
-								{...register("portions", { required: true })}
+								{...register("portions", {
+									required: true,
+									valueAsNumber: true,
+								})}
 							/>
 							<p>{errors.portions?.message}</p>
 						</div>

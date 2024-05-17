@@ -32,6 +32,7 @@ export function BucketModal() {
 	const {
 		register,
 		handleSubmit,
+		reset,
 		formState: { errors },
 	} = useForm<IFormBucket>();
 
@@ -40,6 +41,7 @@ export function BucketModal() {
 		onSuccess() {
 			toast.success("Recette ajoutée à la liste d'attente");
 			utils.buckets.getBucketsByUserId.refetch();
+			reset();
 		},
 	});
 
