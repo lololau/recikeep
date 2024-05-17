@@ -1,11 +1,13 @@
 import { redirect } from "next/navigation";
 import { validateRequest } from "recikeep/auth/auth";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
-import { HiPencil } from "react-icons/hi2";
 import { SearchBar } from "recikeep/components/SearchBar";
-import { api } from "recikeep/trpc/server";
 import Link from "next/link";
 import { IoIosAddCircle } from "react-icons/io";
+import { HomePageRecipe } from "recikeep/components/pages/HomePageRecipes";
+import { dehydrate } from "@tanstack/react-query";
+import { HydrationBoundary } from "@tanstack/react-query";
+import { createServerHelper } from "recikeep/trpc/server";
 
 export default async function HomePage() {
 	const { session } = await validateRequest();
@@ -13,7 +15,11 @@ export default async function HomePage() {
 		redirect("/login");
 	}
 
-	const recipes = await api.recipes.getRecipesByUserId();
+	const helpers = await createServerHelper();
+
+	await helpers.recipes.getRecipesByUserId.prefetch();
+
+	const dehydratedState = dehydrate(helpers.queryClient);
 
 	return (
 		<MaxWidthWrapper>
@@ -51,31 +57,9 @@ export default async function HomePage() {
 								</Link>
 							</div>
 						</li>
-						{recipes.map((recipe, index) => {
-							return (
-								<li
-									key={`${recipe.id}—${index}`}
-									className="p-3 flex flex-row items-center border border-slate-300 rounded-lg hover:bg-gray-100"
-								>
-									<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
-										<Link href={`/recipe/${recipe.id}`}>
-											<p>{recipe.title}</p>
-											<p className="font-base text-gray-500 text-xs">
-												Reference: {recipe.source}
-											</p>
-										</Link>
-									</div>
-									<div>
-										<button
-											type="button"
-											className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
-										>
-											<HiPencil color="#065f46" />
-										</button>
-									</div>
-								</li>
-							);
-						})}
+						<HydrationBoundary state={dehydratedState}>
+							<HomePageRecipe />
+						</HydrationBoundary>
 					</ul>
 				</div>
 			</div>

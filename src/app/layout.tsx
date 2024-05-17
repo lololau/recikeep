@@ -4,6 +4,7 @@ import "./globals.css";
 import { TRPCReactProvider } from "recikeep/trpc/react";
 import { NavBar } from "recikeep/components/NavBar";
 import { validateRequest } from "recikeep/auth/auth";
+import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,6 +31,7 @@ export default async function RootLayout({
 						<TRPCReactProvider>{children}</TRPCReactProvider>
 					</div>
 				</main>
+				<Toaster />
 			</body>
 		</html>
 	);

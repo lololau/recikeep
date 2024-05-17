@@ -55,12 +55,14 @@ export default function NewRecipeForm({ bucketId }: { bucketId?: string }) {
 		name: "ingredients",
 	});
 
+	const utils = api.useUtils();
+
 	const { mutateAsync, mutate, isPending, error } =
 		api.recipes.createRecipe.useMutation({
 			onSuccess(data, variables, context) {
-				// TODO: toast success do not work
 				toast.success("Recette créée.");
 				router.push(`/recipe/${data.id}`);
+				utils.recipes.getRecipesByUserId.invalidate();
 			},
 			onError(error) {
 				// TODO: get error message
