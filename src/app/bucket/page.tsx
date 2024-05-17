@@ -28,28 +28,30 @@ export default async function NewRecipePage() {
 				</div>
 			</div>
 			<div className="flex flex-row divide-x-2 divide-black mx-auto">
-				<div className="flex flex-col">
-					<ul className="flex-grow bg-gray-200 py-2 px-2">
-						<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
-							<div className="font-medium  px-2 grid flex-grow">
-								<BucketModal />
-							</div>
-						</li>
-						{buckets.map((bucket, index) => {
-							return (
-								<li
-									key={`${bucket.id}—${index}`}
-									className="p-3 flex flex-row items-center border border-slate-300 rounded-lg hover:bg-gray-100"
-								>
+				<ul className="flex flex-col flex-grow gap-3 p-2 ">
+					<li className="w-full">
+						<BucketModal />
+					</li>
+					<div className="flex flex-row gap-2 items-center">
+						<h1 className="text-emerald-800">RECETTES EN ATTENTE</h1>
+						<hr className="border-gray-500 flex-grow" />
+					</div>
+					{buckets.map((bucket, index) => {
+						return (
+							<li
+								key={`${bucket.id}—${index}`}
+								className="flex flex-col p-2 border  bg-gray-100 border-slate-300 rounded-lg hover:bg-gray-400 hover:text-white"
+							>
+								<button type="button">
 									<BucketCard
 										source={bucket.source}
 										recipeTitle={bucket.recipeTitle}
 									/>
-								</li>
-							);
-						})}
-					</ul>
-				</div>
+								</button>
+							</li>
+						);
+					})}
+				</ul>
 				<div className="flex flex-col justify-center flex-grow">
 					<div className="pl-3">
 						<NewRecipeForm />

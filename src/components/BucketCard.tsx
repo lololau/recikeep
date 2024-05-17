@@ -7,17 +7,11 @@ export function BucketCard({
 }: { recipeTitle: string; source: string }) {
 	return (
 		<>
-			<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
+			<div className="text-left font-light text-gray-800">
 				<p>{recipeTitle}</p>
-				<p className="font-base text-gray-500 text-xs">Reference: {source}</p>
-			</div>
-			<div>
-				<button
-					type="button"
-					className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
-				>
-					<IoIosAddCircle color="#065f46" />
-				</button>
+				<p className="text-left font-base text-gray-500 text-xs ">
+					Reference: {source}
+				</p>
 			</div>
 		</>
 	);

@@ -54,11 +54,17 @@ export function BucketModal() {
 	};
 
 	return (
-		<div>
-			<button type="button" onClick={openModal}>
-				<div className="flex flex-row gap-4 justify-between">
+		<>
+			<button
+				className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900 w-full"
+				type="button"
+				onClick={openModal}
+			>
+				<div className="px-2 text-start flex-grow">
 					<p className="font-base text-white">Quick save</p>
-					<IoIosAddCircle color="white" size="25px" />
+				</div>
+				<div className="text-lg">
+					<IoIosAddCircle color="white" />
 				</div>
 			</button>
 			<div id="modal">
@@ -120,6 +126,6 @@ export function BucketModal() {
 					</form>
 				</Modal>
 			</div>
-		</div>
+		</>
 	);
 }
