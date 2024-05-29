@@ -1,5 +1,5 @@
 import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
-import { authenticationProcedure, isAuthentified, t } from "../trpc";
+import { authenticationProcedure, isAuthentified } from "../trpc";
 import { z } from "zod";
 import { first } from "radash";
 import {
@@ -9,9 +9,8 @@ import {
 	ingredientsToRecipes,
 	tagsToRecipes,
 	buckets,
-	type IRecipe,
 } from "recikeep/database/schema";
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 
 const ingredientsSchema = z.object({
 	name: z.string(),
@@ -24,6 +23,18 @@ const loadUsersRecipes = isAuthentified.unstable_pipe(async ({ ctx, next }) => {
 	});
 	return next({ ctx: { recipesList } });
 });
+
+type RecipesFormated = {
+	id: string;
+	title: string;
+	preparation: string | null;
+	source: string;
+	description: string | null;
+	portions: number;
+	glucides: string | null;
+	ingredients: { id: string; quantity: string; name: string }[];
+	tags: { id: string; name: string }[];
+};
 
 export const recipeRouter = {
 	// new recipe (which may include new ingredient and new tag)
@@ -208,13 +219,258 @@ export const recipeRouter = {
 			});
 		}),
 
+	// update recipe
+	updateRecipe: authenticationProcedure
+		.input(
+			z.object({
+				recipeId: z.string(),
+				title: z.string(),
+				description: z.string().optional(),
+				preparation: z.string().optional(),
+				source: z.string(),
+				portions: z.number(),
+				glucides: z.string().optional(),
+				ingredients: z.array(ingredientsSchema),
+				tags: z.array(z.string()).optional(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const {
+				recipeId,
+				title,
+				description,
+				preparation,
+				source,
+				portions,
+				glucides,
+				ingredients,
+				tags,
+			} = input;
+
+			return await ctx.db.transaction(async (tx) => {
+				// Get recipe by id
+				const recipeFound = first(
+					await tx
+						.update(recipes)
+						.set({
+							title,
+							description,
+							preparation,
+							source,
+							portions,
+							glucides,
+							userId: ctx.user.id,
+						})
+						.where(eq(recipes.id, input.recipeId))
+						.returning(),
+				);
+
+				if (recipeFound == null) {
+					tx.rollback();
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "recipe not found by id",
+					});
+				}
+
+				// Ingredients part
+				for (const el of ingredients) {
+					// Get ingredient with its quantity
+					const ingredientName = el.name.toLowerCase().trim();
+					const quantity = el.quantity;
+
+					// Check if ingredient already exist
+					const ingredientAlreadyExist = await tx.query.ingredients.findFirst({
+						where: eq(ingredientsTable.name, ingredientName),
+					});
+
+					// Create ingredient if not exist
+					if (ingredientAlreadyExist == null) {
+						const ingredient = first(
+							await tx
+								.insert(ingredientsTable)
+								.values({
+									name: ingredientName,
+								})
+								.returning(),
+						);
+
+						if (ingredient == null) {
+							tx.rollback();
+							throw new TRPCError({
+								code: "INTERNAL_SERVER_ERROR",
+								message: "Ingredient insert but not returning ?",
+							});
+						}
+
+						// Link between recipe, ingredient, quantity
+						await tx
+							.insert(ingredientsToRecipes)
+							.values({
+								ingredientId: ingredient.id,
+								recipeId: recipeFound.id,
+								quantity,
+							})
+							.onConflictDoNothing()
+							.returning();
+					} else {
+						// Check if ingredient is already link with this recipe
+						const ingredientInRecipe = first(
+							await tx
+								.update(ingredientsToRecipes)
+								.set({ quantity })
+								.where(
+									and(
+										eq(
+											ingredientsToRecipes.ingredientId,
+											ingredientAlreadyExist.id,
+										),
+										eq(ingredientsToRecipes.recipeId, recipeFound.id),
+									),
+								)
+								.returning(),
+						);
+
+						// Not already linked
+						if (ingredientInRecipe == null) {
+							// Link between recipe, ingredient, quantity
+							await tx
+								.insert(ingredientsToRecipes)
+								.values({
+									ingredientId: ingredientAlreadyExist.id,
+									recipeId: recipeFound.id,
+									quantity,
+								})
+								.onConflictDoNothing()
+								.returning();
+						}
+					}
+				}
+
+				const tagsList: string[] = [];
+				// Tags part
+				if (tags) {
+					for (let i = 0; i < tags.length; i++) {
+						tagsList.push(tags[i]);
+					}
+				}
+
+				for (let i = 0; i < tagsList.length; i++) {
+					// Get tag name
+					const tagName = tagsList[i].toLowerCase().trim();
+
+					// Tag insert :
+					const tagAlreadyExist = await tx.query.tags.findFirst({
+						where: eq(tagsTable.name, tagName),
+					});
+
+					if (tagAlreadyExist == null) {
+						const tag = first(
+							await tx
+								.insert(tagsTable)
+								.values({
+									name: tagName,
+								})
+								.onConflictDoNothing()
+								.returning(),
+						);
+
+						if (tag == null) {
+							tx.rollback();
+							throw new TRPCError({
+								code: "INTERNAL_SERVER_ERROR",
+								message: "Tag insert but not returning ?",
+							});
+						}
+
+						// Create link between recipe and tag
+						await tx
+							.insert(tagsToRecipes)
+							.values({
+								tagId: tag.id,
+								recipeId: recipeFound.id,
+							})
+							.onConflictDoNothing();
+					} else {
+						// Create link between recipe, recipe and quantity
+						const tagInRecipe = await tx.query.tagsToRecipes.findFirst({
+							where: (tagsToRecipes, { eq, and }) =>
+								and(
+									eq(tagsToRecipes.tagId, tagAlreadyExist.id),
+									eq(tagsToRecipes.recipeId, recipeFound.id),
+								),
+						});
+
+						// Not already linked
+						if (tagInRecipe == null) {
+							// Link between recipe, ingredient, quantity
+							await tx
+								.insert(tagsToRecipes)
+								.values({
+									tagId: tagAlreadyExist.id,
+									recipeId: recipeFound.id,
+								})
+								.onConflictDoNothing()
+								.returning();
+						}
+					}
+				}
+
+				return recipeFound;
+			});
+		}),
+
 	// get all recipes
 	getRecipesByUserId: authenticationProcedure.query(async ({ ctx }) => {
-		const recipesList = await ctx.db.query.recipes.findMany({
+		const recipesByUser = await ctx.db.query.recipes.findMany({
 			where: eq(recipes.userId, ctx.user.id),
+			with: {
+				ingredientsToRecipes: {
+					with: {
+						ingredient: true,
+					},
+				},
+				tagsToRecipes: {
+					with: {
+						tag: true,
+					},
+				},
+			},
 		});
 
-		return recipesList;
+		return recipesByUser.map((recipe) => {
+			const recipeFormated: RecipesFormated = {
+				id: recipe.id,
+				title: recipe.title,
+				preparation: recipe.preparation,
+				source: recipe.source,
+				description: recipe.description,
+				portions: recipe.portions,
+				glucides: recipe.glucides,
+				ingredients: [],
+				tags: [],
+			};
+
+			for (const ingredient of recipe.ingredientsToRecipes) {
+				const ingredientFormated = {
+					id: ingredient.ingredientId,
+					quantity: ingredient.quantity,
+					name: ingredient.ingredient.name,
+				};
+
+				recipeFormated.ingredients.push(ingredientFormated);
+			}
+
+			for (const tag of recipe.tagsToRecipes) {
+				const tagFormated = {
+					id: tag.tagId,
+					name: tag.tag.name,
+				};
+
+				recipeFormated.tags.push(tagFormated);
+			}
+			return recipeFormated;
+		});
 	}),
 
 	// get recipe by recipeId
@@ -298,7 +554,5 @@ export const recipeRouter = {
 					},
 				},
 			});
-
-			console.log("result === ", JSON.stringify(recipesByUser, null, 2));
 		}),
 } satisfies TRPCRouterRecord;

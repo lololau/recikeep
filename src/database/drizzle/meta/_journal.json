@@ -78,6 +78,13 @@
       "when": 1715783470524,
       "tag": "0010_true_dragon_man",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "5",
+      "when": 1716992841049,
+      "tag": "0011_quiet_thunderbolt",
+      "breakpoints": true
     }
   ]
 }

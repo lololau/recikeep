@@ -93,13 +93,11 @@ export default function NewRecipeForm({ initialData }: NewRecipeFormProps) {
 			preparation,
 			bucketId: initialData?.bucketId,
 		};
+
+		await mutateAsync(valuesToReturn);
 	};
 
 	// TODO; check read hook form, data typé selon le formulaire fait via react hook form
-	// async function handleSubmit() {
-	// await mutateAsync()
-	// }
-
 	// Cas suppr => use mutate au lieu de mutateAsync
 	// function clickOnerror() {
 	// 	mutate({ ingredients: })

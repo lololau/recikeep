@@ -47,7 +47,7 @@ export const recipes = sqliteTable("recipe", {
 		.$defaultFn(() => createId()),
 	title: text("title").notNull(),
 	preparation: text("preparation"),
-	source: text("source"),
+	source: text("source").notNull(),
 	description: text("description"),
 	portions: integer("portions").notNull(),
 	glucides: text("glucides"),
