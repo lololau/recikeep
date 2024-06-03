@@ -89,6 +89,7 @@ export default function NewRecipeForm({
 			toast.success("Recette créée.");
 			router.push(`/recipe/${data.id}`);
 			utils.recipes.getRecipesByUserId.invalidate();
+			utils.buckets.getBucketsByUserId.invalidate();
 			reset();
 		},
 		onError(error) {

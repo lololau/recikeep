@@ -10,6 +10,15 @@ import { api } from "recikeep/trpc/react";
 export default function BucketForm() {
 	const { data: buckets } = api.buckets.getBucketsByUserId.useQuery();
 
+	const bucketsToShow = [];
+	if (buckets) {
+		for (const el of buckets) {
+			if (!el.recipeId) {
+				bucketsToShow.push(el);
+			}
+		}
+	}
+
 	const [bucket, setBucket] = useState<
 		| {
 				bucketId: string;
@@ -40,26 +49,28 @@ export default function BucketForm() {
 						<h1 className="text-emerald-800">RECETTES EN ATTENTE</h1>
 						<hr className="border-gray-500 flex-grow" />
 					</div>
-					{(buckets ?? []).map((bucket, index) => {
-						return (
-							<li
-								key={`${bucket.id}—${index}`}
-								className="flex flex-col p-2 border  bg-gray-100 border-slate-300 rounded-lg hover:bg-gray-400 hover:text-white"
-							>
-								<BucketCard
-									source={bucket.source}
-									recipeTitle={bucket.recipeTitle}
-									onClick={() => {
-										setBucket({
-											bucketId: bucket.id,
-											source: bucket.source,
-											recipeTitle: bucket.recipeTitle,
-										});
-									}}
-								/>
-							</li>
-						);
-					})}
+					{bucketsToShow &&
+						bucketsToShow.length > 0 &&
+						bucketsToShow.map((bucket, index) => {
+							return (
+								<li
+									key={`${bucket.id}—${index}`}
+									className="flex flex-col p-2 border  bg-gray-100 border-slate-300 rounded-lg hover:bg-gray-400 hover:text-white"
+								>
+									<BucketCard
+										source={bucket.source}
+										recipeTitle={bucket.recipeTitle}
+										onClick={() => {
+											setBucket({
+												bucketId: bucket.id,
+												source: bucket.source,
+												recipeTitle: bucket.recipeTitle,
+											});
+										}}
+									/>
+								</li>
+							);
+						})}
 				</ul>
 				<div className="flex flex-col justify-center flex-grow">
 					<div className="pl-3">
