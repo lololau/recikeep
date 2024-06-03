@@ -12,25 +12,36 @@ import { MdDeleteOutline } from "react-icons/md";
 import { useEffect, useState } from "react";
 import QuillEditorComponent from "../QuillEditor";
 
-interface IFormRecipe {
+export interface IFormRecipe {
 	title: string;
-	description?: string;
+	description: string | null;
 	source: string;
 	portions: number;
-	glucides?: string;
+	glucides: string | null;
 	ingredients: { name: string; quantity: string }[];
 	tags?: { name: string }[];
 }
 
 type NewRecipeFormProps = {
-	initialData?: {
-		bucketId: string;
-		recipeTitle: string;
-		source: string;
-	};
+	bucketId: string;
+	recipeTitle: string;
+	source: string;
 };
 
-export default function NewRecipeForm({ initialData }: NewRecipeFormProps) {
+type UpdateRecipeFormProps = {
+	recipeId: string;
+	preparation: string | null;
+};
+
+export default function NewRecipeForm({
+	initialData,
+	updateInitialData,
+	recipeDetails,
+}: {
+	initialData?: NewRecipeFormProps;
+	updateInitialData?: IFormRecipe;
+	recipeDetails?: UpdateRecipeFormProps;
+}) {
 	const router = useRouter();
 
 	const {
@@ -42,10 +53,15 @@ export default function NewRecipeForm({ initialData }: NewRecipeFormProps) {
 		formState: { errors },
 	} = useForm<IFormRecipe>({
 		defaultValues: {
-			ingredients: [{ name: "", quantity: "" }],
-			tags: [],
-			title: initialData?.recipeTitle ?? "",
-			source: initialData?.source ?? "",
+			ingredients: updateInitialData?.ingredients ?? [
+				{ name: "", quantity: "" },
+			],
+			tags: updateInitialData?.tags ?? [],
+			title: initialData?.recipeTitle ?? updateInitialData?.title ?? "",
+			source: initialData?.source ?? updateInitialData?.source ?? "",
+			description: updateInitialData?.description ?? null,
+			portions: updateInitialData?.portions,
+			glucides: updateInitialData?.glucides ?? null,
 		},
 	});
 	const {
@@ -68,45 +84,62 @@ export default function NewRecipeForm({ initialData }: NewRecipeFormProps) {
 
 	const utils = api.useUtils();
 
-	const { mutateAsync, mutate, isPending, error } =
-		api.recipes.createRecipe.useMutation({
-			onSuccess(data, variables, context) {
-				toast.success("Recette créée.");
-				router.push(`/recipe/${data.id}`);
-				utils.recipes.getRecipesByUserId.invalidate();
-				reset();
-			},
-			onError(error) {
-				toast.error(error.data?.code);
-			},
-		});
+	const { mutateAsync: createRecipe } = api.recipes.createRecipe.useMutation({
+		onSuccess(data) {
+			toast.success("Recette créée.");
+			router.push(`/recipe/${data.id}`);
+			utils.recipes.getRecipesByUserId.invalidate();
+			reset();
+		},
+		onError(error) {
+			toast.error(error.data?.code);
+		},
+	});
 
-	const [preparation, setPreparation] = useState("");
+	const { mutateAsync: updateRecipe } = api.recipes.updateRecipe.useMutation({
+		onSuccess(data) {
+			toast.success("Recette modifiée.");
+			router.push(`/recipe/${data.id}`);
+			utils.recipes.getRecipesByUserId.invalidate();
+			utils.recipes.getRecipeById.invalidate();
+			utils.recipes.getIngredientsByRecipeId.invalidate();
+			utils.recipes.getTagsByRecipeId.invalidate();
+			reset();
+		},
+		onError(error) {
+			toast.error(error.data?.code);
+		},
+	});
+
+	const [preparation, setPreparation] = useState(
+		recipeDetails?.preparation ?? "",
+	);
 
 	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
 		const tags = data.tags?.map((el) => el.name);
 
-		// Cast tags into string[]
 		const valuesToReturn = {
 			...data,
 			tags,
 			preparation,
 			bucketId: initialData?.bucketId,
+			recipeId: recipeDetails?.recipeId,
 		};
 
-		await mutateAsync(valuesToReturn);
+		if (recipeDetails?.recipeId) {
+			await updateRecipe(valuesToReturn);
+		} else {
+			await createRecipe(valuesToReturn);
+		}
 	};
 
-	// TODO; check read hook form, data typé selon le formulaire fait via react hook form
-	// Cas suppr => use mutate au lieu de mutateAsync
-	// function clickOnerror() {
-	// 	mutate({ ingredients: })
-	// }
-
 	useEffect(() => {
-		setValue("title", initialData?.recipeTitle ?? "");
-		setValue("source", initialData?.source ?? "");
-	}, [initialData, setValue]);
+		setValue(
+			"title",
+			initialData?.recipeTitle ?? updateInitialData?.title ?? "",
+		);
+		setValue("source", initialData?.source ?? updateInitialData?.source ?? "");
+	}, [initialData, updateInitialData, setValue]);
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>

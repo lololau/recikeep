@@ -31,12 +31,14 @@ export function HomePageRecipe() {
 							</Link>
 						</div>
 						<div>
-							<button
-								type="button"
-								className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
-							>
-								<HiPencil color="#065f46" />
-							</button>
+							<Link href={`/recipe/${recipe.id}/update`}>
+								<button
+									type="button"
+									className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
+								>
+									<HiPencil color="#065f46" />
+								</button>
+							</Link>
 						</div>
 					</li>
 				);

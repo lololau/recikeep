@@ -42,11 +42,11 @@ export const recipeRouter = {
 		.input(
 			z.object({
 				title: z.string(),
-				description: z.string().optional(),
-				preparation: z.string().optional(),
+				description: z.string().nullable(),
+				preparation: z.string().nullable(),
 				source: z.string(),
 				portions: z.number(),
-				glucides: z.string().optional(),
+				glucides: z.string().nullable(),
 				ingredients: z.array(ingredientsSchema),
 				tags: z.array(z.string()).optional(),
 				bucketId: z.string().optional(),
@@ -223,13 +223,13 @@ export const recipeRouter = {
 	updateRecipe: authenticationProcedure
 		.input(
 			z.object({
-				recipeId: z.string(),
+				recipeId: z.string().optional(),
 				title: z.string(),
-				description: z.string().optional(),
-				preparation: z.string().optional(),
+				description: z.string().nullable(),
+				preparation: z.string().nullable(),
 				source: z.string(),
 				portions: z.number(),
-				glucides: z.string().optional(),
+				glucides: z.string().nullable(),
 				ingredients: z.array(ingredientsSchema),
 				tags: z.array(z.string()).optional(),
 			}),
@@ -247,6 +247,13 @@ export const recipeRouter = {
 				tags,
 			} = input;
 
+			if (!recipeId) {
+				throw new TRPCError({
+					code: "BAD_REQUEST",
+					message: "missing recipeId",
+				});
+			}
+
 			return await ctx.db.transaction(async (tx) => {
 				// Get recipe by id
 				const recipeFound = first(
@@ -259,9 +266,8 @@ export const recipeRouter = {
 							source,
 							portions,
 							glucides,
-							userId: ctx.user.id,
 						})
-						.where(eq(recipes.id, input.recipeId))
+						.where(eq(recipes.id, recipeId))
 						.returning(),
 				);
 
@@ -274,6 +280,11 @@ export const recipeRouter = {
 				}
 
 				// Ingredients part
+				// Delete all ingredients already linked with recipeId
+				await tx
+					.delete(ingredientsToRecipes)
+					.where(eq(ingredientsToRecipes.recipeId, recipeId));
+
 				for (const el of ingredients) {
 					// Get ingredient with its quantity
 					const ingredientName = el.name.toLowerCase().trim();
@@ -314,41 +325,26 @@ export const recipeRouter = {
 							.onConflictDoNothing()
 							.returning();
 					} else {
-						// Check if ingredient is already link with this recipe
-						const ingredientInRecipe = first(
-							await tx
-								.update(ingredientsToRecipes)
-								.set({ quantity })
-								.where(
-									and(
-										eq(
-											ingredientsToRecipes.ingredientId,
-											ingredientAlreadyExist.id,
-										),
-										eq(ingredientsToRecipes.recipeId, recipeFound.id),
-									),
-								)
-								.returning(),
-						);
-
-						// Not already linked
-						if (ingredientInRecipe == null) {
-							// Link between recipe, ingredient, quantity
-							await tx
-								.insert(ingredientsToRecipes)
-								.values({
-									ingredientId: ingredientAlreadyExist.id,
-									recipeId: recipeFound.id,
-									quantity,
-								})
-								.onConflictDoNothing()
-								.returning();
-						}
+						// Link between recipe, ingredient, quantity
+						await tx
+							.insert(ingredientsToRecipes)
+							.values({
+								ingredientId: ingredientAlreadyExist.id,
+								recipeId: recipeFound.id,
+								quantity,
+							})
+							.onConflictDoNothing()
+							.returning();
 					}
 				}
 
 				const tagsList: string[] = [];
 				// Tags part
+				// Delete all tags already linked with recipeId
+				await tx
+					.delete(tagsToRecipes)
+					.where(eq(tagsToRecipes.recipeId, recipeId));
+
 				if (tags) {
 					for (let i = 0; i < tags.length; i++) {
 						tagsList.push(tags[i]);
@@ -393,26 +389,14 @@ export const recipeRouter = {
 							.onConflictDoNothing();
 					} else {
 						// Create link between recipe, recipe and quantity
-						const tagInRecipe = await tx.query.tagsToRecipes.findFirst({
-							where: (tagsToRecipes, { eq, and }) =>
-								and(
-									eq(tagsToRecipes.tagId, tagAlreadyExist.id),
-									eq(tagsToRecipes.recipeId, recipeFound.id),
-								),
-						});
-
-						// Not already linked
-						if (tagInRecipe == null) {
-							// Link between recipe, ingredient, quantity
-							await tx
-								.insert(tagsToRecipes)
-								.values({
-									tagId: tagAlreadyExist.id,
-									recipeId: recipeFound.id,
-								})
-								.onConflictDoNothing()
-								.returning();
-						}
+						await tx
+							.insert(tagsToRecipes)
+							.values({
+								tagId: tagAlreadyExist.id,
+								recipeId: recipeFound.id,
+							})
+							.onConflictDoNothing()
+							.returning();
 					}
 				}
 
