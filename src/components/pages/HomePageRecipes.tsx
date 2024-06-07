@@ -2,10 +2,13 @@
 
 import Link from "next/link";
 import { HiPencil } from "react-icons/hi2";
+import { RecipeProvider } from "recikeep/contexts/RecipesContext";
 import { api } from "recikeep/trpc/react";
 
 export function HomePageRecipe() {
 	const { data, isLoading } = api.recipes.getRecipesByUserId.useQuery();
+
+	console.log("data recipes", data);
 
 	if (data == null) {
 		if (!isLoading) {
@@ -15,7 +18,7 @@ export function HomePageRecipe() {
 	}
 
 	return (
-		<>
+		<RecipeProvider initialRecipes={data}>
 			{data.map((recipe, index) => {
 				return (
 					<li
@@ -43,6 +46,6 @@ export function HomePageRecipe() {
 					</li>
 				);
 			})}
-		</>
+		</RecipeProvider>
 	);
 }

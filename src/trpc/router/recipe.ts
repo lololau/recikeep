@@ -24,7 +24,7 @@ const loadUsersRecipes = isAuthentified.unstable_pipe(async ({ ctx, next }) => {
 	return next({ ctx: { recipesList } });
 });
 
-type RecipesFormated = {
+export type RecipesFormated = {
 	id: string;
 	title: string;
 	preparation: string | null;
@@ -518,6 +518,7 @@ export const recipeRouter = {
 			}
 			return tagsList;
 		}),
+
 	// get recipes by search
 	getRecipesBySearch: authenticationProcedure
 		.input(z.string())

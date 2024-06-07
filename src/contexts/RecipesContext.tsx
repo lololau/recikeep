@@ -1,46 +1,30 @@
 import type React from "react";
 import { createContext, useContext, useReducer } from "react";
-import type { IRecipe } from "recikeep/database/schema";
+import type { RecipesFormated } from "recikeep/trpc/router/recipe";
 
-type Action =
-	| { type: "addNewRecipe"; payload: IRecipe }
-	| { type: "updateRecipe"; payload: IRecipe[] };
-type Dispatch = (action: Action) => void;
-type State = { recipes: IRecipe[] };
+type State = { recipes: RecipesFormated[] };
 type GameProviderProps = {
-	initialRecipes: IRecipe[];
+	initialRecipes: RecipesFormated[];
 	children: React.ReactNode;
 };
 
-const RecipesStateContext = createContext<
-	{ state: State; dispatch: Dispatch } | undefined
->(undefined);
+const RecipesStateContext = createContext<{ state: State } | undefined>(
+	undefined,
+);
 
-const recipesReducer = (state: State, action: Action): State => {
-	switch (action.type) {
-		case "addNewRecipe": {
-			return { recipes: [...state.recipes, action.payload] };
-		}
-		case "updateRecipe": {
-			return { ...state, recipes: action.payload };
-		}
-
-		default: {
-			console.error(`RecipeContext - action unknown: ${action}`);
-			return state;
-		}
-	}
+const recipesReducer = (state: State): State => {
+	return state;
 };
 
 export const RecipeProvider = ({
 	children,
 	initialRecipes,
 }: GameProviderProps) => {
-	const [state, dispatch] = useReducer(recipesReducer, {
+	const [state] = useReducer(recipesReducer, {
 		recipes: initialRecipes,
 	});
 	return (
-		<RecipesStateContext.Provider value={{ state, dispatch }}>
+		<RecipesStateContext.Provider value={{ state }}>
 			{children}
 		</RecipesStateContext.Provider>
 	);
