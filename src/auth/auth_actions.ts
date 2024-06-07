@@ -33,7 +33,7 @@ export async function signIn(_: unknown, formData: FormData) {
 		return { error: "Email or password incorrect" };
 	}
 
-	return redirect("/");
+	return redirect("/home");
 }
 
 export async function signUp(_: unknown, formData: FormData) {
@@ -63,5 +63,5 @@ export async function signUp(_: unknown, formData: FormData) {
 		if (error instanceof TRPCError) return { error: error.message };
 		return { error: "Unknown error" };
 	}
-	return redirect("/");
+	return redirect("/home");
 }
