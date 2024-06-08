@@ -47,8 +47,8 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				{/* {tags.map((tag) => (
 					<p key={tag.tagId}>{tag.name}</p>
 				))} */}
-				<div className="flex flex-col gap-2 ">
-					<h1 className=" text-gray-800 text-lg underline underline-offset-4">
+				<div className="flex flex-col gap-2 sticky top-14">
+					<h1 className="text-gray-800 text-lg underline underline-offset-4">
 						Ingrédients
 					</h1>
 					<div className="py-4">

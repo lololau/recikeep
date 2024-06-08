@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { HiPencil } from "react-icons/hi2";
+import { HiPencil } from "react-icons/hi";
 import type { RecipesFormated } from "recikeep/trpc/router/recipe";
 
 export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
@@ -21,16 +21,12 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 								</p>
 							</Link>
 						</div>
-						<div>
-							<Link href={`/recipe/${recipe.id}/update`}>
-								<button
-									type="button"
-									className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50 disabled:pointer-events-none"
-								>
-									<HiPencil color="#065f46" />
-								</button>
-							</Link>
-						</div>
+						<Link
+							href={`/recipe/${recipe.id}/update`}
+							className="text-xl font-semibold text-emerald-600 hover:text-emerald-800 disabled:opacity-50"
+						>
+							<HiPencil color="#065f46" />
+						</Link>
 					</li>
 				);
 			})}
