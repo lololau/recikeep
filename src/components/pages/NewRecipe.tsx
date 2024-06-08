@@ -90,7 +90,6 @@ export default function NewRecipeForm({
 			router.push(`/recipe/${data.id}`);
 			utils.recipes.getRecipesByUserId.invalidate();
 			utils.buckets.getBucketsByUserId.invalidate();
-			reset();
 		},
 		onError(error) {
 			toast.error(error.data?.code);
@@ -102,10 +101,9 @@ export default function NewRecipeForm({
 			toast.success("Recette modifiée.");
 			router.push(`/recipe/${data.id}`);
 			utils.recipes.getRecipesByUserId.invalidate();
-			utils.recipes.getRecipeById.invalidate();
-			utils.recipes.getIngredientsByRecipeId.invalidate();
-			utils.recipes.getTagsByRecipeId.invalidate();
-			reset();
+			utils.recipes.getRecipeById.invalidate(data.id);
+			utils.recipes.getIngredientsByRecipeId.invalidate(data.id);
+			utils.recipes.getTagsByRecipeId.invalidate(data.id);
 		},
 		onError(error) {
 			toast.error(error.data?.code);

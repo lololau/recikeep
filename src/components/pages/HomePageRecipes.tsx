@@ -2,12 +2,9 @@
 
 import Link from "next/link";
 import { HiPencil } from "react-icons/hi2";
-import { RecipesProvider, useRecipes } from "recikeep/contexts/RecipesContext";
-import { api } from "recikeep/trpc/react";
+import type { RecipesFormated } from "recikeep/trpc/router/recipe";
 
-export function HomePageRecipe() {
-	const { recipes } = useRecipes();
-
+export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 	return (
 		<>
 			{recipes.map((recipe, index) => {
