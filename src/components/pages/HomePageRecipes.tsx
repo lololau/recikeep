@@ -2,24 +2,15 @@
 
 import Link from "next/link";
 import { HiPencil } from "react-icons/hi2";
-import { RecipeProvider } from "recikeep/contexts/RecipesContext";
+import { RecipesProvider, useRecipes } from "recikeep/contexts/RecipesContext";
 import { api } from "recikeep/trpc/react";
 
 export function HomePageRecipe() {
-	const { data, isLoading } = api.recipes.getRecipesByUserId.useQuery();
-
-	console.log("data recipes", data);
-
-	if (data == null) {
-		if (!isLoading) {
-			return <>Error</>;
-		}
-		return <></>;
-	}
+	const { recipes } = useRecipes();
 
 	return (
-		<RecipeProvider initialRecipes={data}>
-			{data.map((recipe, index) => {
+		<>
+			{recipes.map((recipe, index) => {
 				return (
 					<li
 						key={`${recipe.id}—${index}`}
@@ -46,6 +37,6 @@ export function HomePageRecipe() {
 					</li>
 				);
 			})}
-		</RecipeProvider>
+		</>
 	);
 }

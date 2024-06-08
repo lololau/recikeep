@@ -2,29 +2,18 @@ import type React from "react";
 import { createContext, useContext, useReducer } from "react";
 import type { RecipesFormated } from "recikeep/trpc/router/recipe";
 
-type State = { recipes: RecipesFormated[] };
-type GameProviderProps = {
-	initialRecipes: RecipesFormated[];
+type RecipeProviderProps = {
+	recipes: RecipesFormated[];
 	children: React.ReactNode;
 };
 
-const RecipesStateContext = createContext<{ state: State } | undefined>(
-	undefined,
-);
+const RecipesStateContext = createContext<
+	{ recipes: RecipesFormated[] } | undefined
+>(undefined);
 
-const recipesReducer = (state: State): State => {
-	return state;
-};
-
-export const RecipeProvider = ({
-	children,
-	initialRecipes,
-}: GameProviderProps) => {
-	const [state] = useReducer(recipesReducer, {
-		recipes: initialRecipes,
-	});
+export const RecipesProvider = ({ children, recipes }: RecipeProviderProps) => {
 	return (
-		<RecipesStateContext.Provider value={{ state }}>
+		<RecipesStateContext.Provider value={{ recipes }}>
 			{children}
 		</RecipesStateContext.Provider>
 	);
