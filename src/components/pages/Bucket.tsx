@@ -36,12 +36,12 @@ export default function BucketForm() {
 						Backlog de recettes
 					</h1>
 					<p className="mt-6 text-lg text-muted-foreground">
-						Enregistre une de tes recettes sauvegardées !
+						Enregistre une de tes recettes pré-sauvegardées !
 					</p>
 				</div>
 			</div>
-			<div className="flex flex-row divide-x-2 divide-gray-800 divide-opacity-75 mx-auto">
-				<ul className="flex flex-col flex-grow gap-3 p-2 ">
+			<div className="flex flex-row mx-auto">
+				<ul className="flex flex-col gap-3 p-2 basis-1/4">
 					<li className="w-full">
 						<BucketModal />
 					</li>
@@ -72,7 +72,7 @@ export default function BucketForm() {
 							);
 						})}
 				</ul>
-				<div className="flex flex-col justify-center flex-grow">
+				<div className="flex flex-col justify-center basis-3/4">
 					<div className="pl-3">
 						{bucket != null && <NewRecipeForm initialData={bucket} />}
 					</div>
