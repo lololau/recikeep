@@ -10,7 +10,6 @@ import "react-quill/dist/quill.snow.css";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { useEffect, useState } from "react";
-import QuillEditorComponent from "../QuillEditor";
 
 export interface IFormRecipe {
 	title: string;
@@ -354,9 +353,16 @@ export default function NewRecipeForm({
 				>
 					Étapes de préparation
 				</label>
-				<QuillEditorComponent value={preparation} setValue={setPreparation} />
+				<section>
+					<textarea
+						className="w-full p-2 rounded-md shadow-sm border-2 h-60"
+						placeholder="Décris les étapes de ta recette 🍕"
+						value={preparation}
+						onChange={(e) => setPreparation(e.target.value)}
+					/>
+				</section>
 			</div>
-			<div className="text-center pt-20 pb-10 text-3xl">
+			<div className="text-center py-10 text-3xl">
 				<button type="submit">
 					<IoIosCheckmarkCircle color="#065f46" />
 				</button>

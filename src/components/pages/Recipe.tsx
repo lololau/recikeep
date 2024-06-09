@@ -1,9 +1,12 @@
 "use client";
-
+import remarkGfm from "remark-gfm";
+import rehypeSanitize from "rehype-sanitize";
+import rehypeExternalLinks from "rehype-external-links";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import { api } from "recikeep/trpc/react";
+import Markdown from "react-markdown";
 import { IngredientsTable } from "../IngredientsTable";
-import QuillRead from "../QuillRead";
+import { CodeBlock, Pre } from "../Code";
 
 export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
@@ -11,6 +14,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 		api.recipes.getIngredientsByRecipeId.useQuery(recipeId);
 	const { data: tags } = api.recipes.getTagsByRecipeId.useQuery(recipeId);
 
+	const options = { code: CodeBlock, pre: Pre };
 	if (!recipe || !ingredients) {
 		return (
 			<MaxWidthWrapper>
@@ -59,7 +63,26 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					<h1 className="text-lg text-gray-800  underline underline-offset-4">
 						Étapes de préparation
 					</h1>
-					{recipe.preparation && <QuillRead text={recipe.preparation} />}
+					{recipe.preparation && (
+						<div>
+							<article className="w-full pt-5 pl-6">
+								<Markdown
+									className="prose min-w-full"
+									components={options}
+									remarkPlugins={[remarkGfm]}
+									rehypePlugins={[
+										rehypeSanitize,
+										[
+											rehypeExternalLinks,
+											{ content: { type: "text", value: " 🔗" } },
+										],
+									]}
+								>
+									{recipe.preparation}
+								</Markdown>
+							</article>
+						</div>
+					)}
 				</div>
 			</div>
 		</MaxWidthWrapper>
