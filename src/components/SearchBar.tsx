@@ -12,7 +12,7 @@ export const SearchBar = ({
 	handleSearchChange: (query: string) => void;
 }) => {
 	return (
-		<div className="flex flex-row gap-2 w-3/5">
+		<div className="flex flex-row gap-2 w-4/5">
 			<input
 				type="text"
 				placeholder={"Quelle recette veux-tu cuisiner ?"}

@@ -11,7 +11,7 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 				return (
 					<li
 						key={`${recipe.id}—${index}`}
-						className="p-3 flex flex-row items-center border border-slate-300 rounded-lg hover:bg-gray-100"
+						className="p-3 gap-1 flex flex-row items-center border border-slate-300 rounded-lg hover:bg-gray-100"
 					>
 						<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
 							<Link href={`/recipe/${recipe.id}`}>

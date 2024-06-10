@@ -38,7 +38,7 @@ function HomePageFormContent() {
 					Toutes tes recettes à disposition pour t'inspirer en cuisine.
 				</p>
 			</div>
-			<div className="flex flex-col gap-4 w-full py-20 items-center text-center">
+			<div className="flex flex-col gap-4 w-full py-10 sm:py-20 items-center text-center">
 				<SearchBar handleSearchChange={handleSearchChange} />
 			</div>
 
