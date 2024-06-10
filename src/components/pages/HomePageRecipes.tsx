@@ -15,9 +15,9 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 					>
 						<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
 							<Link href={`/recipe/${recipe.id}`}>
-								<p>{recipe.title}</p>
+								<p className="sm:text-base text-sm">{recipe.title}</p>
 								<p className="font-base text-gray-500 text-xs">
-									Reference: {recipe.source}
+									Ref: {recipe.source}
 								</p>
 							</Link>
 						</div>

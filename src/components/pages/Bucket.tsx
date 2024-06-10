@@ -55,7 +55,7 @@ export default function BucketForm() {
 							return (
 								<li
 									key={`${bucket.id}—${index}`}
-									className="flex flex-col p-2 border  bg-gray-100 border-slate-300 rounded-lg hover:bg-gray-400 hover:text-white"
+									className="flex flex-col p-2 border bg-gray-100 border-slate-300 rounded-lg hover:bg-gray-400 hover:text-white"
 								>
 									<BucketCard
 										source={bucket.source}

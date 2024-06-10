@@ -43,19 +43,21 @@ function HomePageFormContent() {
 			</div>
 
 			<div className="flex flex-row gap-3 items-center">
-				<h1 className="text-2xl font-semibold mb-2 pb-2 text-gray-800">
+				<h1 className="text-xl sm:text-2xl font-semibold mb-2 pb-2 text-gray-800">
 					TES RECETTES
 				</h1>
 				<hr className="flex-grow border-gray-400" />
 			</div>
 
 			<div className="w-full py-4">
-				<ul className="min-w-full grid grid-cols-3 gap-4">
-					<li className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
+				<ul className="min-w-full grid grid-cols-2 gap-4 sm:grid-cols-3">
+					<li className="p-2 sm:p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
 						<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
 							<Link href={"/recipe"}>
 								<div className="flex flex-row gap-4 justify-between">
-									<p className="font-base text-white">Nouvelle recette</p>
+									<p className="text-sm sm:text-base font-base text-white">
+										Nouvelle recette
+									</p>
 									<button type="button">
 										<IoIosAddCircle color="white" size="25px" />
 									</button>
