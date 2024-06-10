@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      colors: {
+        "ecru": '#FFF2D7',
+        "dk-green": "#0A6847"
+      },
     },
   },
   plugins: [require('@tailwindcss/typography')]

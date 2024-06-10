@@ -30,7 +30,7 @@ function HomePageFormContent() {
 
 	return (
 		<>
-			<div className="py-20 w-full bg-pink-50 text-center">
+			<div className="py-20 w-full bg-ecru text-center">
 				<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
 					RECIKEEP.
 				</h1>
@@ -83,7 +83,7 @@ export function HomePageForm() {
 	}
 
 	return (
-		<div className="pb-20 mx-auto flex flex-col">
+		<div className="pb-5 mx-auto flex flex-col">
 			<RecipesProvider recipes={data}>
 				<HomePageFormContent />
 			</RecipesProvider>

@@ -109,6 +109,7 @@ export const recipeRouter = {
 				for (const el of ingredients) {
 					// Get ingredient with its quantity
 					const ingredientName = el.name.toLowerCase().trim();
+					ingredientName[0].toUpperCase();
 					const quantity = el.quantity;
 
 					// Check if ingredient already exist

@@ -19,7 +19,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 		return (
 			<MaxWidthWrapper>
 				<div className="pb-10 mx-auto text-center flex flex-col items-center">
-					<div className="py-20 w-full bg-pink-50">
+					<div className="py-20 w-full bg-ecru">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 							Recette introuvable
 						</h1>
@@ -34,8 +34,8 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 
 	return (
 		<MaxWidthWrapper>
-			<div className="pb-9 mx-auto text-center flex flex-col items-center">
-				<div className="py-20 w-full bg-pink-50">
+			<div className="mx-auto text-center flex flex-col items-center">
+				<div className="py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 						{recipe.title}
 					</h1>
@@ -45,27 +45,39 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					</div>
 				</div>
 			</div>
-			{/* <div className="border-t-2 border-dashed pb-9" /> */}
-			<div className="flex flex-col gap-10">
-				{/* Tag part */}
-				{/* {tags.map((tag) => (
-					<p key={tag.tagId}>{tag.name}</p>
-				))} */}
-				<div className="flex flex-col gap-2 sticky top-14">
-					<h1 className="text-gray-800 text-lg underline underline-offset-4">
-						Ingrédients
-					</h1>
-					<div className="py-4">
-						<IngredientsTable ingredients={ingredients} />
-					</div>
+			{/* {tags && (
+				<div className="flex flex-col pb-9">
+					{tags.map((tag) => (
+						<p key={tag.tagId}>{tag.name}</p>
+					))}
 				</div>
-				<div className="flex flex-col gap-2">
-					<h1 className="text-lg text-gray-800  underline underline-offset-4">
-						Étapes de préparation
+			)} */}
+			<div className="flex flex-col">
+				<div className="flex flex-col gap-5 pt-6 pb-3 sm:pt-10 sm:pb-5">
+					<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
+						<h1 className="text-gray-800 text-xl sm:text-2xl font-semibold text-center sm:text-left mb-4">
+							Ingrédients 🥗
+						</h1>
+						<hr className="flex-grow border-gray-300" />
+					</div>
+					<h1 className="text-gray-800 text-xl visible sm:hidden font-semibold text-center mb-4">
+						Ingrédients 🥗
+					</h1>
+					<IngredientsTable ingredients={ingredients} />
+				</div>
+				<div className="flex flex-col gap-2 pt-3 pb-6 sm:pt-5 sm:pb-10">
+					<div className="flex-row gap-3 items-center hidden sm:flex sm:visible">
+						<h1 className="text-xl sm:text-2xl text-gray-800 font-semibold text-center sm:text-left mb-4">
+							Recette 🍴
+						</h1>
+						<hr className="flex-grow border-gray-300" />
+					</div>
+					<h1 className="text-gray-800 text-xl visible sm:hidden font-semibold text-center">
+						Recette 🧑🏻‍🍳
 					</h1>
 					{recipe.preparation && (
 						<div>
-							<article className="w-full pt-5 pl-6">
+							<article className="w-full pt-5">
 								<Markdown
 									className="prose min-w-full"
 									components={options}

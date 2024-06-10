@@ -12,7 +12,7 @@ export default async function NewRecipePage() {
 	return (
 		<MaxWidthWrapper>
 			<div className="pb-10 mx-auto text-center flex flex-col items-center">
-				<div className="py-20 w-full bg-pink-50">
+				<div className="py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 						Nouvelle recette
 					</h1>

@@ -14,7 +14,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 		return (
 			<MaxWidthWrapper>
 				<div className="pb-10 mx-auto text-center flex flex-col items-center">
-					<div className="py-20 w-full bg-pink-50">
+					<div className="py-20 w-full bg-ecru">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 							Recette introuvable
 						</h1>
@@ -41,7 +41,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 	return (
 		<MaxWidthWrapper>
 			<div className="pb-10 mx-auto text-center flex flex-col items-center">
-				<div className="py-20 w-full bg-pink-50">
+				<div className="py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 						Modification d'une recette
 					</h1>
