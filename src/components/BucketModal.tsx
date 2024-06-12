@@ -13,10 +13,10 @@ Modal.setAppElement("#root");
 // Modal styles
 const customStyles = {
 	content: {
-		top: "50%",
-		left: "50%",
+		top: "15%",
+		left: "12%",
 		bottom: "auto",
-		transform: "translate(-50%, -50%)",
+		right: "12%",
 	},
 };
 
