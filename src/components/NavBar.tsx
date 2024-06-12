@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
 import { lucia, validateRequest } from "recikeep/auth/auth";
 import { Button } from "./Button";
+import { MdPlaylistAddCircle } from "react-icons/md";
 
 async function logout() {
 	"use server";
@@ -28,45 +29,56 @@ async function logout() {
 
 export const NavBar = async () => {
 	return (
-		<div className="bg-white sticky z-50 top-0 inset-x-0 h-16">
-			<header className="relative bg-white">
+		<div className="bg-white sm:sticky z-50 sm:top-0 sm:border-0 inset-x-0 h-16 fixed bottom-0 border-y">
+			<div className="relative bg-white">
 				<MaxWidthWrapper>
-					<div className="border-b border-gray-200">
-						<div className="flex h-16 items-center">
-							{/* { TODO: account } */}
-							<div className="ml-4 flex lg:ml-0">
+					{/* Desktop menu */}
+					<div className="h-16 items-center hidden sm:flex">
+						{/* { TODO: account } */}
+						<div className="ml-4 flex lg:ml-0">
+							<Link href="/">
+								<PiCookingPotFill className="h-10 w-10" />
+							</Link>
+						</div>
+						<div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch w-full">
+							<ul className="relative list-none flex h-full items-center divide-x divide-gray-400 font-light text-gray-600">
 								<Link href="/">
-									<PiCookingPotFill className="h-10 w-10" />
+									<li className="pr-4 hover:text-gray-800 hover:font-semibold">
+										Mes recettes
+									</li>
 								</Link>
-							</div>
-							<div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch w-full">
-								<ul className="relative list-none flex h-full items-center divide-x divide-gray-400 font-light text-gray-600">
-									<Link href="/">
-										<li className="pr-4 hover:text-gray-800 hover:font-semibold">
-											Mes recettes
-										</li>
-									</Link>
-									<Link href="/recipe">
-										<li className="px-4 hover:text-gray-800 hover:font-semibold">
-											Nouvelle recette
-										</li>
-									</Link>
-									<Link href="/bucket">
-										<li className="pl-4 hover:text-gray-800 hover:font-semibold">
-											Backlog
-										</li>
-									</Link>
-								</ul>
-							</div>
-							<div className="text-right w-full">
-								<form action={logout}>
-									<Button text="Sign out" />
-								</form>
-							</div>
+								<Link href="/recipe">
+									<li className="px-4 hover:text-gray-800 hover:font-semibold">
+										Nouvelle recette
+									</li>
+								</Link>
+								<Link href="/bucket">
+									<li className="pl-4 hover:text-gray-800 hover:font-semibold">
+										Backlog
+									</li>
+								</Link>
+							</ul>
+						</div>
+						<div className="text-right w-full">
+							<form action={logout}>
+								<Button text="Sign out" />
+							</form>
+						</div>
+					</div>
+					{/* Mobile menu */}
+					<div className="h-16 w-full sm:hidden">
+						{/* { TODO: account } */}
+						<div className="list-none flex flex-row items-center text-center h-full w-full">
+							<Link href="/" className="text-3xl">
+								<PiCookingPotFill />
+							</Link>
+							<Link href="/bucket" className="text-3xl">
+								<MdPlaylistAddCircle color="#065f46" />
+							</Link>
 						</div>
 					</div>
 				</MaxWidthWrapper>
-			</header>
+			</div>
 		</div>
 	);
 };
