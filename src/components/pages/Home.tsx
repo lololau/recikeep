@@ -83,7 +83,7 @@ export function HomePageForm() {
 	}
 
 	return (
-		<div className="mx-auto flex flex-col bg-white z-20 px-5 min-h-screen">
+		<div className="mx-auto flex flex-col bg-white z-20 min-h-screen">
 			<RecipesProvider recipes={data}>
 				<HomePageFormContent />
 			</RecipesProvider>

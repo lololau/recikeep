@@ -22,7 +22,7 @@ export default async function RootLayout({
 	return (
 		<html lang="en" className="h-full">
 			<body
-				className={`${inter.className} relative h-full font-sans antialiased bg-ecru z-10`}
+				className={`${inter.className} relative h-full font-sans antialiased z-10`}
 				id="root"
 			>
 				<main className="relative flex flex-col min-h-screen">
