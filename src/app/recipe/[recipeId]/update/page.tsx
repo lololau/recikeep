@@ -1,6 +1,7 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { validateRequest } from "recikeep/auth/auth";
+import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import UpdateRecipeForm from "recikeep/components/pages/UpdateRecipe";
 import { createServerHelper } from "recikeep/trpc/server";
 
@@ -20,8 +21,10 @@ export default async function UpdateRecipePage({
 	const dehydratedState = dehydrate(helpers.queryClient);
 
 	return (
-		<HydrationBoundary state={dehydratedState}>
-			<UpdateRecipeForm recipeId={params.recipeId} />
-		</HydrationBoundary>
+		<MaxWidthWrapper>
+			<HydrationBoundary state={dehydratedState}>
+				<UpdateRecipeForm recipeId={params.recipeId} />
+			</HydrationBoundary>
+		</MaxWidthWrapper>
 	);
 }

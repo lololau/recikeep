@@ -2,7 +2,6 @@
 import remarkGfm from "remark-gfm";
 import rehypeSanitize from "rehype-sanitize";
 import rehypeExternalLinks from "rehype-external-links";
-import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import { api } from "recikeep/trpc/react";
 import Markdown from "react-markdown";
 import { IngredientsTable } from "../IngredientsTable";
@@ -17,7 +16,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	const options = { code: CodeBlock, pre: Pre };
 	if (!recipe || !ingredients) {
 		return (
-			<MaxWidthWrapper>
+			<>
 				<div className="pb-10 mx-auto text-center flex flex-col items-center">
 					<div className="py-20 w-full bg-ecru">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
@@ -28,13 +27,13 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 						</p>
 					</div>
 				</div>
-			</MaxWidthWrapper>
+			</>
 		);
 	}
 
 	return (
-		<MaxWidthWrapper>
-			<div className="mx-auto text-center flex flex-col items-center">
+		<div className="mx-auto z-20 min-h-screen bg-white px-5">
+			<div className="mx-auto text-center flex flex-col items-center z-20">
 				<div className="py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 						{recipe.title}
@@ -97,6 +96,6 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					)}
 				</div>
 			</div>
-		</MaxWidthWrapper>
+		</div>
 	);
 }

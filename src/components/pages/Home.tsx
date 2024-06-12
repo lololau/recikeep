@@ -29,7 +29,7 @@ function HomePageFormContent() {
 	};
 
 	return (
-		<>
+		<div className="px-2.5">
 			<div className="py-20 w-full bg-ecru text-center">
 				<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
 					RECIKEEP.
@@ -68,7 +68,7 @@ function HomePageFormContent() {
 					<HomePageRecipe recipes={query === "" ? recipes : filteredRecipes} />
 				</ul>
 			</div>
-		</>
+		</div>
 	);
 }
 
@@ -83,7 +83,7 @@ export function HomePageForm() {
 	}
 
 	return (
-		<div className="pb-5 mx-auto flex flex-col">
+		<div className="mx-auto flex flex-col bg-white z-20 px-2.5 h-screen">
 			<RecipesProvider recipes={data}>
 				<HomePageFormContent />
 			</RecipesProvider>

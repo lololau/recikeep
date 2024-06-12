@@ -4,7 +4,7 @@ export const IngredientsTable = ({
 	ingredients: { name: string; quantity: string }[];
 }) => {
 	return (
-		<ul className="list-disc grid grid-cols-3 gap-6 sm:px-10 sm:grid-cols-5">
+		<ul className="list-disc grid auto-cols-auto gap-3 sm:px-10">
 			{ingredients.map((ingredient, index) => (
 				<li
 					key={`${ingredient.name}—${index}`}

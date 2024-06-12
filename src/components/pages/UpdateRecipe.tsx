@@ -12,7 +12,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 
 	if (!recipe || !ingredients) {
 		return (
-			<MaxWidthWrapper>
+			<div className="px-5 bg-white min-h-screen z-20">
 				<div className="pb-10 mx-auto text-center flex flex-col items-center">
 					<div className="py-20 w-full bg-ecru">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
@@ -23,7 +23,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 						</p>
 					</div>
 				</div>
-			</MaxWidthWrapper>
+			</div>
 		);
 	}
 
@@ -39,7 +39,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 	};
 
 	return (
-		<MaxWidthWrapper>
+		<div className="px-5 bg-white min-h-screen z-20">
 			<div className="pb-10 mx-auto text-center flex flex-col items-center">
 				<div className="py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
@@ -54,6 +54,6 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 				updateInitialData={initialData}
 				recipeDetails={recipeDetails}
 			/>
-		</MaxWidthWrapper>
+		</div>
 	);
 }

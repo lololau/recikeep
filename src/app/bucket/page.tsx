@@ -1,6 +1,7 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { redirect } from "next/navigation";
 import { validateRequest } from "recikeep/auth/auth";
+import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import BucketForm from "recikeep/components/pages/Bucket";
 import { api, createServerHelper } from "recikeep/trpc/server";
 
@@ -16,8 +17,10 @@ export default async function BucketPage() {
 	const dehydratedState = dehydrate(helpers.queryClient);
 
 	return (
-		<HydrationBoundary state={dehydratedState}>
-			<BucketForm />
-		</HydrationBoundary>
+		<MaxWidthWrapper>
+			<HydrationBoundary state={dehydratedState}>
+				<BucketForm />
+			</HydrationBoundary>
+		</MaxWidthWrapper>
 	);
 }
