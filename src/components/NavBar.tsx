@@ -66,15 +66,17 @@ export const NavBar = async () => {
 						</div>
 					</div>
 					{/* Mobile menu */}
-					<div className="h-16 w-full sm:hidden">
+					<div className="h-16 items-center text-center sm:hidden flex w-full">
 						{/* { TODO: account } */}
-						<div className="list-none flex flex-row items-center text-center h-full w-full">
-							<Link href="/" className="text-3xl">
-								<PiCookingPotFill />
-							</Link>
-							<Link href="/bucket" className="text-3xl">
-								<MdPlaylistAddCircle color="#065f46" />
-							</Link>
+						<div className="z-50 w-full">
+							<ul className="relative list-none flex justify-around h-full">
+								<Link href="/" className="text-3xl">
+									<PiCookingPotFill />
+								</Link>
+								<Link href="/bucket" className="text-3xl">
+									<MdPlaylistAddCircle color="#065f46" />
+								</Link>
+							</ul>
 						</div>
 					</div>
 				</MaxWidthWrapper>

@@ -32,7 +32,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	}
 
 	return (
-		<div className="mx-auto z-20 min-h-screen bg-white px-5">
+		<div className="mx-auto z-20 min-h-screen bg-white px-5 sm:pb-0 pb-14">
 			<div className="mx-auto text-center flex flex-col items-center z-20">
 				<div className="py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
