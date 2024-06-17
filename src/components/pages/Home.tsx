@@ -17,15 +17,29 @@ function HomePageFormContent() {
 
 	const fuse = useMemo(() => {
 		return new Fuse(recipes, {
-			keys: ["title", "ingredients.name", "tags.name"],
+			keys: [
+				{ name: "title", weight: 0.5 },
+				{ name: "ingredients.name", weight: 0.25 },
+				{ name: "tags.name", weight: 0.25 },
+			],
+			isCaseSensitive: false,
+			findAllMatches: true,
+			includeMatches: true,
+			includeScore: true,
+			useExtendedSearch: false,
+			threshold: 0.3,
+			ignoreLocation: true,
+			distance: 2,
 		});
 	}, [recipes]);
 
 	const handleSearchChange = (query: string) => {
 		setQuery(query);
 		const fuseSearch = fuse.search(query);
+		console.log(fuseSearch);
 
 		setFilteredRecipes(fuseSearch.map((el) => el.item));
+		// console.log(filteredRecipes);
 	};
 
 	return (
