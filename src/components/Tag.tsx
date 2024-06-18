@@ -1,16 +1,17 @@
-export function BucketCard({
-	recipeTitle,
-	source,
+import { IoMdCloseCircleOutline } from "react-icons/io";
+
+export function Tag({
+	tagName,
 	onClick,
-}: { recipeTitle: string; source: string; onClick: () => void }) {
+}: { tagName: string; onClick?: () => void }) {
 	return (
-		<button type="button" onClick={onClick}>
-			<div className="text-left font-light text-gray-800">
-				<p>{recipeTitle}</p>
-				<p className="text-left font-base text-gray-500 text-xs ">
-					Reference: {source}
+		<div className="text-left text-white border border-gray-800 bg-emerald-800 max-w-fit rounded-3xl py-0.5 px-3">
+			<p>{tagName}</p>
+			{onClick && (
+				<p className="font-base text-white text-xs">
+					<IoMdCloseCircleOutline />
 				</p>
-			</div>
-		</button>
+			)}
+		</div>
 	);
 }

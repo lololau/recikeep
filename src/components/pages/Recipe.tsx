@@ -6,6 +6,7 @@ import { api } from "recikeep/trpc/react";
 import Markdown from "react-markdown";
 import { IngredientsTable } from "../IngredientsTable";
 import { CodeBlock, Pre } from "../Code";
+import { Tag } from "../Tag";
 
 export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
@@ -44,20 +45,12 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					<p>Portions : {recipe.portions}</p>
 				</div>
 			</div>
-			{tags && (
-				<div className="flex flex-col pb-9">
-					{tags.map((tag) => (
-						<p key={tag.tagId}>{tag.name}</p>
-					))}
-				</div>
-			)}
 			<div className="flex flex-col">
-				<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl">
+				<div className="flex flex-col gap-5 mt-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl">
 					<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
 						<h1 className="pl-2.5 sm:text-2xl sm:text-center">
 							Ingrédients 🥬
 						</h1>
-						{/* <hr className="flex-grow border-gray-300" /> */}
 					</div>
 					<h1 className="text-xl visible sm:hidden font-light text-center">
 						Ingrédients 🥬
@@ -66,13 +59,16 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 						<IngredientsTable ingredients={ingredients} />
 					</div>
 				</div>
-				<hr className="border-gray-200 border-dashed" />
-				<div className="flex flex-col gap-2 pb-6 pt-5 sm:pt-0 mt-3 sm:pb-10 rounded-2xl">
-					<div className="sm:gap-3 visible sm:hidden flex flex-col gap-5">
-						<h1 className="pl-0 sm:pl-2.5 text-xl sm:text-2xl font-light sm:font-normal text-center sm:text-left">
-							Recette 🥗
-						</h1>
+
+				{tags && (
+					<div className="my-3 self-center sm:self-start px-2.5">
+						{tags.map((tag) => (
+							<Tag tagName={tag.name} key={tag.tagId} />
+						))}
 					</div>
+				)}
+				<hr className="border-gray-200 border-dashed" />
+				<div className="flex flex-col gap-2 pb-6 pt-3 sm:pb-10 rounded-2xl">
 					{recipe.preparation && (
 						<div>
 							<article className="w-full sm:pt-0 pt-5">
