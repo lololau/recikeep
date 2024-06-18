@@ -44,7 +44,7 @@ function HomePageFormContent() {
 
 	return (
 		<div className="sm:pb-0 pb-14">
-			<div className="py-20 w-full bg-ecru text-center">
+			<div className="py-14 sm:py-20 w-full bg-ecru text-center px-0">
 				<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
 					RECIKEEP.
 				</h1>
@@ -56,14 +56,14 @@ function HomePageFormContent() {
 				<SearchBar handleSearchChange={handleSearchChange} />
 			</div>
 
-			<div className="flex flex-row gap-3 items-center">
+			<div className="flex flex-row gap-3 items-center px-2.5 sm:px-0">
 				<h1 className="text-xl sm:text-2xl font-semibold mb-2 pb-2 text-gray-800">
 					TES RECETTES
 				</h1>
 				<hr className="flex-grow border-gray-400" />
 			</div>
 
-			<div className="w-full py-4">
+			<div className="w-full py-4  px-2.5 sm:px-0">
 				<ul className="min-w-full grid grid-cols-2 gap-4 sm:grid-cols-3">
 					<li className="p-2 sm:p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
 						<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">

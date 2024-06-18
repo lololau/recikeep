@@ -12,7 +12,7 @@ export default function SignUpForm() {
 
 	return (
 		<MaxWidthWrapper>
-			<div className="py-20 mx-auto grid gap-3 items-center max-w-md">
+			<div className="py-10 sm:py-20 mx-auto grid gap-3 items-center max-w-md">
 				<PiCookingPotFill className="h-10 w-10 justify-self-center" />
 				<h1 className="text-2xl font-semibold text-center">Créer un compte</h1>
 				<p className="text-center text-sm">

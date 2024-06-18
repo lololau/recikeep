@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { BucketCard } from "recikeep/components/BucketCard";
 import { BucketModal } from "recikeep/components/BucketModal";
-import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import NewRecipeForm from "recikeep/components/pages/NewRecipe";
 import { api } from "recikeep/trpc/react";
 
@@ -30,8 +29,8 @@ export default function BucketForm() {
 
 	return (
 		<div className="min-h-screen bg-white z-20 sm:pb-0 pb-14">
-			<div className="pb-10 mx-auto text-center flex flex-col items-center">
-				<div className="py-20 w-full bg-ecru">
+			<div className="mx-auto text-center flex flex-col items-center">
+				<div className="py-10 sm:py-20  w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 						Backlog de recettes
 					</h1>
@@ -40,13 +39,13 @@ export default function BucketForm() {
 					</p>
 				</div>
 			</div>
-			<div className="flex flex-row mx-auto">
-				<ul className="flex flex-col gap-3 p-2 basis-1/4">
+			<div className="sm:flex sm:flex-row w-full pt-5">
+				<ul className="flex flex-col gap-3 p-2 sm:basis-1/4">
 					<li className="w-full">
 						<BucketModal />
 					</li>
 					<div className="flex flex-row gap-2 items-center py-3">
-						<h1 className="text-emerald-800">RECETTES EN ATTENTE</h1>
+						<h1>RECETTES EN ATTENTE</h1>
 						<hr className="border-gray-500 flex-grow" />
 					</div>
 					{bucketsToShow &&
@@ -72,8 +71,8 @@ export default function BucketForm() {
 							);
 						})}
 				</ul>
-				<div className="flex flex-col justify-center basis-3/4">
-					<div className="pl-3">
+				<div className="flex flex-col justify-center sm:basis-3/4 p-2 sm:p-0">
+					<div className="sm:pl-3">
 						{bucket != null && <NewRecipeForm initialData={bucket} />}
 					</div>
 				</div>

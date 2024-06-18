@@ -29,11 +29,11 @@ async function logout() {
 
 export const NavBar = async () => {
 	return (
-		<div className="bg-white sm:sticky z-50 sm:top-0 sm:border-0 inset-x-0 h-16 fixed bottom-0 border-y">
-			<div className="relative bg-white">
+		<div className="sm:sticky z-50 sm:top-0 sm:border-0 inset-x-0 h-16 fixed bottom-0">
+			<div className="relative">
 				<MaxWidthWrapper>
 					{/* Desktop menu */}
-					<div className="h-16 items-center hidden sm:flex">
+					<div className="h-16 items-center hidden sm:flex bg-white">
 						{/* { TODO: account } */}
 						<div className="ml-4 flex lg:ml-0">
 							<Link href="/">
@@ -65,21 +65,21 @@ export const NavBar = async () => {
 							</form>
 						</div>
 					</div>
-					{/* Mobile menu */}
-					<div className="h-16 items-center text-center sm:hidden flex w-full">
-						{/* { TODO: account } */}
-						<div className="z-50 w-full">
-							<ul className="relative list-none flex justify-around h-full">
-								<Link href="/" className="text-3xl">
-									<PiCookingPotFill />
-								</Link>
-								<Link href="/bucket" className="text-3xl">
-									<MdPlaylistAddCircle color="#065f46" />
-								</Link>
-							</ul>
-						</div>
-					</div>
 				</MaxWidthWrapper>
+				{/* Mobile menu */}
+				<div className="h-16 items-center text-center sm:hidden flex w-full border-t border-emerald-800 rounded-2xl bg-white">
+					{/* { TODO: account } */}
+					<div className="z-50 w-full">
+						<ul className="relative list-none flex justify-around h-full">
+							<Link href="/" className="text-3xl">
+								<PiCookingPotFill />
+							</Link>
+							<Link href="/bucket" className="text-3xl">
+								<MdPlaylistAddCircle color="#065f46" />
+							</Link>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

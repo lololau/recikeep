@@ -7,7 +7,7 @@ export const MaxWidthWrapper = ({
 			className={
 				className
 					? className
-					: "relative mx-auto w-full max-w-screen-xl px-1.5 md:px-10"
+					: "relative mx-auto w-full max-w-screen-xl px-0 md:px-10"
 			}
 		>
 			{children}

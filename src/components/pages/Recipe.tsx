@@ -18,7 +18,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 		return (
 			<>
 				<div className="pb-10 mx-auto text-center flex flex-col items-center">
-					<div className="py-20 w-full bg-ecru">
+					<div className="py-10 sm:py-20 w-full bg-ecru">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 							Recette introuvable
 						</h1>
@@ -34,8 +34,8 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	return (
 		<div className="mx-auto z-20 min-h-screen bg-white sm:pb-0 pb-14">
 			<div className="mx-auto text-center flex flex-col items-center z-20">
-				<div className="py-20 w-full bg-ecru">
-					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
+				<div className="py-12 sm:py-20 w-full ">
+					<h1 className="text-2xl text-gray-800 sm:text-5xl px-2 sm:px-0">
 						{recipe.title}
 					</h1>
 				</div>
@@ -44,41 +44,40 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					<p>Portions : {recipe.portions}</p>
 				</div>
 			</div>
-			{/* {tags && (
+			{tags && (
 				<div className="flex flex-col pb-9">
 					{tags.map((tag) => (
 						<p key={tag.tagId}>{tag.name}</p>
 					))}
 				</div>
-			)} */}
+			)}
 			<div className="flex flex-col">
-				<div className="flex flex-col gap-5 pt-6 pb-3 sm:pt-10 sm:pb-5">
+				<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl">
 					<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
-						<h1 className="text-emerald-800 text-xl sm:text-2xl font-semibold text-center sm:text-left mb-4">
-							Ingrédients 🥗
+						<h1 className="pl-2.5 sm:text-2xl sm:text-center">
+							Ingrédients 🥬
 						</h1>
-						<hr className="flex-grow border-gray-300" />
+						{/* <hr className="flex-grow border-gray-300" /> */}
 					</div>
-					<h1 className="text-emerald-800 text-xl visible sm:hidden font-semibold text-center mb-4">
-						Ingrédients 🥗
+					<h1 className="text-xl visible sm:hidden font-light text-center">
+						Ingrédients 🥬
 					</h1>
-					<IngredientsTable ingredients={ingredients} />
+					<div className="self-center sm:self-start sm:pl-2.5">
+						<IngredientsTable ingredients={ingredients} />
+					</div>
 				</div>
-				<div className="flex flex-col gap-2 pt-3 pb-6 sm:pt-5 sm:pb-10">
-					<div className="flex-row gap-3 items-center hidden sm:flex sm:visible">
-						<h1 className="text-xl sm:text-2xl text-emerald-800 font-semibold text-center sm:text-left mb-4">
-							Recette 🍴
+				<hr className="border-gray-200 border-dashed" />
+				<div className="flex flex-col gap-2 pb-6 pt-5 sm:pt-0 mt-3 sm:pb-10 rounded-2xl">
+					<div className="sm:gap-3 visible sm:hidden flex flex-col gap-5">
+						<h1 className="pl-0 sm:pl-2.5 text-xl sm:text-2xl font-light sm:font-normal text-center sm:text-left">
+							Recette 🥗
 						</h1>
-						<hr className="flex-grow border-gray-300" />
 					</div>
-					<h1 className="text-emerald-800 text-xl visible sm:hidden font-semibold text-center">
-						Recette 🧑🏻‍🍳
-					</h1>
 					{recipe.preparation && (
 						<div>
-							<article className="w-full pt-5">
+							<article className="w-full sm:pt-0 pt-5">
 								<Markdown
-									className="prose min-w-full"
+									className="prose min-w-full px-2.5"
 									components={options}
 									remarkPlugins={[remarkGfm]}
 									rehypePlugins={[

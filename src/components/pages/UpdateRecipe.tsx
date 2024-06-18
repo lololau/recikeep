@@ -14,7 +14,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 		return (
 			<div className="bg-white min-h-screen z-20">
 				<div className="pb-10 mx-auto text-center flex flex-col items-center">
-					<div className="py-20 w-full bg-ecru">
+					<div className="py-10 sm:py-20 w-full bg-ecru">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 							Recette introuvable
 						</h1>
@@ -41,7 +41,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 	return (
 		<div className="bg-white min-h-screen z-20 sm:pb-0 pb-14">
 			<div className="pb-10 mx-auto text-center flex flex-col items-center">
-				<div className="py-20 w-full bg-ecru">
+				<div className="py-10 sm:py-20 w-full bg-ecru">
 					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 						Modification d'une recette
 					</h1>

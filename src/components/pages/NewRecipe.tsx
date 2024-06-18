@@ -141,7 +141,7 @@ export default function NewRecipeForm({
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<div className="grid grid-cols-2 mb-2 gap-2">
+			<div className="grid  mb-2 gap-2 px-2.5 sm:px-0">
 				<div className="grid gap-2">
 					{/* === Title === */}
 					<div className="gap-1 py-2">
@@ -149,7 +149,7 @@ export default function NewRecipeForm({
 							htmlFor="title"
 							className="text-base font-light text-emerald-800"
 						>
-							Titre
+							Titre *
 						</label>
 						<div className="rounded-md shadow-sm border-2 sm:max-w-md">
 							<input
@@ -168,7 +168,7 @@ export default function NewRecipeForm({
 							htmlFor="source"
 							className="text-base font-light text-emerald-800"
 						>
-							Source
+							Source *
 						</label>
 						<div className="rounded-md shadow-sm border-2 sm:max-w-md">
 							<input
@@ -207,7 +207,7 @@ export default function NewRecipeForm({
 							htmlFor="portions"
 							className="text-base font-light text-emerald-800"
 						>
-							Nombre de portions
+							Nombre de portions *
 						</label>
 						<div className="rounded-md shadow-sm border-2 sm:max-w-md">
 							<input
@@ -246,7 +246,7 @@ export default function NewRecipeForm({
 					{/* === Ingrédients === */}
 					<div className="py-2 whitespace-nowrap min-w-full">
 						<div className="flex flex-row gap-6">
-							<p className="font-light text-emerald-800">Ingrédients</p>
+							<p className="font-light text-emerald-800">Ingrédients *</p>
 							<div>
 								<button
 									className="text-xl"
@@ -345,7 +345,7 @@ export default function NewRecipeForm({
 					</div>
 				</div>
 			</div>
-			<div className="flex flex-col gap-2 py-2">
+			<div className="flex flex-col gap-2 py-2 px-2.5 sm:px-0">
 				{/* === Preparation details === */}
 				<label
 					htmlFor="preparation"
