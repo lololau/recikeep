@@ -46,7 +46,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				</div>
 			</div>
 			<div className="flex flex-col">
-				<div className="flex flex-col gap-5 mt-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl">
+				<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl">
 					<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
 						<h1 className="pl-2.5 sm:text-2xl sm:text-center">
 							Ingrédients 🥬
@@ -59,9 +59,8 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 						<IngredientsTable ingredients={ingredients} />
 					</div>
 				</div>
-
-				{tags && (
-					<div className="my-3 self-center sm:self-start px-2.5">
+				{tags && tags.length > 0 && (
+					<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:text-base sm:self-start px-2.5 mb-3">
 						{tags.map((tag) => (
 							<Tag tagName={tag.name} key={tag.tagId} />
 						))}
