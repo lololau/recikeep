@@ -35,10 +35,13 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	return (
 		<div className="mx-auto z-20 min-h-screen bg-white sm:pb-0 pb-14">
 			<div className="mx-auto text-center flex flex-col items-center z-20">
-				<div className="py-12 sm:py-20 w-full ">
-					<h1 className="text-2xl text-gray-800 sm:text-5xl px-2 sm:px-0">
-						{recipe.title}
+				<div className="py-14 sm:py-20 w-full bg-ecru text-center px-0">
+					<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
+						RECETTE.
 					</h1>
+					<p className="mt-6 text-lg sm:text-2xl text-muted-foreground font-medium">
+						{recipe.title}
+					</p>
 				</div>
 				<div className="flex flex-row justify-around items-center text-sm sm:text-lg  text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
 					{recipe.glucides && <p>Glucides : {recipe.glucides}</p>}

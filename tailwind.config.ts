@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        "ecru": '#FFEBCD',
+        "ecru": '#fef1e2',
         "dk-green": "#0A6847"
       },
     },
