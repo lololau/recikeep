@@ -1,11 +1,11 @@
-import Link from "next/link";
-import { MaxWidthWrapper } from "./MaxWidthWrapper";
-import { PiCookingPotFill } from "react-icons/pi";
-import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+import { MdPlaylistAddCircle } from "react-icons/md";
+import { PiCookingPotFill } from "react-icons/pi";
 import { lucia, validateRequest } from "recikeep/auth/auth";
 import { Button } from "./Button";
-import { MdPlaylistAddCircle } from "react-icons/md";
+import { MaxWidthWrapper } from "./MaxWidthWrapper";
 
 async function logout() {
 	"use server";

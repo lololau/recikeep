@@ -1,11 +1,11 @@
 import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
-import { authenticationProcedure, publicProcedure } from "../trpc";
-import { z } from "zod";
-import { users } from "recikeep/database/schema";
-import { eq } from "drizzle-orm";
 import { SqliteError } from "better-sqlite3";
+import { eq } from "drizzle-orm";
 import { Argon2id } from "oslo/password";
 import { first } from "radash";
+import { users } from "recikeep/database/schema";
+import { z } from "zod";
+import { authenticationProcedure, publicProcedure } from "../trpc";
 
 export const authRouter = {
 	// new account

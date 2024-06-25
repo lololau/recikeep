@@ -1,14 +1,14 @@
 "use client";
 
-import Link from "next/link";
-import { SearchBar } from "../SearchBar";
-import { IoIosAddCircle } from "react-icons/io";
 import Fuse from "fuse.js";
+import Link from "next/link";
 import { useMemo, useState } from "react";
-import { HomePageRecipe } from "./HomePageRecipes";
+import { IoIosAddCircle } from "react-icons/io";
 import { RecipesProvider, useRecipes } from "recikeep/contexts/RecipesContext";
 import { api } from "recikeep/trpc/react";
 import type { RecipesFormated } from "recikeep/trpc/router/recipe";
+import { SearchBar } from "../SearchBar";
+import { HomePageRecipe } from "./HomePageRecipes";
 
 function HomePageFormContent() {
 	const { recipes } = useRecipes();

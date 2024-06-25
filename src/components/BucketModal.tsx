@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { type SubmitHandler, useForm } from "react-hook-form";
+import { FcFlashOn } from "react-icons/fc";
 import { IoIosAddCircle } from "react-icons/io";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import { FcFlashOn } from "react-icons/fc";
+import Modal from "react-modal";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
-import Modal from "react-modal";
-import { useForm, type SubmitHandler } from "react-hook-form";
 Modal.setAppElement("#root");
 
 // Modal styles

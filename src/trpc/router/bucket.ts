@@ -1,10 +1,10 @@
-import { z } from "zod";
+import { TRPCError } from "@trpc/server";
 import { SqliteError } from "better-sqlite3";
-import { authenticationProcedure } from "../trpc";
+import { eq } from "drizzle-orm";
 import { first } from "radash";
 import { buckets } from "recikeep/database/schema";
-import { TRPCError } from "@trpc/server";
-import { eq } from "drizzle-orm";
+import { z } from "zod";
+import { authenticationProcedure } from "../trpc";
 
 export const bucketRouter = {
 	// new bucket

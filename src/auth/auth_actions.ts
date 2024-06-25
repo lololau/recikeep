@@ -1,9 +1,9 @@
 "use server";
+import { TRPCError } from "@trpc/server";
+import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { api } from "../trpc/server";
 import { lucia } from "./auth";
-import { cookies } from "next/headers";
-import { TRPCError } from "@trpc/server";
 
 export async function signIn(_: unknown, formData: FormData) {
 	const email = formData.get("email");

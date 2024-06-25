@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { TRPCReactProvider } from "recikeep/trpc/react";
-import { NavBar } from "recikeep/components/NavBar";
 import { validateRequest } from "recikeep/auth/auth";
+import { NavBar } from "recikeep/components/NavBar";
+import { TRPCReactProvider } from "recikeep/trpc/react";
 import { Toaster } from "sonner";
+import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
