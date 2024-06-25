@@ -3,7 +3,6 @@
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
 import { IoIosAddCircle } from "react-icons/io";
-import "react-quill/dist/quill.snow.css";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
 

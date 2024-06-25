@@ -36,10 +36,8 @@ function HomePageFormContent() {
 	const handleSearchChange = (query: string) => {
 		setQuery(query);
 		const fuseSearch = fuse.search(query);
-		console.log(fuseSearch);
 
 		setFilteredRecipes(fuseSearch.map((el) => el.item));
-		// console.log(filteredRecipes);
 	};
 
 	return (

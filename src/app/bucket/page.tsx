@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { validateRequest } from "recikeep/auth/auth";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import BucketForm from "recikeep/components/pages/Bucket";
-import { api, createServerHelper } from "recikeep/trpc/server";
+import { createServerHelper } from "recikeep/app/api/trpc/[trpc]/route";
 
 export default async function BucketPage() {
 	const { session } = await validateRequest();

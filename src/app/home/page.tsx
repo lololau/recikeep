@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { validateRequest } from "recikeep/auth/auth";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import { HomePageForm } from "recikeep/components/pages/Home";
-import { createServerHelper } from "recikeep/trpc/server";
+import { createServerHelper } from "recikeep/app/api/trpc/[trpc]/route";
 
 export default async function HomePage() {
 	const { session } = await validateRequest();

@@ -1,5 +1,7 @@
+"use client";
+
 import type React from "react";
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext } from "react";
 import type { RecipesFormated } from "recikeep/trpc/router/recipe";
 
 type RecipeProviderProps = {

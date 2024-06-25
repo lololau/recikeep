@@ -1,7 +1,7 @@
 import { HydrationBoundary, dehydrate } from "@tanstack/react-query";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import RecipeForm from "recikeep/components/pages/Recipe";
-import { createServerHelper } from "recikeep/trpc/server";
+import { createServerHelper } from "recikeep/app/api/trpc/[trpc]/route";
 
 export default async function RecipePage({
 	params,

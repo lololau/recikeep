@@ -25,7 +25,7 @@ export default async function RootLayout({
 				className={`${inter.className} relative h-full font-sans antialiased z-10`}
 				id="root"
 			>
-				<main className="relative flex flex-col min-h-screen" id="user">
+				<main className="relative flex flex-col min-h-screen">
 					{session && <NavBar />}
 					<div className="flex-grow flex-1 ">
 						<TRPCReactProvider>{children}</TRPCReactProvider>
