@@ -1,8 +1,13 @@
 name: recikeep
 
+env:
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
 on:
   push:
     branches: [main]
+    
 
 jobs:
   # run biome
@@ -56,6 +61,8 @@ jobs:
         run: pnpm install
         working-directory: ./
       - name: Build with Next.js
+        env: 
+          NODE_ENV: development
         run: pnpm build
         working-directory: ./
 
