@@ -6,7 +6,7 @@ const dev = process.env.NODE_ENV !== "production"
 config({path: dev ? '.env.development' : '.env.production'})
 
 let drizzlConfig
-if (process.env.NODE_ENV === "production") {
+if (!process.env.CI_MODE && process.env.NODE_ENV === "production") {
 	if (!process.env.TURSO_CONNECTION_URL || !process.env.TURSO_AUTH_TOKEN) {
 		throw new Error("missing turso token");
 	}
