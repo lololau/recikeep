@@ -1,90 +1,13 @@
 {
-	"version": "5",
-	"dialect": "sqlite",
-	"entries": [
-		{
-			"idx": 0,
-			"version": "5",
-			"when": 1713875855019,
-			"tag": "0000_tan_arclight",
-			"breakpoints": true
-		},
-		{
-			"idx": 1,
-			"version": "5",
-			"when": 1714061235219,
-			"tag": "0001_dapper_tombstone",
-			"breakpoints": true
-		},
-		{
-			"idx": 2,
-			"version": "5",
-			"when": 1714133374486,
-			"tag": "0002_wise_maria_hill",
-			"breakpoints": true
-		},
-		{
-			"idx": 3,
-			"version": "5",
-			"when": 1714134689073,
-			"tag": "0003_fat_captain_cross",
-			"breakpoints": true
-		},
-		{
-			"idx": 4,
-			"version": "5",
-			"when": 1714135765633,
-			"tag": "0004_rainy_captain_midlands",
-			"breakpoints": true
-		},
-		{
-			"idx": 5,
-			"version": "5",
-			"when": 1714139367854,
-			"tag": "0005_lame_salo",
-			"breakpoints": true
-		},
-		{
-			"idx": 6,
-			"version": "5",
-			"when": 1714552568149,
-			"tag": "0006_productive_mariko_yashida",
-			"breakpoints": true
-		},
-		{
-			"idx": 7,
-			"version": "5",
-			"when": 1715093990574,
-			"tag": "0007_yielding_orphan",
-			"breakpoints": true
-		},
-		{
-			"idx": 8,
-			"version": "5",
-			"when": 1715778592442,
-			"tag": "0008_round_madame_hydra",
-			"breakpoints": true
-		},
-		{
-			"idx": 9,
-			"version": "5",
-			"when": 1715782211286,
-			"tag": "0009_sparkling_kitty_pryde",
-			"breakpoints": true
-		},
-		{
-			"idx": 10,
-			"version": "5",
-			"when": 1715783470524,
-			"tag": "0010_true_dragon_man",
-			"breakpoints": true
-		},
-		{
-			"idx": 11,
-			"version": "5",
-			"when": 1716992841049,
-			"tag": "0011_quiet_thunderbolt",
-			"breakpoints": true
-		}
-	]
+  "version": "6",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1719495788794,
+      "tag": "0000_hesitant_beast",
+      "breakpoints": true
+    }
+  ]
 }

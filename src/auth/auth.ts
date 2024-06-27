@@ -1,11 +1,12 @@
 import { DrizzleSQLiteAdapter } from "@lucia-auth/adapter-drizzle";
+import { LibSQLAdapter } from "@lucia-auth/adapter-sqlite";
 import { Lucia, type Session, type User } from "lucia";
 import { cookies } from "next/headers";
 import { cache } from "react";
 import { db } from "../database";
 import { sessions, users } from "../database/schema";
 
-const adapter = new DrizzleSQLiteAdapter(db, sessions, users); // your adapter
+const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
 
 export const lucia = new Lucia(adapter, {
 	sessionCookie: {
