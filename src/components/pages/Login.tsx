@@ -11,7 +11,7 @@ export default function LoginForm() {
 	const [state, formAction] = useFormState(signIn, { error: "" });
 	return (
 		<MaxWidthWrapper>
-			<div className="py-20 mx-auto grid gap-3 items-center max-w-md">
+			<div className="py-20 mx-auto grid gap-3 items-center max-w-md sm:px-0 px-3">
 				<PiCookingPotFill className="h-10 w-10 justify-self-center" />
 				<h1 className="text-2xl font-semibold text-center">Mon compte</h1>
 				<p className="text-center text-sm">
