@@ -1,3 +1,8 @@
+"use client";
+
+import { useFormStatus } from "react-dom";
+import { BiLoaderAlt } from "react-icons/bi";
+
 export const Button = ({
 	text,
 	className,
@@ -21,3 +26,19 @@ export const Button = ({
 		</div>
 	);
 };
+
+export function SubmitButton({ text }: { text: string }) {
+	const { pending } = useFormStatus();
+	return (
+		<>
+			{pending ? (
+				<button type="button" className="text-sm sm:text-2xl disabled">
+					<BiLoaderAlt className="animate-spin disabled" color="#065f46" />
+				</button>
+			) : (
+				<Button text={text} />
+			)}
+			{!pending}
+		</>
+	);
+}

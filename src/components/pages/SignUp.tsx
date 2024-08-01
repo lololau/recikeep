@@ -1,9 +1,10 @@
 "use client";
+
 import Link from "next/link";
-import { useFormState } from "react-dom";
+import { useFormState, useFormStatus } from "react-dom";
 import { PiCookingPotFill } from "react-icons/pi";
 import { signUp } from "recikeep/auth/auth_actions";
-import { Button } from "recikeep/components/Button";
+import { SubmitButton } from "recikeep/components/Button";
 import { InputLabel } from "recikeep/components/InputLabel";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 
@@ -40,7 +41,7 @@ export default function SignUpForm() {
 							/>
 						</div>
 						<div className="text-center mt-3">
-							<Button text="Créer" />
+							<SubmitButton text="Créer" />
 						</div>
 					</div>
 					{state.error && <span>{state.error}</span>}

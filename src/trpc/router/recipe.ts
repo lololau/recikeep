@@ -17,13 +17,6 @@ const ingredientsSchema = z.object({
 	quantity: z.string(),
 });
 
-const loadUsersRecipes = isAuthentified.unstable_pipe(async ({ ctx, next }) => {
-	const recipesList = await ctx.db.query.recipes.findMany({
-		where: eq(recipes.userId, ctx.user.id),
-	});
-	return next({ ctx: { recipesList } });
-});
-
 export type RecipesFormated = {
 	id: string;
 	title: string;
