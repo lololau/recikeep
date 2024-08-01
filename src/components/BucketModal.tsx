@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { FcFlashOn } from "react-icons/fc";
-import { IoIosAddCircle } from "react-icons/io";
-import { IoIosCheckmarkCircle } from "react-icons/io";
+import { IoIosAddCircle, IoIosCheckmarkCircle } from "react-icons/io";
+import { BiLoaderAlt } from "react-icons/bi";
 import Modal from "react-modal";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
@@ -37,7 +37,7 @@ export function BucketModal() {
 	} = useForm<IFormBucket>();
 
 	const utils = api.useUtils();
-	const { mutateAsync } = api.buckets.createBucket.useMutation({
+	const { mutateAsync, isPending } = api.buckets.createBucket.useMutation({
 		onSuccess() {
 			toast.success("Recette ajoutée à la liste d'attente");
 			utils.buckets.getBucketsByUserId.refetch();
@@ -123,7 +123,13 @@ export function BucketModal() {
 							</div>
 							<div className="text-center text-2xl pt-5">
 								<button type="submit">
-									<IoIosCheckmarkCircle color="#065f46" />
+									{isPending && (
+										<BiLoaderAlt
+											className="animate-spin disabled"
+											color="#065f46"
+										/>
+									)}
+									{!isPending && <IoIosCheckmarkCircle color="#065f46" />}
 								</button>
 							</div>
 						</div>

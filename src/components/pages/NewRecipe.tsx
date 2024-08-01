@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
+import { BiLoaderAlt } from "react-icons/bi";
 
 export interface IFormRecipe {
 	title: string;
@@ -82,31 +83,33 @@ export default function NewRecipeForm({
 
 	const utils = api.useUtils();
 
-	const { mutateAsync: createRecipe } = api.recipes.createRecipe.useMutation({
-		onSuccess(data) {
-			toast.success("Recette créée.");
-			router.push(`/recipe/${data.id}`);
-			utils.recipes.getRecipesByUserId.invalidate();
-			utils.buckets.getBucketsByUserId.invalidate();
-		},
-		onError(error) {
-			toast.error(error.data?.code);
-		},
-	});
+	const { mutateAsync: createRecipe, isPending: loadingCreateRecipe } =
+		api.recipes.createRecipe.useMutation({
+			onSuccess(data) {
+				toast.success("Recette créée.");
+				router.push(`/recipe/${data.id}`);
+				utils.recipes.getRecipesByUserId.invalidate();
+				utils.buckets.getBucketsByUserId.invalidate();
+			},
+			onError(error) {
+				toast.error(error.data?.code);
+			},
+		});
 
-	const { mutateAsync: updateRecipe } = api.recipes.updateRecipe.useMutation({
-		onSuccess(data) {
-			toast.success("Recette modifiée.");
-			router.push(`/recipe/${data.id}`);
-			utils.recipes.getRecipesByUserId.invalidate();
-			utils.recipes.getRecipeById.invalidate(data.id);
-			utils.recipes.getIngredientsByRecipeId.invalidate(data.id);
-			utils.recipes.getTagsByRecipeId.invalidate(data.id);
-		},
-		onError(error) {
-			toast.error(error.data?.code);
-		},
-	});
+	const { mutateAsync: updateRecipe, isPending: loadingUpdateRecipe } =
+		api.recipes.updateRecipe.useMutation({
+			onSuccess(data) {
+				toast.success("Recette modifiée.");
+				router.push(`/recipe/${data.id}`);
+				utils.recipes.getRecipesByUserId.invalidate();
+				utils.recipes.getRecipeById.invalidate(data.id);
+				utils.recipes.getIngredientsByRecipeId.invalidate(data.id);
+				utils.recipes.getTagsByRecipeId.invalidate(data.id);
+			},
+			onError(error) {
+				toast.error(error.data?.code);
+			},
+		});
 
 	const [preparation, setPreparation] = useState(
 		recipeDetails?.preparation ?? "",
@@ -363,7 +366,12 @@ export default function NewRecipeForm({
 			</div>
 			<div className="text-center py-10 text-3xl">
 				<button type="submit">
-					<IoIosCheckmarkCircle color="#065f46" />
+					{(loadingCreateRecipe || loadingUpdateRecipe) && (
+						<BiLoaderAlt className="animate-spin disabled" color="#065f46" />
+					)}
+					{!loadingCreateRecipe && !loadingUpdateRecipe && (
+						<IoIosCheckmarkCircle color="#065f46" />
+					)}
 				</button>
 			</div>
 		</form>
