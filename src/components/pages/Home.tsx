@@ -70,7 +70,7 @@ function HomePageFormContent() {
 
 	return (
 		<div className="sm:pb-0 pb-14">
-			<div className="py-14 sm:py-20 w-full bg-ecru text-center px-0">
+			<div className="pt-14 w-full text-center px-0">
 				<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
 					RECIKEEP.
 				</h1>
@@ -78,7 +78,7 @@ function HomePageFormContent() {
 					Toutes tes recettes à disposition pour t'inspirer en cuisine.
 				</p>
 			</div>
-			<div className="flex flex-col gap-4 w-full py-10 sm:py-20 items-center text-center">
+			<div className="flex flex-col gap-4 w-full py-10 items-center text-center">
 				<SearchBar handleSearchChange={handleSearchChange} />
 			</div>
 

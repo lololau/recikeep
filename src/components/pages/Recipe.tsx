@@ -48,32 +48,35 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					<p>Portions : {recipe.portions}</p>
 				</div>
 			</div>
-			<div className="flex flex-col">
-				<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl">
-					<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
-						<h1 className="pl-2.5 sm:text-2xl sm:text-center">
+			<div className="flex flex-col sm:flex-row">
+				<div>
+					<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl px-3">
+						<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
+							<h1 className="pl-2.5 sm:text-2xl sm:text-center">
+								Ingrédients 🥬
+							</h1>
+						</div>
+						<h1 className="text-xl visible sm:hidden font-light text-center">
 							Ingrédients 🥬
 						</h1>
+						<div className="self-center sm:self-start sm:pl-2.5">
+							<IngredientsTable ingredients={ingredients} />
+						</div>
 					</div>
-					<h1 className="text-xl visible sm:hidden font-light text-center">
-						Ingrédients 🥬
-					</h1>
-					<div className="self-center sm:self-start sm:pl-2.5">
-						<IngredientsTable ingredients={ingredients} />
-					</div>
+					{tags && tags.length > 0 && (
+						<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:text-base sm:self-start px-2.5 mb-3">
+							{tags.map((tag) => (
+								<Tag
+									tagName={tag.name}
+									bgColor="bg-emerald-800"
+									textColor="text-white"
+									key={tag.tagId}
+								/>
+							))}
+						</div>
+					)}
 				</div>
-				{tags && tags.length > 0 && (
-					<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:text-base sm:self-start px-2.5 mb-3">
-						{tags.map((tag) => (
-							<Tag
-								tagName={tag.name}
-								bgColor="bg-emerald-800"
-								textColor="text-white"
-								key={tag.tagId}
-							/>
-						))}
-					</div>
-				)}
+
 				<hr className="border-gray-200 border-dashed" />
 				<div className="flex flex-col gap-2 pb-6 pt-3 sm:pb-10 rounded-2xl">
 					{recipe.preparation && (
