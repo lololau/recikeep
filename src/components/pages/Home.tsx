@@ -34,10 +34,38 @@ function HomePageFormContent() {
 	}, [recipes]);
 
 	const handleSearchChange = (query: string) => {
-		setQuery(query);
-		const fuseSearch = fuse.search(query);
+		if (query === "") {
+			setQuery(query);
+			for (const recipe of recipes) {
+				recipe.filters = [];
+			}
+		}
 
-		setFilteredRecipes(fuseSearch.map((el) => el.item));
+		if (query.length > 1) {
+			setQuery(query);
+			const fuseSearch = fuse.search(query);
+
+			setFilteredRecipes(
+				fuseSearch.map((el) => {
+					el.item.filters = [];
+
+					const matches = el.matches ?? [];
+					// let matchFilters: string[] = [];
+					for (let i = 0; i < matches?.length; i++) {
+						const match = matches[i];
+
+						if (match.value) {
+							if (el.item.filters.includes(match.value)) {
+								continue;
+							}
+							el.item.filters.push(match.value);
+						}
+					}
+
+					return el.item;
+				}),
+			);
+		}
 	};
 
 	return (

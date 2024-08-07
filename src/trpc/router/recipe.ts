@@ -27,6 +27,7 @@ export type RecipesFormated = {
 	glucides: string | null;
 	ingredients: { id: string; quantity: string; name: string }[];
 	tags: { id: string; name: string }[];
+	filters?: string[];
 };
 
 export const recipeRouter = {

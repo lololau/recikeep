@@ -65,7 +65,12 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				{tags && tags.length > 0 && (
 					<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:text-base sm:self-start px-2.5 mb-3">
 						{tags.map((tag) => (
-							<Tag tagName={tag.name} key={tag.tagId} />
+							<Tag
+								tagName={tag.name}
+								bgColor="bg-emerald-800"
+								textColor="text-white"
+								key={tag.tagId}
+							/>
 						))}
 					</div>
 				)}
