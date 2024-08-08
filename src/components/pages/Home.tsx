@@ -71,7 +71,7 @@ function HomePageFormContent() {
 	return (
 		<div className="sm:pb-0 pb-14">
 			<div className="pt-14 w-full text-center px-0">
-				<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
+				<h1 className="text-4xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
 					RECIKEEP.
 				</h1>
 				<p className="mt-6 text-lg text-muted-foreground">
@@ -123,7 +123,7 @@ export function HomePageForm() {
 	}
 
 	return (
-		<div className="mx-auto flex flex-col bg-white z-20 min-h-screen">
+		<div className="mx-auto flex flex-col bg-white z-20">
 			<RecipesProvider recipes={data}>
 				<HomePageFormContent />
 			</RecipesProvider>

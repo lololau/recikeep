@@ -7,6 +7,8 @@ import remarkGfm from "remark-gfm";
 import { CodeBlock, Pre } from "../Code";
 import { IngredientsTable } from "../IngredientsTable";
 import { Tag } from "../Tag";
+import { PiForkKnifeFill } from "react-icons/pi";
+import { MdEnergySavingsLeaf } from "react-icons/md";
 
 export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
@@ -33,23 +35,29 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	}
 
 	return (
-		<div className="mx-auto z-20 min-h-screen bg-white sm:pb-0 pb-14">
-			<div className="mx-auto text-center flex flex-col items-center z-20">
-				<div className="py-14 sm:py-20 w-full bg-ecru text-center px-0">
-					<h1 className="text-3xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
-						RECETTE.
-					</h1>
-					<p className="mt-6 text-lg sm:text-2xl text-muted-foreground font-medium">
+		<div className="mx-auto z-20 bg-white sm:pb-0 pb-14">
+			<div className="mx-auto flex flex-col items-center z-20">
+				<div className="flex flex-col gap-2 px-3 py-14 w-full">
+					<h1 className="font-gupter text-3xl font-semibold tracking-wide text-gray-800 sm:text-5xl">
 						{recipe.title}
-					</p>
+					</h1>
+					<p className="italic text-sm sm:text-base">by {recipe.source}</p>
 				</div>
-				<div className="flex flex-row justify-around items-center text-sm sm:text-lg  text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
-					{recipe.glucides && <p>Glucides : {recipe.glucides}</p>}
-					<p>Portions : {recipe.portions}</p>
+				<div className="flex flex-row justify-around text-center items-center text-sm sm:text-lg  text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
+					{recipe.glucides && (
+						<div className="flex flex-row items-center">
+							<MdEnergySavingsLeaf />
+							<p>: {recipe.glucides}</p>
+						</div>
+					)}
+					<div className="flex flex-row items-center">
+						<PiForkKnifeFill />
+						<p>: {recipe.portions}</p>
+					</div>
 				</div>
 			</div>
-			<div className="flex flex-col sm:flex-row">
-				<div>
+			<div className="relative flex flex-col sm:flex-row">
+				<div className="sm:w-1/3">
 					<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl px-3">
 						<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
 							<h1 className="pl-2.5 sm:text-2xl sm:text-center">
@@ -78,12 +86,12 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				</div>
 
 				<hr className="border-gray-200 border-dashed" />
-				<div className="flex flex-col gap-2 pb-6 pt-3 sm:pb-10 rounded-2xl">
+				<div className="flex flex-col gap-2 pb-6 sm:pt-3 sm:pb-10 rounded-2xl">
 					{recipe.preparation && (
 						<div>
 							<article className="w-full sm:pt-0 pt-5">
 								<Markdown
-									className="prose min-w-full px-2.5"
+									className="prose px-2.5 max-w-fit"
 									components={options}
 									remarkPlugins={[remarkGfm]}
 									rehypePlugins={[

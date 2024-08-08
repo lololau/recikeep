@@ -17,8 +17,8 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 						<div className="flex flex-row items-center">
 							<div className="font-light text-gray-800 text-start px-2 grid flex-grow">
 								<Link href={`/recipe/${recipe.id}`}>
-									<p className="sm:text-base text-base">{recipe.title}</p>
-									<p className="font-base text-emerald-800 text-sm">
+									<p className="sm:text-base text-sm">{recipe.title}</p>
+									<p className="font-base text-gray-600 sm:text-sm text-xs">
 										Ref: {recipe.source}
 									</p>
 								</Link>

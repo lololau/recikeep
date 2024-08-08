@@ -12,6 +12,11 @@ const config: Config = {
         "ecru": '#fef1e2',
         "dk-green": "#0A6847"
       },
+      fontFamily: {
+        gupter: ["Gupter", "serif"],
+        inter: ["Inter", "sans-serif"],
+        pt_serif: ["PT Serif", "serif"]
+      },
     },
   },
   plugins: [require('@tailwindcss/typography')]

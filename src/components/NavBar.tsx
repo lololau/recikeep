@@ -61,7 +61,7 @@ export const NavBar = async () => {
 						</div>
 						<div className="text-right w-full">
 							<form action={logout}>
-								<Button text="Sign out" />
+								<Button text="Déconnexion" />
 							</form>
 						</div>
 					</div>
@@ -75,7 +75,7 @@ export const NavBar = async () => {
 								<PiCookingPotFill />
 							</Link>
 							<Link href="/bucket" className="text-3xl">
-								<MdPlaylistAddCircle color="#065f46" />
+								<MdPlaylistAddCircle color="#fecaca" />
 							</Link>
 						</ul>
 					</div>
