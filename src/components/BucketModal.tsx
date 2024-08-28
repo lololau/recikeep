@@ -80,8 +80,8 @@ export function BucketModal() {
 				>
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<div className="pb-10 mx-auto text-center flex flex-col items-center">
-							<div className="py-5 w-full bg-ecru flex flex-row justify-center items-center gap-2">
-								<h1 className="text-lg font-light">
+							<div className="py-5 w-full bg-rose-100 flex flex-row justify-center items-center gap-1">
+								<h1 className="font-gupter text-lg sm:text-xl font-light">
 									Enregistre rapidement ta future recette
 								</h1>
 								<div className="text-2xl">

@@ -9,6 +9,8 @@ import { IngredientsTable } from "../IngredientsTable";
 import { Tag } from "../Tag";
 import { PiForkKnifeFill } from "react-icons/pi";
 import { MdEnergySavingsLeaf } from "react-icons/md";
+import { Button } from "../Button";
+import Link from "next/link";
 
 export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
@@ -35,13 +37,20 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	}
 
 	return (
-		<div className="mx-auto z-20 bg-white sm:pb-0 pb-14">
+		<div className="mx-auto z-20 bg-white sm:pb-0">
 			<div className="mx-auto flex flex-col items-center z-20">
-				<div className="flex flex-col gap-2 px-3 py-14 w-full">
+				<div className="flex flex-col gap-2 px-3 pt-14 w-full">
 					<h1 className="font-gupter text-3xl font-semibold tracking-wide text-gray-800 sm:text-5xl">
 						{recipe.title}
 					</h1>
 					<p className="italic text-sm sm:text-base">by {recipe.source}</p>
+					<div className="text-end">
+						<Link href={`/recipe/${recipe.id}/update`}>
+							<p className="sm:text-base text-sm italic text-emerald-800 py-1.5 px-2">
+								Modifier la recette ?
+							</p>
+						</Link>
+					</div>
 				</div>
 				<div className="flex flex-row justify-around text-center items-center text-sm sm:text-lg  text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
 					{recipe.glucides && (
@@ -56,15 +65,15 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					</div>
 				</div>
 			</div>
-			<div className="relative flex flex-col sm:flex-row">
+			<div className="flex flex-col gap-2 sm:flex-row">
 				<div className="sm:w-1/3">
-					<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-5 bg-rose-50 rounded-2xl px-3">
+					<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-6 bg-rose-50 rounded-2xl px-6">
 						<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
-							<h1 className="pl-2.5 sm:text-2xl sm:text-center">
+							<h1 className="font-gupter pl-2.5 sm:text-2xl sm:text-center">
 								Ingrédients 🥬
 							</h1>
 						</div>
-						<h1 className="text-xl visible sm:hidden font-light text-center">
+						<h1 className="font-gupter text-xl visible sm:hidden font-light text-center">
 							Ingrédients 🥬
 						</h1>
 						<div className="self-center sm:self-start sm:pl-2.5">

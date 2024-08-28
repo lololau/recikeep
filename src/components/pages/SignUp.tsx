@@ -13,9 +13,18 @@ export default function SignUpForm() {
 
 	return (
 		<MaxWidthWrapper>
+			<div className="pt-14 w-full text-center px-0">
+				<h1 className="text-4xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
+					RECIKEEP.
+				</h1>
+				<p className="mt-6 text-lg text-muted-foreground">
+					Toutes tes recettes à disposition pour t'inspirer en cuisine.
+				</p>
+			</div>
 			<div className="py-20 mx-auto grid gap-3 items-center max-w-md sm:px-0 px-3">
-				<PiCookingPotFill className="h-10 w-10 justify-self-center" />
-				<h1 className="text-2xl font-semibold text-center">Créer un compte</h1>
+				<h1 className="text-2xl text-emerald-800 font-gupter font-semibold text-center">
+					Créer un compte
+				</h1>
 				<p className="text-center text-sm">
 					Tu as déjà un compte?{" "}
 					<Link href="/login" className="underline">

@@ -12,9 +12,9 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 
 	if (!recipe || !ingredients) {
 		return (
-			<div className="bg-white min-h-screen z-20">
-				<div className="pb-10 mx-auto text-center flex flex-col items-center">
-					<div className="py-10 sm:py-20 w-full bg-ecru">
+			<div className="bg-white z-20">
+				<div className="mx-auto text-center flex flex-col items-center">
+					<div className="py-14 w-full">
 						<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
 							Recette introuvable
 						</h1>
@@ -39,13 +39,13 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 	};
 
 	return (
-		<div className="bg-white min-h-screen z-20 sm:pb-0 pb-14">
-			<div className="pb-10 mx-auto text-center flex flex-col items-center">
-				<div className="py-10 sm:py-20 w-full bg-ecru">
-					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
+		<div className="bg-white z-20 sm:pb-0 pb-14">
+			<div className="mx-auto text-center flex flex-col items-center">
+				<div className="py-14 w-full px-3 flex flex-col gap-2">
+					<h1 className="font-gupter font-semibold text-3xl tracking-wide text-gray-800 sm:text-5xl">
 						Modification d'une recette
 					</h1>
-					<p className="mt-6 text-lg text-muted-foreground">
+					<p className="text-sm italic text-emerald-800 sm:text-lg text-muted-foreground">
 						Que souhaites-tu changer ?
 					</p>
 				</div>

@@ -28,18 +28,18 @@ export default function BucketForm() {
 	>(undefined);
 
 	return (
-		<div className="min-h-screen bg-white z-20 sm:pb-0 pb-14">
-			<div className="mx-auto text-center flex flex-col items-center">
-				<div className="py-10 sm:py-20  w-full bg-ecru">
-					<h1 className="text-3xl tracking-wide text-gray-800 sm:text-6xl">
+		<div className="bg-white z-20 sm:pb-0">
+			<div className="mx-auto text-center items-center">
+				<div className="px-3 py-14 w-full flex flex-col gap-3">
+					<h1 className="font-gupter font-semibold text-3xl tracking-wide text-gray-800 sm:text-5xl">
 						Backlog de recettes
 					</h1>
-					<p className="mt-6 text-lg text-muted-foreground">
+					<p className="text-sm text-muted-foreground sm:text-lg">
 						Enregistre une de tes recettes pré-sauvegardées !
 					</p>
 				</div>
 			</div>
-			<div className="sm:flex sm:flex-row w-full pt-5">
+			<div className="sm:flex sm:flex-row w-full">
 				<ul className="flex flex-col gap-3 p-2 sm:basis-1/4">
 					<li className="w-full">
 						<BucketModal />
