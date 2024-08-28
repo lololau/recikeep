@@ -37,7 +37,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 	}
 
 	return (
-		<div className="mx-auto z-20 bg-white sm:pb-0">
+		<div className="mx-auto z-20 bg-white sm:pb-0 pb-14">
 			<div className="mx-auto flex flex-col items-center z-20">
 				<div className="flex flex-col gap-2 px-3 pt-14 w-full">
 					<h1 className="font-gupter text-3xl font-semibold tracking-wide text-gray-800 sm:text-5xl">
