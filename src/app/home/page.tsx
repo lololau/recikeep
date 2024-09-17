@@ -11,8 +11,10 @@ export default async function HomePage() {
 		redirect("/login");
 	}
 
+	// This helper will be used to prefetch data for the homepage.
 	const helpers = await createServerHelper();
 
+	// Prefetch the list of recipes for the current user to improve loading time on the client side.
 	await helpers.recipes.getRecipesByUserId.prefetch();
 
 	const dehydratedState = dehydrate(helpers.queryClient);

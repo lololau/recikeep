@@ -9,10 +9,12 @@ type RecipeProviderProps = {
 	children: React.ReactNode;
 };
 
+// Create a context for recipes, initially undefined
 const RecipesStateContext = createContext<
 	{ recipes: RecipesFormated[] } | undefined
 >(undefined);
 
+// RecipeProvider component that provides recipes data to its children
 export const RecipesProvider = ({ children, recipes }: RecipeProviderProps) => {
 	return (
 		<RecipesStateContext.Provider value={{ recipes }}>
@@ -21,10 +23,12 @@ export const RecipesProvider = ({ children, recipes }: RecipeProviderProps) => {
 	);
 };
 
+// Custom useRecipes hook to consume the recipes context
 export const useRecipes = () => {
 	const context = useContext(RecipesStateContext);
 	if (context === undefined) {
 		throw new Error("useRecipes must be used within a RecipeProvider");
 	}
+	// Return the context value (recipes data)
 	return context;
 };

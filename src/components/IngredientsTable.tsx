@@ -1,3 +1,4 @@
+// IngredientsTable components takes a list of ingredient with a name and a quantity
 export const IngredientsTable = ({
 	ingredients,
 }: {

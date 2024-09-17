@@ -3,6 +3,7 @@
 import { useFormStatus } from "react-dom";
 import { BiLoaderAlt } from "react-icons/bi";
 
+// Button component that takes text, className, and children as props (optional)
 export const Button = ({
 	text,
 	className,
@@ -27,6 +28,7 @@ export const Button = ({
 	);
 };
 
+// SubmitButton component specifically designed for form submission with loading indicator
 export function SubmitButton({ text }: { text: string }) {
 	const { pending } = useFormStatus();
 	return (

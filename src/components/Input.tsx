@@ -1,3 +1,5 @@
+// Input base component that takes name, placeholder, required and classNameInput as props
+// (placeholder and classNameInput are optional)
 export const Input = ({
 	name,
 	placeholder,

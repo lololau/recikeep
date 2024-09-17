@@ -7,6 +7,7 @@ import { lucia, validateRequest } from "recikeep/auth/auth";
 import { Button } from "./Button";
 import { MaxWidthWrapper } from "./MaxWidthWrapper";
 
+// Function to log out the user and invalidate the session
 async function logout() {
 	"use server";
 	const { session } = await validateRequest();
@@ -16,8 +17,10 @@ async function logout() {
 		};
 	}
 
+	// Invalidate the user's session to log them out
 	await lucia.invalidateSession(session.id);
 
+	// Clear the current session
 	const sessionCookie = lucia.createBlankSessionCookie();
 	cookies().set(
 		sessionCookie.name,
@@ -27,6 +30,7 @@ async function logout() {
 	return redirect("/login");
 }
 
+// Asynchronous NavBar component
 export const NavBar = async () => {
 	return (
 		<div className="sm:sticky z-50 sm:top-0 sm:border-0 inset-x-0 h-16 fixed bottom-0">

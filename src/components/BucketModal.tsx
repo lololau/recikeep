@@ -25,8 +25,9 @@ interface IFormBucket {
 	source: string;
 }
 
+// Modal to register quickly a recipe for adding later with name and source
 export function BucketModal() {
-	// BucketModal state
+	// State to control whether the modal is open or closed
 	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const {
@@ -36,10 +37,15 @@ export function BucketModal() {
 		formState: { errors },
 	} = useForm<IFormBucket>();
 
+	// API utilities to perform mutations and refetch queries
 	const utils = api.useUtils();
+
+	// Mutation function for creating a new card
 	const { mutateAsync, isPending } = api.buckets.createBucket.useMutation({
 		onSuccess() {
 			toast.success("Recette ajoutée à la liste d'attente");
+
+			// Refetch the buckets list after creating a new bucket
 			utils.buckets.getBucketsByUserId.refetch();
 			reset();
 		},
@@ -59,6 +65,7 @@ export function BucketModal() {
 
 	return (
 		<>
+			{/* Button to open the modal */}
 			<button
 				className="p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900 w-full"
 				type="button"
@@ -71,6 +78,8 @@ export function BucketModal() {
 					<IoIosAddCircle color="white" />
 				</div>
 			</button>
+
+			{/* Modal component */}
 			<div id="modal">
 				<Modal
 					isOpen={isModalOpen}
@@ -78,6 +87,7 @@ export function BucketModal() {
 					style={customStyles}
 					shouldCloseOnOverlayClick={true}
 				>
+					{/* Form for adding a new recipe to the bucket */}
 					<form onSubmit={handleSubmit(onSubmit)}>
 						<div className="pb-10 mx-auto text-center flex flex-col items-center">
 							<div className="py-5 w-full bg-rose-100 flex flex-row justify-center items-center gap-1">

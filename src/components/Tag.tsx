@@ -1,5 +1,7 @@
 import { IoMdCloseCircleOutline } from "react-icons/io";
 
+// Tag component that takes tagName, bgColor, textColor, onClick and textSize as props
+// (onClick and textSize are optional)
 export function Tag({
 	tagName,
 	bgColor,

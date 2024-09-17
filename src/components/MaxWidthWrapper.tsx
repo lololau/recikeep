@@ -1,3 +1,4 @@
+// MaxWidthWrapper component that restricts the width of its content and applies optional styling
 export const MaxWidthWrapper = ({
 	children,
 	className,

@@ -1,3 +1,4 @@
+// Card component with recipeTitle, source and onClick function as props
 export function BucketCard({
 	recipeTitle,
 	source,
