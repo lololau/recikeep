@@ -9,10 +9,12 @@ import { IngredientsTable } from "../IngredientsTable";
 import { Tag } from "../Tag";
 import { PiForkKnifeFill } from "react-icons/pi";
 import { MdEnergySavingsLeaf } from "react-icons/md";
-import { Button } from "../Button";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function RecipeForm({ recipeId }: { recipeId: string }) {
+	const [isAccordionOpen, setIsAccordionOpen] = useState(true);
+
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
 	const { data: ingredients } =
 		api.recipes.getIngredientsByRecipeId.useQuery(recipeId);
@@ -66,33 +68,40 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				</div>
 			</div>
 			<div className="flex flex-col gap-2 sm:flex-row">
-				<div className="sm:w-1/3">
-					<div className="flex flex-col gap-5 my-3 pt-5 pb-8 sm:pb-6 bg-rose-50 rounded-2xl px-6">
+				<div className="sm:w-1/3 sticky top-0 sm:top-auto">
+					<div className="flex flex-col gap-5 py-5 bg-rose-50 rounded-2xl shadow-md px-6">
 						<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
 							<h1 className="font-gupter pl-2.5 sm:text-2xl sm:text-center">
 								Ingrédients 🥬
 							</h1>
 						</div>
-						<h1 className="font-gupter text-xl visible sm:hidden font-light text-center">
-							Ingrédients 🥬
-						</h1>
-						<div className="self-center sm:self-start sm:pl-2.5">
-							<IngredientsTable ingredients={ingredients} />
-						</div>
+						<button
+							type="button"
+							onClick={() => setIsAccordionOpen(!isAccordionOpen)}
+							className="font-gupter text-xl visible sm:hidden font-light text-center"
+						>
+							<span>Ingrédients 🥬</span>
+						</button>
+						{isAccordionOpen && (
+							<div className="self-center sm:self-start sm:pl-2.5">
+								<IngredientsTable ingredients={ingredients} />
+							</div>
+						)}
 					</div>
-					{tags && tags.length > 0 && (
-						<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:text-base sm:self-start px-2.5 mb-3">
-							{tags.map((tag) => (
-								<Tag
-									tagName={tag.name}
-									bgColor="bg-emerald-800"
-									textColor="text-white"
-									key={tag.tagId}
-								/>
-							))}
-						</div>
-					)}
 				</div>
+
+				{tags && tags.length > 0 && (
+					<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:hidden px-2.5 my-3">
+						{tags.map((tag) => (
+							<Tag
+								tagName={tag.name}
+								bgColor="bg-emerald-800"
+								textColor="text-white"
+								key={tag.tagId}
+							/>
+						))}
+					</div>
+				)}
 
 				<hr className="border-gray-200 border-dashed" />
 				<div className="flex flex-col gap-2 pb-6 sm:pt-3 sm:pb-10 rounded-2xl">
