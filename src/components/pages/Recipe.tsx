@@ -9,6 +9,7 @@ import { IngredientsTable } from "../IngredientsTable";
 import { Tag } from "../Tag";
 import { PiForkKnifeFill } from "react-icons/pi";
 import { MdEnergySavingsLeaf } from "react-icons/md";
+import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -54,7 +55,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 						</Link>
 					</div>
 				</div>
-				<div className="flex flex-row justify-around text-center items-center text-sm sm:text-lg  text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
+				<div className="flex flex-row justify-around text-center items-center text-sm sm:text-lg text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
 					{recipe.glucides && (
 						<div className="flex flex-row items-center">
 							<MdEnergySavingsLeaf />
@@ -67,23 +68,22 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					</div>
 				</div>
 			</div>
-			<div className="flex flex-col gap-2 sm:flex-row">
-				<div className="sm:w-1/3 sticky top-0 sm:top-auto">
-					<div className="flex flex-col gap-5 py-5 bg-rose-50 rounded-2xl shadow-md px-6">
-						<div className="hidden sm:flex sm:flex-row sm:gap-3 sm:items-center sm:visible">
-							<h1 className="font-gupter pl-2.5 sm:text-2xl sm:text-center">
-								Ingrédients 🥬
-							</h1>
-						</div>
+
+			<div className="flex flex-col gap-2 sm:flex-row self-start">
+				<div className="sm:w-1/3 sticky top-0 sm:self-start sm:top-16">
+					<div className="flex flex-col gap-4 py-5 bg-rose-50 rounded-2xl shadow-md px-6">
 						<button
 							type="button"
-							onClick={() => setIsAccordionOpen(!isAccordionOpen)}
-							className="font-gupter text-xl visible sm:hidden font-light text-center"
+							onClick={() => setIsAccordionOpen(() => !isAccordionOpen)}
+							className="font-gupter pl-2.5 text-xl sm:text-2xl text-center items-center flex sm:justify-center justify-between"
 						>
 							<span>Ingrédients 🥬</span>
+							<span className="sm:hidden">
+								{isAccordionOpen ? <BiChevronUp /> : <BiChevronDown />}
+							</span>
 						</button>
 						{isAccordionOpen && (
-							<div className="self-center sm:self-start sm:pl-2.5">
+							<div className="sm:self-center sm:pl-2.5">
 								<IngredientsTable ingredients={ingredients} />
 							</div>
 						)}
@@ -104,7 +104,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				)}
 
 				<hr className="border-gray-200 border-dashed" />
-				<div className="flex flex-col gap-2 pb-6 sm:pt-3 sm:pb-10 rounded-2xl">
+				<div className="flex flex-col pb-6 sm:pt-3 sm:pb-10 rounded-2xl">
 					{recipe.preparation && (
 						<div>
 							<article className="w-full sm:pt-0 pt-5">
