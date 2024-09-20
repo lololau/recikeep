@@ -43,6 +43,7 @@ export const tags = sqliteTable("tag", {
 export const recipes = sqliteTable("recipe", {
 	id: text("id")
 		.notNull()
+		.unique()
 		.primaryKey()
 		.$defaultFn(() => createId()),
 	title: text("title").notNull(),

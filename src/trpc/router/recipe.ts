@@ -10,7 +10,7 @@ import {
 	tagsToRecipes,
 } from "recikeep/database/schema";
 import { z } from "zod";
-import { authenticationProcedure, isAuthentified } from "../trpc";
+import { authenticationProcedure, publicProcedure } from "../trpc";
 
 const ingredientsSchema = z.object({
 	name: z.string(),
@@ -453,8 +453,7 @@ export const recipeRouter = {
 		});
 	}),
 
-	// get recipe by recipeId
-	getRecipeById: authenticationProcedure
+	getRecipeById: publicProcedure
 		.input(z.string())
 		.query(async ({ ctx, input }) => {
 			const recipe = await ctx.db.query.recipes.findFirst({
@@ -464,7 +463,7 @@ export const recipeRouter = {
 		}),
 
 	// get ingredients by recipeId
-	getIngredientsByRecipeId: authenticationProcedure
+	getIngredientsByRecipeId: publicProcedure
 		.input(z.string())
 		.query(async ({ ctx, input }) => {
 			const ingredientsByRecipeId =
@@ -490,7 +489,7 @@ export const recipeRouter = {
 			return ingredientsList;
 		}),
 	// get tags by recipeId
-	getTagsByRecipeId: authenticationProcedure
+	getTagsByRecipeId: publicProcedure
 		.input(z.string())
 		.query(async ({ ctx, input }) => {
 			const tagsByRecipeId = await ctx.db.query.tagsToRecipes.findMany({

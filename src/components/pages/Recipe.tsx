@@ -13,7 +13,10 @@ import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import Link from "next/link";
 import { useState } from "react";
 
-export default function RecipeForm({ recipeId }: { recipeId: string }) {
+export default function RecipeForm({
+	recipeId,
+	isOwner,
+}: { recipeId: string; isOwner?: boolean }) {
 	const [isAccordionOpen, setIsAccordionOpen] = useState(true);
 
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
@@ -47,12 +50,14 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 						{recipe.title}
 					</h1>
 					<p className="italic text-sm sm:text-base">by {recipe.source}</p>
-					<div className="text-end">
-						<Link href={`/recipe/${recipe.id}/update`}>
-							<p className="sm:text-base text-sm italic text-emerald-800 py-1.5 px-2">
-								Modifier la recette ?
-							</p>
-						</Link>
+					<div className="text-end py-1.5">
+						{isOwner && (
+							<Link href={`/recipe/${recipe.id}/update`}>
+								<p className="sm:text-base text-sm italic text-emerald-800 px-2">
+									Modifier la recette ?
+								</p>
+							</Link>
+						)}
 					</div>
 				</div>
 				<div className="flex flex-row justify-around text-center items-center text-sm sm:text-lg text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
@@ -91,7 +96,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 				</div>
 
 				{tags && tags.length > 0 && (
-					<div className="flex flex-wrap items-center justify-center gap-1 self-center text-sm sm:hidden px-2.5 my-3">
+					<div className="flex flex-wrap items-center justify-center gap-1 self-center sm:self-start text-sm px-2.5 my-3">
 						{tags.map((tag) => (
 							<Tag
 								tagName={tag.name}
@@ -103,7 +108,7 @@ export default function RecipeForm({ recipeId }: { recipeId: string }) {
 					</div>
 				)}
 
-				<hr className="border-gray-200 border-dashed" />
+				<hr className="border-gray-200 border-dashed sm:hidden" />
 				<div className="flex flex-col pb-6 sm:pt-3 sm:pb-10 rounded-2xl">
 					{recipe.preparation && (
 						<div>
