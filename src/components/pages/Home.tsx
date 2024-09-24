@@ -89,8 +89,8 @@ function HomePageFormContent() {
 				<hr className="flex-grow border-gray-400" />
 			</div>
 
-			<div className="w-full py-4  px-2.5 sm:px-0">
-				<ul className="min-w-full grid grid-cols-2 gap-4 sm:grid-cols-3">
+			<div className="py-4  px-2.5 sm:px-0">
+				<ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
 					<li className="p-2 sm:p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
 						<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
 							<Link href={"/recipe"}>

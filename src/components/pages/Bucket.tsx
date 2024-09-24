@@ -59,6 +59,7 @@ export default function BucketForm() {
 									<BucketCard
 										source={bucket.source}
 										recipeTitle={bucket.recipeTitle}
+										bucketId={bucket.id}
 										onClick={() => {
 											setBucket({
 												bucketId: bucket.id,

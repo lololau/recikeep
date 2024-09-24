@@ -51,4 +51,10 @@ export const bucketRouter = {
 
 		return bucketsList;
 	}),
+
+	deleteBucketById: authenticationProcedure
+		.input(z.string())
+		.mutation(async ({ ctx, input }) => {
+			await ctx.db.delete(buckets).where(eq(buckets.id, input)).returning();
+		}),
 };

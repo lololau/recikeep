@@ -49,6 +49,9 @@ export function BucketModal() {
 			utils.buckets.getBucketsByUserId.refetch();
 			reset();
 		},
+		onError() {
+			toast.error("Une erreur est survenue. Veuillez réessayer plus tard.");
+		},
 	});
 
 	function openModal() {

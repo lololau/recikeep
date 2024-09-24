@@ -45,21 +45,29 @@ export default function RecipeForm({
 	return (
 		<div className="mx-auto z-20 bg-white sm:pb-0 pb-14">
 			<div className="mx-auto flex flex-col items-center z-20">
-				<div className="flex flex-col gap-2 px-3 pt-14 w-full">
-					<h1 className="font-gupter text-3xl font-semibold tracking-wide text-gray-800 sm:text-5xl">
-						{recipe.title}
-					</h1>
-					<p className="italic text-sm sm:text-base">by {recipe.source}</p>
-					<div className="text-end py-1.5">
-						{isOwner && (
-							<Link href={`/recipe/${recipe.id}/update`}>
-								<p className="sm:text-base text-sm italic text-emerald-800 px-2">
-									Modifier la recette ?
-								</p>
-							</Link>
-						)}
+				<div className="w-full overflow-hidden relative">
+					<img
+						src="https://images.ricardocuisine.com/services/recipes/992x1340_9042.jpg"
+						alt=""
+						className="absolute inset-0 h-full w-full object-cover"
+					/>
+					<div className="flex flex-col gap-2 px-3 pt-14 w-full relative bg-white bg-opacity-60">
+						<h1 className="font-gupter text-3xl font-semibold tracking-wide text-gray-800 sm:text-5xl">
+							{recipe.title}
+						</h1>
+						<p className="italic text-sm sm:text-base">by {recipe.source}</p>
+						<div className="text-end py-1.5">
+							{isOwner && (
+								<Link href={`/recipe/${recipe.id}/update`}>
+									<p className="sm:text-base text-sm italic text-emerald-800 px-2">
+										Modifier la recette ?
+									</p>
+								</Link>
+							)}
+						</div>
 					</div>
 				</div>
+
 				<div className="flex flex-row justify-around text-center items-center text-sm sm:text-lg text-white bg-emerald-800 w-full py-4 sm:py-5 rounded">
 					{recipe.glucides && (
 						<div className="flex flex-row items-center">
