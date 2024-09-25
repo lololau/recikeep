@@ -34,7 +34,7 @@ export async function signIn(_: unknown, formData: FormData) {
 			sessionCookie.attributes,
 		);
 	} catch (error) {
-		return { error: "Email or password incorrect" };
+		return { error: "Email ou mot de passe incorrect" };
 	}
 
 	// Redirect the user to the home page after a successful login
@@ -45,9 +45,14 @@ export async function signIn(_: unknown, formData: FormData) {
 export async function signUp(_: unknown, formData: FormData) {
 	const email = formData.get("email");
 	const password = formData.get("password");
+	const password_confirmation = formData.get("password_confirmation");
 
 	if (email == null || password == null) {
-		return { error: "Invalid credentials" };
+		return { error: "Email et/ou mot de passe manquant(s)" };
+	}
+
+	if (password !== password_confirmation) {
+		return { error: "Les mots de passe ne sont pas identiques." };
 	}
 
 	try {

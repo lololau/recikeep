@@ -2,6 +2,7 @@
 // (placeholder, classNameLabel and classNameInput are optional)
 export const InputLabel = ({
 	name,
+	type,
 	placeholder,
 	label,
 	required,
@@ -9,6 +10,7 @@ export const InputLabel = ({
 	classNameInput,
 }: {
 	name: string;
+	type: string;
 	required: boolean;
 	label: string;
 	placeholder?: string;
@@ -25,7 +27,7 @@ export const InputLabel = ({
 			</label>
 			<div className="rounded-md shadow-sm border-2 sm:max-w-md">
 				<input
-					type={name}
+					type={type}
 					name={name}
 					id={name}
 					required={required}

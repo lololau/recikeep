@@ -34,6 +34,7 @@ export default function LoginForm() {
 						<div className="grid gap-1 py-2">
 							<InputLabel
 								name="email"
+								type="email"
 								placeholder="you@example.com"
 								label="Email"
 								required={true}
@@ -42,7 +43,8 @@ export default function LoginForm() {
 						<div className="grid gap-1 py-2">
 							<InputLabel
 								name="password"
-								placeholder="Mot de passe"
+								type="password"
+								placeholder="*****"
 								label="Mot de passe"
 								required={true}
 							/>
@@ -53,7 +55,11 @@ export default function LoginForm() {
 						</div>
 					</div>
 
-					{state.error && <span>{state.error}</span>}
+					{state.error && (
+						<div className="pt-5 text-red-700 font-medium">
+							<span>{state.error}</span>
+						</div>
+					)}
 				</form>
 			</div>
 		</MaxWidthWrapper>
