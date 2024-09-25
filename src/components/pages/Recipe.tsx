@@ -79,6 +79,18 @@ export default function RecipeForm({
 						<PiForkKnifeFill />
 						<p>: {recipe.portions}</p>
 					</div>
+					{tags && tags.length > 0 && (
+						<div className="hidden sm:flex sm:flex-row items-center gap-1 text-sm">
+							{tags.map((tag) => (
+								<Tag
+									tagName={tag.name}
+									bgColor="bg-white"
+									textColor="text-emerald-800"
+									key={tag.tagId}
+								/>
+							))}
+						</div>
+					)}
 				</div>
 			</div>
 
@@ -104,7 +116,7 @@ export default function RecipeForm({
 				</div>
 
 				{tags && tags.length > 0 && (
-					<div className="flex flex-wrap items-center justify-center gap-1 self-center sm:self-start text-sm px-2.5 my-3">
+					<div className="sm:hidden flex flex-wrap items-center justify-center gap-1 self-center sm:self-start text-sm px-2.5 my-3">
 						{tags.map((tag) => (
 							<Tag
 								tagName={tag.name}

@@ -17,7 +17,7 @@ export function Tag({
 }) {
 	return (
 		<div
-			className={`text-left ${textColor} ${bgColor} min-w-fit rounded-3xl py-0.5 px-3`}
+			className={`text-left ${textColor} ${bgColor} min-w-fit rounded-3xl py-0.5 px-3 border-white`}
 		>
 			<p className={`text-${textSize}`}>{tagName}</p>
 			{onClick && (
