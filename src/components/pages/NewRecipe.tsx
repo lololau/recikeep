@@ -183,6 +183,17 @@ export default function NewRecipeForm({
 							<p>{errors.source?.message}</p>
 						</div>
 					</div>
+					<div>
+						<label
+							htmlFor="recipe_photo"
+							className="text-base font-light text-emerald-800"
+						>
+							Photo principale
+						</label>
+						<div>
+							<input type="file" accept="image/*;capture=camera" />
+						</div>
+					</div>
 					{/* === Description === */}
 					<div className="grid gap-1 py-2">
 						<label
