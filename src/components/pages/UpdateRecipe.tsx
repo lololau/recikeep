@@ -36,6 +36,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 	const recipeDetails = {
 		recipeId: recipe.id,
 		preparation: recipe.preparation,
+		mainImage: recipe.main_image,
 	};
 
 	return (

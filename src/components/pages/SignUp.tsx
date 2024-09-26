@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useFormState, useFormStatus } from "react-dom";
-import { PiCookingPotFill } from "react-icons/pi";
+import { useFormState } from "react-dom";
 import { signUp } from "recikeep/auth/auth_actions";
 import { SubmitButton } from "recikeep/components/Button";
 import { InputLabel } from "recikeep/components/InputLabel";
@@ -15,7 +14,7 @@ export default function SignUpForm() {
 		<MaxWidthWrapper>
 			<div className="pt-14 w-full text-center px-0">
 				<h1 className="text-4xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
-					RECIKEEP.
+					ReciKeep.
 				</h1>
 				<p className="mt-6 text-lg text-muted-foreground">
 					Toutes tes recettes à disposition pour t'inspirer en cuisine.

@@ -43,7 +43,6 @@ export const tags = sqliteTable("tag", {
 export const recipes = sqliteTable("recipe", {
 	id: text("id")
 		.notNull()
-		.unique()
 		.primaryKey()
 		.$defaultFn(() => createId()),
 	title: text("title").notNull(),
@@ -52,6 +51,7 @@ export const recipes = sqliteTable("recipe", {
 	description: text("description"),
 	portions: integer("portions").notNull(),
 	glucides: text("glucides"),
+	main_image: text("main_image"),
 	userId: text("user_id")
 		.notNull()
 		.references(() => users.id),

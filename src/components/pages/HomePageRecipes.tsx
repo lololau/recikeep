@@ -15,13 +15,15 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 						className="p-3 items-center border border-slate-300 rounded-lg hover:bg-gray-100"
 					>
 						<div className="flex flex-col">
-							<div className="h-20 sm:h-40 items-center overflow-hidden bg-center">
-								<img
-									src="https://images.ricardocuisine.com/services/recipes/992x1340_9042.jpg"
-									alt="salade"
-									className="-translate-y-1/3"
-								/>
-							</div>
+							{recipe.main_image && (
+								<div className="h-20 sm:h-40 items-center overflow-hidden bg-center">
+									<img
+										src={`https://utfs.io/f/${recipe.main_image}`}
+										alt="salade"
+										className="-translate-y-1/3"
+									/>
+								</div>
+							)}
 
 							<div className="flex flex-row items-center">
 								<div className="font-light text-gray-800 text-start px-2 grid flex-grow">

@@ -1,4 +1,5 @@
 import { TRPCError, type TRPCRouterRecord } from "@trpc/server";
+import { UTApi } from "uploadthing/server";
 import { eq } from "drizzle-orm";
 import { first } from "radash";
 import {
@@ -21,6 +22,7 @@ export type RecipesFormated = {
 	id: string;
 	title: string;
 	preparation: string | null;
+	main_image: string | null;
 	source: string;
 	description: string | null;
 	portions: number;
@@ -44,6 +46,7 @@ export const recipeRouter = {
 				ingredients: z.array(ingredientsSchema),
 				tags: z.array(z.string()).optional(),
 				bucketId: z.string().optional(),
+				imageUrl: z.string().nullable(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -57,6 +60,7 @@ export const recipeRouter = {
 				ingredients,
 				tags,
 				bucketId,
+				imageUrl,
 			} = input;
 
 			return await ctx.db.transaction(async (tx) => {
@@ -72,6 +76,7 @@ export const recipeRouter = {
 							portions,
 							glucides,
 							userId: ctx.user.id,
+							main_image: imageUrl,
 						})
 						.returning(),
 				);
@@ -228,6 +233,7 @@ export const recipeRouter = {
 				glucides: z.string().nullable(),
 				ingredients: z.array(ingredientsSchema),
 				tags: z.array(z.string()).optional(),
+				imageUrl: z.string().nullable(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -241,6 +247,7 @@ export const recipeRouter = {
 				glucides,
 				ingredients,
 				tags,
+				imageUrl,
 			} = input;
 
 			if (!recipeId) {
@@ -262,6 +269,7 @@ export const recipeRouter = {
 							source,
 							portions,
 							glucides,
+							main_image: imageUrl,
 						})
 						.where(eq(recipes.id, recipeId))
 						.returning(),
@@ -423,6 +431,7 @@ export const recipeRouter = {
 				id: recipe.id,
 				title: recipe.title,
 				preparation: recipe.preparation,
+				main_image: recipe.main_image,
 				source: recipe.source,
 				description: recipe.description,
 				portions: recipe.portions,
@@ -460,6 +469,17 @@ export const recipeRouter = {
 				where: eq(recipes.id, input),
 			});
 			return recipe;
+		}),
+
+	deleteImageRecipeByKey: authenticationProcedure
+		.input(z.string())
+		.mutation(async ({ ctx, input }) => {
+			const utapi = new UTApi();
+			try {
+				await utapi.deleteFiles(input);
+			} catch (error) {
+				console.error("UTAPI: Error deleting files", error);
+			}
 		}),
 
 	// get ingredients by recipeId

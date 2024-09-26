@@ -1,0 +1,1 @@
+DROP INDEX IF EXISTS `recipe_id_unique`;

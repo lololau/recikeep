@@ -72,7 +72,7 @@ function HomePageFormContent() {
 		<div className="sm:pb-0 pb-14">
 			<div className="pt-14 w-full text-center px-0">
 				<h1 className="text-4xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
-					RECIKEEP.
+					ReciKeep.
 				</h1>
 				<p className="mt-6 text-lg text-muted-foreground">
 					Toutes tes recettes à disposition pour t'inspirer en cuisine.

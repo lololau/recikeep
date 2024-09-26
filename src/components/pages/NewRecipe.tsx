@@ -2,7 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useFieldArray, useForm } from "react-hook-form";
-import { IoIosAddCircle } from "react-icons/io";
+import {
+	IoIosAddCircle,
+	IoMdCloseCircle,
+	IoMdCloseCircleOutline,
+} from "react-icons/io";
 import { api } from "recikeep/trpc/react";
 import { toast } from "sonner";
 
@@ -10,6 +14,7 @@ import { useEffect, useState } from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { BiLoaderAlt } from "react-icons/bi";
+import { UploadButton } from "recikeep/utils/uploadthing";
 
 export interface IFormRecipe {
 	title: string;
@@ -30,6 +35,7 @@ type NewRecipeFormProps = {
 type UpdateRecipeFormProps = {
 	recipeId: string;
 	preparation: string | null;
+	mainImage: string | null;
 };
 
 export default function NewRecipeForm({
@@ -83,6 +89,17 @@ export default function NewRecipeForm({
 
 	const utils = api.useUtils();
 
+	const { mutateAsync: deleteImageRecipe } =
+		api.recipes.deleteImageRecipeByKey.useMutation({
+			onSuccess() {
+				setImageUrl("");
+				toast.success("Image supprimée.");
+			},
+			onError(error) {
+				toast.error(error.data?.code);
+			},
+		});
+
 	const { mutateAsync: createRecipe, isPending: loadingCreateRecipe } =
 		api.recipes.createRecipe.useMutation({
 			onSuccess(data) {
@@ -114,6 +131,9 @@ export default function NewRecipeForm({
 	const [preparation, setPreparation] = useState(
 		recipeDetails?.preparation ?? "",
 	);
+	const [imageUrl, setImageUrl] = useState<string>(
+		recipeDetails?.mainImage ?? "",
+	);
 
 	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
 		const tags = data.tags?.map((el) => el.name);
@@ -122,6 +142,7 @@ export default function NewRecipeForm({
 			...data,
 			tags,
 			preparation,
+			imageUrl,
 			bucketId: initialData?.bucketId,
 			recipeId: recipeDetails?.recipeId,
 		};
@@ -185,13 +206,42 @@ export default function NewRecipeForm({
 					</div>
 					<div>
 						<label
-							htmlFor="recipe_photo"
+							htmlFor="main_image"
 							className="text-base font-light text-emerald-800"
 						>
 							Photo principale
 						</label>
-						<div>
-							<input type="file" accept="image/*;capture=camera" />
+						<div className="flex flex-col items-start justify-between p-2">
+							<UploadButton
+								className="justify-start"
+								endpoint="imageUploader"
+								onClientUploadComplete={(res) => {
+									console.log(res);
+									toast.success("Image ajoutée!");
+									setImageUrl(res[0].key);
+								}}
+								onUploadError={(error: Error) => {
+									toast.error(`Erreur! ${error.message}`);
+								}}
+							/>
+							{imageUrl.length ? (
+								<div className="flex flex-row gap-2">
+									<img
+										src={`https://utfs.io/f/${imageUrl}`}
+										alt=""
+										className="w-40 h-auto"
+									/>
+									<button
+										type="button"
+										className="font-base text-emerald-800 text-xl"
+										onClick={() => {
+											deleteImageRecipe(imageUrl);
+										}}
+									>
+										<IoMdCloseCircle />
+									</button>
+								</div>
+							) : null}
 						</div>
 					</div>
 					{/* === Description === */}
