@@ -131,25 +131,33 @@ export default function RecipeForm({
 				)}
 
 				<hr className="border-gray-200 border-dashed sm:hidden" />
-				<div className="flex flex-col pb-6 sm:pt-3 sm:pb-10 rounded-2xl">
+				<div className="flex flex-col gap-4 pb-6 sm:pt-3 sm:pb-10 sm:w-2/3 rounded-2xl">
 					{recipe.preparation && (
-						<div>
-							<article className="w-full sm:pt-0 pt-5">
-								<Markdown
-									className="prose px-2.5 max-w-fit"
-									components={options}
-									remarkPlugins={[remarkGfm]}
-									rehypePlugins={[
-										rehypeSanitize,
-										[
-											rehypeExternalLinks,
-											{ content: { type: "text", value: " 🔗" } },
-										],
-									]}
-								>
-									{recipe.preparation}
-								</Markdown>
-							</article>
+						<article className="w-full sm:pt-0 pt-3">
+							<Markdown
+								className="prose px-2.5 max-w-fit"
+								components={options}
+								remarkPlugins={[remarkGfm]}
+								rehypePlugins={[
+									rehypeSanitize,
+									[
+										rehypeExternalLinks,
+										{ content: { type: "text", value: " 🔗" } },
+									],
+								]}
+							>
+								{recipe.preparation}
+							</Markdown>
+						</article>
+					)}
+
+					{recipe.main_image && (
+						<div className="self-center">
+							<img
+								src={`https://utfs.io/f/${recipe.main_image}`}
+								alt=""
+								className="max-w-60 sm:max-w-80 border-gray-300 rounded-xl sm:border-8 border-4"
+							/>
 						</div>
 					)}
 				</div>
