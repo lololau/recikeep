@@ -15,6 +15,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { MdDeleteOutline } from "react-icons/md";
 import { BiLoaderAlt } from "react-icons/bi";
 import { UploadButton } from "recikeep/utils/uploadthing";
+import { compressFile } from "recikeep/app/api/uploadthing/core";
 
 export interface IFormRecipe {
 	title: string;
@@ -92,7 +93,7 @@ export default function NewRecipeForm({
 	const { mutateAsync: deleteImageRecipe } =
 		api.recipes.deleteImageRecipeByKey.useMutation({
 			onSuccess() {
-				setImageUrl("");
+				setImageUrl(null);
 				toast.success("Image supprimée.");
 			},
 			onError(error) {
@@ -131,8 +132,8 @@ export default function NewRecipeForm({
 	const [preparation, setPreparation] = useState(
 		recipeDetails?.preparation ?? "",
 	);
-	const [imageUrl, setImageUrl] = useState<string>(
-		recipeDetails?.mainImage ?? "",
+	const [imageUrl, setImageUrl] = useState<string | null>(
+		recipeDetails?.mainImage ?? null,
 	);
 
 	const onSubmit: SubmitHandler<IFormRecipe> = async (data) => {
@@ -215,8 +216,18 @@ export default function NewRecipeForm({
 							<UploadButton
 								className="justify-start"
 								endpoint="imageUploader"
+								onBeforeUploadBegin={async (files) => {
+									// Compress file before uploading
+									const compressedFiles: File[] = [];
+
+									for (let i = 0; i < files.length; i++) {
+										const image = files[i];
+										const imageCompressed = await compressFile(image);
+										compressedFiles.push(imageCompressed);
+									}
+									return compressedFiles;
+								}}
 								onClientUploadComplete={(res) => {
-									console.log(res);
 									toast.success("Image ajoutée!");
 									setImageUrl(res[0].key);
 								}}
@@ -224,7 +235,7 @@ export default function NewRecipeForm({
 									toast.error(`Erreur! ${error.message}`);
 								}}
 							/>
-							{imageUrl.length ? (
+							{imageUrl?.length ? (
 								<div className="flex flex-row gap-2">
 									<img
 										src={`https://utfs.io/f/${imageUrl}`}
