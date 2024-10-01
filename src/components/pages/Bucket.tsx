@@ -28,7 +28,7 @@ export default function BucketForm() {
 	>(undefined);
 
 	return (
-		<div className="bg-white z-20 sm:pb-0">
+		<div className="bg-white z-20 sm:pb-0 pb-14">
 			<div className="mx-auto text-center items-center">
 				<div className="px-3 py-14 w-full flex flex-col gap-3">
 					<h1 className="font-gupter font-semibold text-3xl tracking-wide text-gray-800 sm:text-5xl">
