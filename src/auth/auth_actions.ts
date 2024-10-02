@@ -46,13 +46,23 @@ export async function signUp(_: unknown, formData: FormData) {
 	const email = formData.get("email");
 	const password = formData.get("password");
 	const password_confirmation = formData.get("password_confirmation");
+	const pseudo = formData.get("pseudo");
+	const isPublic = formData.get("is_public");
 
-	if (email == null || password == null) {
-		return { error: "Email et/ou mot de passe manquant(s)" };
+	console.log(isPublic, pseudo);
+	if (email == null || password == null || pseudo == null || isPublic == null) {
+		return { error: "Veuillez remplir tous les champs obligatoires. (*)" };
 	}
 
 	if (password !== password_confirmation) {
 		return { error: "Les mots de passe ne sont pas identiques." };
+	}
+
+	let isPublicBoolean: boolean;
+	if (isPublic === "true") {
+		isPublicBoolean = true;
+	} else {
+		isPublicBoolean = false;
 	}
 
 	try {
@@ -60,6 +70,8 @@ export async function signUp(_: unknown, formData: FormData) {
 		const user = await api.auth.signUp({
 			email: email.toString(),
 			password: password.toString(),
+			pseudo: pseudo.toString(),
+			isPublic: isPublicBoolean,
 		});
 
 		// Create a new session for the user after a successful sign-up

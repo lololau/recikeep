@@ -16,6 +16,8 @@ export const authRouter = {
 				password: z
 					.string()
 					.min(4, "Your password must have a minimal length of 4 characters."),
+				pseudo: z.string(),
+				isPublic: z.boolean(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
@@ -27,7 +29,12 @@ export const authRouter = {
 				const user = first(
 					await ctx.db
 						.insert(users)
-						.values({ email: input.email, password: hashPassword })
+						.values({
+							email: input.email,
+							password: hashPassword,
+							pseudo: input.pseudo,
+							isPublic: input.isPublic,
+						})
 						.returning(),
 				);
 
@@ -93,5 +100,45 @@ export const authRouter = {
 		}),
 
 	// get informations about connected user
-	getMe: authenticationProcedure.query(async ({ ctx }) => {}),
+	getMe: authenticationProcedure.query(async ({ ctx }) => {
+		return ctx.user;
+	}),
+
+	// update informations about connected user
+	updateMe: authenticationProcedure
+		.input(
+			z.object({
+				pseudo: z.string(),
+				isPublic: z.boolean(),
+				personalPicture: z.string().nullable(),
+			}),
+		)
+		.mutation(async ({ ctx, input }) => {
+			const { pseudo, isPublic, personalPicture } = input;
+
+			const userId = ctx.user.id;
+
+			return await ctx.db.transaction(async (tx) => {
+				// Get user by id
+				const userFound = first(
+					await tx
+						.update(users)
+						.set({
+							pseudo,
+							isPublic,
+							personalPicture,
+						})
+						.where(eq(users.id, userId))
+						.returning(),
+				);
+
+				if (userFound == null) {
+					tx.rollback();
+					throw new TRPCError({
+						code: "NOT_FOUND",
+						message: "user not found by id",
+					});
+				}
+			});
+		}),
 } satisfies TRPCRouterRecord;
