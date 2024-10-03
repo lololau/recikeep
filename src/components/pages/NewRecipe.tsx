@@ -203,7 +203,7 @@ export default function NewRecipeForm({
 					</div>
 					<div>
 						<label
-							htmlFor="main_image"
+							htmlFor="personal_picture"
 							className="text-base font-light text-emerald-800"
 						>
 							Photo principale
@@ -212,6 +212,18 @@ export default function NewRecipeForm({
 							<UploadButton
 								className="justify-start"
 								endpoint="imageUploader"
+								content={{
+									button({ ready }) {
+										if (ready) return <div>Choisis une photo</div>;
+
+										return "Chargement...";
+									},
+									allowedContent({ ready, fileTypes, isUploading }) {
+										if (!ready) return "...";
+										if (isUploading) return "En téléchargement";
+										return `Type: ${fileTypes.join(", ")}`;
+									},
+								}}
 								onBeforeUploadBegin={async (files) => {
 									// Compress file before uploading
 									const compressedFiles: File[] = [];
@@ -224,6 +236,9 @@ export default function NewRecipeForm({
 									return compressedFiles;
 								}}
 								onClientUploadComplete={(res) => {
+									if (imageUrl) {
+										deleteImageRecipe(imageUrl);
+									}
 									toast.success("Image ajoutée!");
 									setImageUrl(res[0].key);
 								}}

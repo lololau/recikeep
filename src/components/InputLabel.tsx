@@ -8,6 +8,8 @@ export const InputLabel = ({
 	required,
 	classNameLabel,
 	classNameInput,
+	value,
+	disabled,
 }: {
 	name: string;
 	type: string;
@@ -16,6 +18,8 @@ export const InputLabel = ({
 	placeholder?: string;
 	classNameLabel?: string;
 	classNameInput?: string;
+	value?: string;
+	disabled?: boolean;
 }) => {
 	return (
 		<>
@@ -31,8 +35,10 @@ export const InputLabel = ({
 					name={name}
 					id={name}
 					required={required}
-					className={`${classNameInput} border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full`}
+					className={`${classNameInput} border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full disabled:bg-gray-100`}
 					placeholder={placeholder}
+					value={value}
+					disabled={disabled}
 				/>
 			</div>
 		</>

@@ -3,15 +3,17 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { MdPlaylistAddCircle } from "react-icons/md";
 import { PiCookingPotFill } from "react-icons/pi";
+import { FaUserCircle } from "react-icons/fa";
 import { lucia, validateRequest } from "recikeep/auth/auth";
 import { Button } from "./Button";
 import { MaxWidthWrapper } from "./MaxWidthWrapper";
+import { IoIosAddCircle } from "react-icons/io";
 
 // Function to log out the user and invalidate the session
 async function logout() {
 	"use server";
-	const { session } = await validateRequest();
-	if (!session) {
+	const { session, user } = await validateRequest();
+	if (!session || !user) {
 		return {
 			error: "Unauthorized",
 		};
@@ -38,32 +40,40 @@ export const NavBar = async () => {
 				<MaxWidthWrapper>
 					{/* Desktop menu */}
 					<div className="h-16 items-center hidden sm:flex bg-white">
-						{/* { TODO: account } */}
-						<div className="ml-4 flex lg:ml-0">
-							<Link href="/">
+						<div className="ml-4 sm:ml-0">
+							<Link href="/" className="flex items-center gap-1">
+								<div className="text-2xl font-gupter font-semibold">
+									<p className="">Recikeep.</p>
+								</div>
 								<PiCookingPotFill className="h-10 w-10 text-rose-200" />
 							</Link>
 						</div>
-						<div className="hidden z-50 lg:ml-8 lg:block lg:self-stretch w-full">
+						<div className="hidden z-50 sm:ml-8 sm:block sm:self-stretch w-full">
 							<ul className="relative list-none flex h-full items-center divide-x divide-gray-400 font-light text-gray-600">
 								<Link href="/">
-									<li className="pr-4 hover:text-gray-800 hover:font-semibold">
+									<li className="pr-3 hover:text-gray-800 hover:font-semibold">
 										Mes recettes
 									</li>
 								</Link>
 								<Link href="/recipe">
-									<li className="px-4 hover:text-gray-800 hover:font-semibold">
-										Nouvelle recette
+									<li className="px-3 flex items-center gap-1 hover:text-gray-800 hover:font-semibold">
+										<IoIosAddCircle />
+										<p>Recette</p>
 									</li>
 								</Link>
 								<Link href="/bucket">
-									<li className="pl-4 hover:text-gray-800 hover:font-semibold">
+									<li className="px-3 hover:text-gray-800 hover:font-semibold">
 										Backlog
+									</li>
+								</Link>
+								<Link href="/profil">
+									<li className="pl-3 hover:text-gray-800 hover:font-semibold">
+										Profil
 									</li>
 								</Link>
 							</ul>
 						</div>
-						<div className="text-right w-full">
+						<div className="text-right w-full items-center">
 							<form action={logout}>
 								<Button text="Déconnexion" />
 							</form>
@@ -80,6 +90,9 @@ export const NavBar = async () => {
 							</Link>
 							<Link href="/bucket" className="text-3xl">
 								<MdPlaylistAddCircle color="#fecaca" />
+							</Link>
+							<Link href="/profil" className="text-3xl">
+								<FaUserCircle />
 							</Link>
 						</ul>
 					</div>

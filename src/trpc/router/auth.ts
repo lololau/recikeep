@@ -101,7 +101,10 @@ export const authRouter = {
 
 	// get informations about connected user
 	getMe: authenticationProcedure.query(async ({ ctx }) => {
-		return ctx.user;
+		const user = await ctx.db.query.users.findFirst({
+			where: eq(users.id, ctx.user.id),
+		});
+		return user;
 	}),
 
 	// update informations about connected user

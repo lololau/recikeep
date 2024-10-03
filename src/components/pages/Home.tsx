@@ -12,8 +12,11 @@ import { HomePageRecipe } from "./HomePageRecipes";
 
 function HomePageFormContent() {
 	const { recipes } = useRecipes();
+
 	const [query, setQuery] = useState("");
 	const [filteredRecipes, setFilteredRecipes] = useState<RecipesFormated[]>([]);
+
+	const { data: user } = api.auth.getMe.useQuery();
 
 	const fuse = useMemo(() => {
 		return new Fuse(recipes, {
@@ -70,13 +73,21 @@ function HomePageFormContent() {
 
 	return (
 		<div className="sm:pb-0 pb-14">
-			<div className="pt-14 w-full text-center px-0">
-				<h1 className="text-4xl font-semibold tracking-wide text-gray-800 sm:text-6xl">
-					ReciKeep.
-				</h1>
-				<p className="mt-6 text-lg text-muted-foreground">
-					Toutes tes recettes à disposition pour t'inspirer en cuisine.
-				</p>
+			<div className="flex flex-row items-center pt-14 w-full text-center justify-center gap-3 px-0">
+				{/* {!user?.personalPicture && (
+					<div className="items-center w-24 h-24 content-center rounded-full bg-gray-200 ">
+						<p className="text-sm">Ajouter une photo</p>
+					</div>
+				)}
+				{user?.personalPicture && <img src={user?.personalPicture} alt="" />} */}
+				<div>
+					<h1 className="text-3xl font-semibold font-gupter tracking-wide text-gray-800 sm:text-5xl">
+						Les recettes de {user?.pseudo}
+					</h1>
+					<p className="mt-3 text-xs font-light sm:text-lg">
+						Toutes tes recettes à disposition pour t'inspirer en cuisine.
+					</p>
+				</div>
 			</div>
 			<div className="flex flex-col gap-4 w-full py-10 items-center text-center">
 				<SearchBar handleSearchChange={handleSearchChange} />
