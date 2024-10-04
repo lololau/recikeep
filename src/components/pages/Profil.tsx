@@ -41,10 +41,12 @@ export default function ProfilForm() {
 	// Variable to set if we are updating user profil
 	const [isDisabled, setIsDisabled] = useState(true);
 
+	const utils = api.useUtils();
 	// Method to update profil
 	const { mutateAsync: updateUser } = api.auth.updateMe.useMutation({
 		onSuccess() {
 			setIsDisabled(true);
+			utils.auth.getMe.invalidate();
 			toast.success("Profil mis à jour!");
 		},
 		onError(error) {
