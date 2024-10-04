@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX `recipe_id_unique` ON `recipe` (`id`);

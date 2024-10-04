@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "dde75960-c9ee-4360-99d1-a4041ea6e0e4",
+  "id": "62d64338-8268-4a29-9dad-7cb2a9d643d0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "bucket": {
@@ -223,6 +223,13 @@
           "notNull": false,
           "autoincrement": false
         },
+        "main_image": {
+          "name": "main_image",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
         "user_id": {
           "name": "user_id",
           "type": "text",
@@ -406,6 +413,28 @@
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false
+        },
+        "pseudo": {
+          "name": "pseudo",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "personal_picture": {
+          "name": "personal_picture",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "is_public": {
+          "name": "is_public",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         }
       },
       "indexes": {
@@ -413,6 +442,13 @@
           "name": "user_email_unique",
           "columns": [
             "email"
+          ],
+          "isUnique": true
+        },
+        "user_pseudo_unique": {
+          "name": "user_pseudo_unique",
+          "columns": [
+            "pseudo"
           ],
           "isUnique": true
         }

@@ -49,7 +49,6 @@ export async function signUp(_: unknown, formData: FormData) {
 	const pseudo = formData.get("pseudo");
 	const isPublic = formData.get("is_public");
 
-	console.log(isPublic, pseudo);
 	if (email == null || password == null || pseudo == null || isPublic == null) {
 		return { error: "Veuillez remplir tous les champs obligatoires. (*)" };
 	}

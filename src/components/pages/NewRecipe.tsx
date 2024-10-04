@@ -210,12 +210,11 @@ export default function NewRecipeForm({
 						</label>
 						<div className="flex flex-col items-start justify-between p-2">
 							<UploadButton
-								className="justify-start"
+								className="justify-start ut-button:bg-emerald-800 ut-label:text-sm"
 								endpoint="imageUploader"
 								content={{
 									button({ ready }) {
 										if (ready) return <div>Choisis une photo</div>;
-
 										return "Chargement...";
 									},
 									allowedContent({ ready, fileTypes, isUploading }) {

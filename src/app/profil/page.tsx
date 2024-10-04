@@ -18,7 +18,7 @@ export default async function ProfilPage() {
 
 	return (
 		<MaxWidthWrapper>
-			<div className="bg-white z-20 sm:pb-0 pb-14">
+			<div className="bg-white z-20 sm:pb-0 pb-20">
 				<HydrationBoundary state={dehydratedState}>
 					<ProfilForm />
 				</HydrationBoundary>

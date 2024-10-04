@@ -1,21 +1,20 @@
 "use client";
 
 import { UploadButton } from "recikeep/utils/uploadthing";
-import Link from "next/link";
 import { compressFile } from "recikeep/app/api/uploadthing/core";
-import { SubmitButton } from "recikeep/components/Button";
 import { InputLabel } from "recikeep/components/InputLabel";
 import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import { toast } from "sonner";
 import { useState } from "react";
 import { api } from "recikeep/trpc/react";
-import { IoMdCloseCircle } from "react-icons/io";
+import { IoIosCheckmarkCircle } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
 import { redirect } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 
 type UpdateUserProps = {
 	pseudo: string;
-	isPublic: boolean;
+	isPublic: string;
 };
 
 export default function ProfilForm() {
@@ -23,26 +22,29 @@ export default function ProfilForm() {
 	if (!user) {
 		return redirect("/login");
 	}
+
+	// User informations
 	const {
 		register,
-		control,
 		handleSubmit,
-		setValue,
 		formState: { errors },
 	} = useForm<UpdateUserProps>({
 		defaultValues: {
 			pseudo: user.pseudo,
-			isPublic: user.isPublic,
+			isPublic: user.isPublic.toString(),
 		},
 	});
-
-	const [isDisabled, setIsDisabled] = useState(true);
 	const [image, setImage] = useState<string | null>(
 		user?.personalPicture ?? null,
 	);
 
+	// Variable to set if we are updating user profil
+	const [isDisabled, setIsDisabled] = useState(true);
+
+	// Method to update profil
 	const { mutateAsync: updateUser } = api.auth.updateMe.useMutation({
 		onSuccess() {
+			setIsDisabled(true);
 			toast.success("Profil mis à jour!");
 		},
 		onError(error) {
@@ -50,6 +52,7 @@ export default function ProfilForm() {
 		},
 	});
 
+	// Method to delete an image in uploadthing
 	const { mutateAsync: deleteImageRecipe } =
 		api.recipes.deleteImageRecipeByKey.useMutation({
 			onSuccess() {
@@ -61,6 +64,7 @@ export default function ProfilForm() {
 			},
 		});
 
+	// Handler call for updating profil
 	const onSubmit: SubmitHandler<UpdateUserProps> = async (data) => {
 		const valuesToReturn = {
 			...data,
@@ -103,94 +107,99 @@ export default function ProfilForm() {
 							/>
 						</div>
 						{/* Pseudo */}
-						<div className="grid gap-1 py-2">
-							<InputLabel
-								name="pseudo"
-								classNameLabel="text-base"
-								type="text"
+						<label htmlFor="pseudo" className="text-base font-light">
+							Pseudo
+						</label>
+						<div className="rounded-md shadow-sm border-2 sm:max-w-md">
+							<input
+								id="pseudo"
+								className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full disabled:bg-gray-100"
 								placeholder="@monpseudo"
-								label="Pseudo"
-								required={true}
-								value={user.pseudo}
 								disabled={isDisabled}
+								{...register("pseudo", { required: true })}
 							/>
+							<p>{errors.pseudo?.message}</p>
 						</div>
 
 						{/* IsPublic */}
 						<div className="grid gap-1 py-2">
 							<label htmlFor="isPublic" className="text-base">
-								Profil public ?
+								Profil public
 							</label>
 							<div className="flex flex-row">
-								<label className="flex px-3 py-2 cursor-pointer">
+								<label
+									className="flex px-3 py-2 cursor-pointer"
+									htmlFor="isPublic_true"
+								>
 									<input
-										id="isPublic"
 										type="radio"
-										value={"true"}
-										{...register("isPublic", { required: true })}
-										// biome-ignore lint/complexity/noUselessTernary: <explanation>
-										checked={user.isPublic ? true : false}
+										value="true"
+										{...register("isPublic")}
 										disabled={isDisabled}
 									/>
 									<p className="pl-2 text-sm">Oui</p>
 								</label>
-
-								<label className="flex px-3 py-2 cursor-pointer ">
+								<label
+									htmlFor="isPublic_no"
+									className="flex px-3 py-2 cursor-pointer"
+								>
 									<input
-										id="isPublic"
 										type="radio"
-										value={"false"}
-										{...register("isPublic", { required: true })}
-										// biome-ignore lint/complexity/noUselessTernary: <explanation>
-										checked={user.isPublic ? false : true}
+										value="false"
+										{...register("isPublic")}
 										disabled={isDisabled}
 									/>
 									<p className="pl-2 text-sm">Non</p>
 								</label>
 							</div>
 						</div>
+
+						{/* Photo */}
 						<label htmlFor="main_image" className="">
-							Photo principale
+							Photo de profil
 						</label>
-						<div className="flex flex-col items-start justify-between">
-							<UploadButton
-								className="justify-start ut-button:bg-emerald-800"
-								content={{
-									button({ ready }) {
-										if (ready) return <div>Choisis une photo</div>;
+						<div className="flex flex-col items-start justify-between gap-3">
+							{!isDisabled && (
+								<UploadButton
+									className="justify-start ut-button:bg-emerald-800 ut-label:text-sm"
+									content={{
+										button({ ready }) {
+											if (ready) return <div>Choisis une photo</div>;
 
-										return "Chargement...";
-									},
-									allowedContent({ ready, fileTypes, isUploading }) {
-										if (!ready) return "...";
-										if (isUploading) return "En téléchargement";
-										return `Type: ${fileTypes.join(", ")}`;
-									},
-								}}
-								endpoint="imageUploader"
-								onBeforeUploadBegin={async (files) => {
-									// Compress file before uploading
-									const compressedFiles: File[] = [];
+											return "Chargement...";
+										},
+										allowedContent({ ready, fileTypes, isUploading }) {
+											if (!ready) return "...";
+											if (isUploading) return "En téléchargement";
+											return `Type: ${fileTypes.join(", ")}`;
+										},
+									}}
+									endpoint="imageUploader"
+									onBeforeUploadBegin={async (files) => {
+										// Compress file before uploading
+										const compressedFiles: File[] = [];
 
-									for (let i = 0; i < files.length; i++) {
-										const image = files[i];
-										const imageCompressed = await compressFile(image);
-										compressedFiles.push(imageCompressed);
-									}
-									return compressedFiles;
-								}}
-								onClientUploadComplete={(res) => {
-									if (image) {
-										deleteImageRecipe(image);
-									}
-									toast.success("Image ajoutée!");
-									setImage(res[0].key);
-								}}
-								onUploadError={(error: Error) => {
-									toast.error(`Erreur! ${error.message}`);
-								}}
-								disabled={isDisabled}
-							/>
+										for (let i = 0; i < files.length; i++) {
+											const image = files[i];
+											const imageCompressed = await compressFile(image);
+											compressedFiles.push(imageCompressed);
+										}
+										return compressedFiles;
+									}}
+									onClientUploadComplete={(res) => {
+										if (image) {
+											deleteImageRecipe(image);
+										}
+										toast.success("Image ajoutée!");
+										setImage(res[0].key);
+									}}
+									onUploadError={(error: Error) => {
+										toast.error(`Erreur! ${error.message}`);
+									}}
+									disabled={isDisabled}
+								/>
+							)}
+
 							{image?.length ? (
 								<div className="flex flex-row gap-2">
 									<img
@@ -198,22 +207,26 @@ export default function ProfilForm() {
 										alt=""
 										className="w-40 h-auto"
 									/>
-									<button
-										type="button"
-										className="font-base text-emerald-800 text-xl"
-										onClick={() => {
-											deleteImageRecipe(image);
-										}}
-									>
-										<IoMdCloseCircle />
-									</button>
+									{!isDisabled && (
+										<button
+											type="button"
+											className="font-base text-xl"
+											onClick={() => {
+												deleteImageRecipe(image);
+											}}
+										>
+											<IoClose />
+										</button>
+									)}
 								</div>
 							) : null}
 						</div>
 
 						{!isDisabled && (
-							<div className="text-center mt-3">
-								<SubmitButton text="Sauvegarder" />
+							<div className="text-center pt-5">
+								<button type="submit" className="text-xl sm:text-3xl">
+									<IoIosCheckmarkCircle color="#065f46" />
+								</button>
 							</div>
 						)}
 					</div>

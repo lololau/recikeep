@@ -15,8 +15,8 @@ export const users = sqliteTable("user", {
 	email: text("email").unique().notNull(),
 	password: text("password").notNull(),
 	pseudo: text("pseudo").unique().notNull(),
+	isPublic: integer("is_public", { mode: "boolean" }).notNull().default(false),
 	personalPicture: text("personal_picture"),
-	isPublic: integer("is_public", { mode: "boolean" }).notNull(),
 });
 
 export const sessions = sqliteTable("session", {

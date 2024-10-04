@@ -112,7 +112,7 @@ export const authRouter = {
 		.input(
 			z.object({
 				pseudo: z.string(),
-				isPublic: z.boolean(),
+				isPublic: z.string(),
 				personalPicture: z.string().nullable(),
 			}),
 		)
@@ -121,6 +121,13 @@ export const authRouter = {
 
 			const userId = ctx.user.id;
 
+			let isPublicBoolean: boolean;
+			if (isPublic === "true") {
+				isPublicBoolean = true;
+			} else {
+				isPublicBoolean = false;
+			}
+
 			return await ctx.db.transaction(async (tx) => {
 				// Get user by id
 				const userFound = first(
@@ -128,7 +135,7 @@ export const authRouter = {
 						.update(users)
 						.set({
 							pseudo,
-							isPublic,
+							isPublic: isPublicBoolean,
 							personalPicture,
 						})
 						.where(eq(users.id, userId))

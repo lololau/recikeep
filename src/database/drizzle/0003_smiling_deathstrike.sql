@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX `user_pseudo_unique` ON `user` (`pseudo`);

@@ -30,8 +30,6 @@ export const ourFileRouter = {
 	imageUploader: f({ image: { maxFileSize: "4MB" } })
 		// Set permissions and file types for this FileRoute
 		.onUploadComplete(async ({ metadata, file }) => {
-			console.log("Upload complete");
-
 			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
 			return;
 		}),
