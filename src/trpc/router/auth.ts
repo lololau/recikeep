@@ -104,6 +104,7 @@ export const authRouter = {
 		const user = await ctx.db.query.users.findFirst({
 			where: eq(users.id, ctx.user.id),
 		});
+		console.log(`getMe - user pseudo : ${user?.pseudo}`);
 		return user;
 	}),
 

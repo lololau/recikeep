@@ -458,6 +458,10 @@ export const recipeRouter = {
 
 				recipeFormated.tags.push(tagFormated);
 			}
+
+			console.log(
+				`getRecipesByUserId - recipes fetch from userId : ${ctx.user.id}`,
+			);
 			return recipeFormated;
 		});
 	}),

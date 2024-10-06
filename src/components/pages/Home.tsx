@@ -11,11 +11,13 @@ import { SearchBar } from "../SearchBar";
 import { HomePageRecipe } from "./HomePageRecipes";
 
 function HomePageFormContent() {
+	console.log("getRecipesByUserId - call method from prefetch");
 	const { recipes } = useRecipes();
 
 	const [query, setQuery] = useState("");
 	const [filteredRecipes, setFilteredRecipes] = useState<RecipesFormated[]>([]);
 
+	console.log("getMe - get info from prefetch");
 	const { data: user } = api.auth.getMe.useQuery();
 
 	const fuse = useMemo(() => {

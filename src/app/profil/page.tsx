@@ -12,6 +12,8 @@ export default async function ProfilPage() {
 	}
 
 	const helpers = await createServerHelper();
+
+	console.log("ask user 1 bis");
 	await helpers.auth.getMe.prefetch();
 
 	const dehydratedState = dehydrate(helpers.queryClient);
