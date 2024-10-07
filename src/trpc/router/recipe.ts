@@ -433,7 +433,6 @@ export const recipeRouter = {
 			});
 
 			console.log("recipes", recipesByUser);
-
 			return recipesByUser.map((recipe) => {
 				const recipeFormated: RecipesFormated = {
 					id: recipe.id,
