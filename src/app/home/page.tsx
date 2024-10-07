@@ -20,7 +20,6 @@ export default async function HomePage() {
 	try {
 		console.log("getMe - prefetch");
 		await helpers.auth.getMe.prefetch();
-		await helpers.recipes.getRecipesByUserId.prefetch();
 	} catch (err) {
 		console.error(err);
 	}
