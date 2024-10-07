@@ -5,6 +5,7 @@ import LoginForm from "recikeep/components/pages/Login";
 export default async function LoginPage() {
 	const { session } = await validateRequest();
 	if (session) {
+		console.log("redirect home");
 		return redirect("/home");
 	}
 

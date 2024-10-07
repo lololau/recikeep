@@ -8,6 +8,7 @@ import { createServerHelper } from "recikeep/app/api/trpc/[trpc]/route";
 export default async function HomePage() {
 	const { session } = await validateRequest();
 	if (!session) {
+		console.log("redirect login");
 		redirect("/login");
 	}
 
