@@ -124,11 +124,15 @@ function HomePageFormContent() {
 }
 
 export function HomePageForm() {
-	const { data, isLoading } = api.recipes.getRecipesByUserId.useQuery();
+	const { data, isLoading, isError } =
+		api.recipes.getRecipesByUserId.useQuery();
 
 	if (data == null) {
 		if (!isLoading) {
 			return <>Error</>;
+		}
+		if (isError) {
+			console.log("error");
 		}
 		return <></>;
 	}
