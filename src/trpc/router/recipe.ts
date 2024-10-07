@@ -415,60 +415,64 @@ export const recipeRouter = {
 	// get all recipes
 	getRecipesByUserId: loggedProcedure.query(async ({ ctx }) => {
 		console.log("getRecipesByUserId - start of the request");
-		const recipesByUser = await ctx.db.query.recipes.findMany({
-			where: eq(recipes.userId, ctx.user.id),
-			with: {
-				ingredientsToRecipes: {
-					with: {
-						ingredient: true,
+		try {
+			const recipesByUser = await ctx.db.query.recipes.findMany({
+				where: eq(recipes.userId, ctx.user.id),
+				with: {
+					ingredientsToRecipes: {
+						with: {
+							ingredient: true,
+						},
+					},
+					tagsToRecipes: {
+						with: {
+							tag: true,
+						},
 					},
 				},
-				tagsToRecipes: {
-					with: {
-						tag: true,
-					},
-				},
-			},
-		});
+			});
 
-		return recipesByUser.map((recipe) => {
-			const recipeFormated: RecipesFormated = {
-				id: recipe.id,
-				title: recipe.title,
-				preparation: recipe.preparation,
-				main_image: recipe.main_image,
-				source: recipe.source,
-				description: recipe.description,
-				portions: recipe.portions,
-				glucides: recipe.glucides,
-				ingredients: [],
-				tags: [],
-			};
-
-			for (const ingredient of recipe.ingredientsToRecipes) {
-				const ingredientFormated = {
-					id: ingredient.ingredientId,
-					quantity: ingredient.quantity,
-					name: ingredient.ingredient.name,
+			return recipesByUser.map((recipe) => {
+				const recipeFormated: RecipesFormated = {
+					id: recipe.id,
+					title: recipe.title,
+					preparation: recipe.preparation,
+					main_image: recipe.main_image,
+					source: recipe.source,
+					description: recipe.description,
+					portions: recipe.portions,
+					glucides: recipe.glucides,
+					ingredients: [],
+					tags: [],
 				};
 
-				recipeFormated.ingredients.push(ingredientFormated);
-			}
+				for (const ingredient of recipe.ingredientsToRecipes) {
+					const ingredientFormated = {
+						id: ingredient.ingredientId,
+						quantity: ingredient.quantity,
+						name: ingredient.ingredient.name,
+					};
 
-			for (const tag of recipe.tagsToRecipes) {
-				const tagFormated = {
-					id: tag.tagId,
-					name: tag.tag.name,
-				};
+					recipeFormated.ingredients.push(ingredientFormated);
+				}
 
-				recipeFormated.tags.push(tagFormated);
-			}
+				for (const tag of recipe.tagsToRecipes) {
+					const tagFormated = {
+						id: tag.tagId,
+						name: tag.tag.name,
+					};
 
-			console.log(
-				`getRecipesByUserId - recipes fetch from userId : ${ctx.user.id}`,
-			);
-			return recipeFormated;
-		});
+					recipeFormated.tags.push(tagFormated);
+				}
+
+				console.log(
+					`getRecipesByUserId - recipes fetch from userId : ${ctx.user.id}`,
+				);
+				return recipeFormated;
+			});
+		} catch (err) {
+			console.error(err);
+		}
 	}),
 
 	getRecipeById: publicProcedure
