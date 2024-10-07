@@ -414,6 +414,7 @@ export const recipeRouter = {
 
 	// get all recipes
 	getRecipesByUserId: loggedProcedure.query(async ({ ctx }) => {
+		console.log("getRecipesByUserId - start of the request");
 		const recipesByUser = await ctx.db.query.recipes.findMany({
 			where: eq(recipes.userId, ctx.user.id),
 			with: {
