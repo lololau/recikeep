@@ -124,6 +124,7 @@ function HomePageFormContent() {
 }
 
 export function HomePageForm() {
+	console.log("getRecipesByUser - call useQuery");
 	const { data, isLoading, isError } =
 		api.recipes.getRecipesByUserId.useQuery();
 
