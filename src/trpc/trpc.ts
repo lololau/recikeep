@@ -20,6 +20,7 @@ export const createCallerFactory = t.createCallerFactory;
 
 export const createTRPCRouter = t.router;
 
+// public procedure
 export const publicProcedure = t.procedure;
 
 // middleware authentication
@@ -31,3 +32,19 @@ export const isAuthentified = t.middleware(({ ctx, next }) => {
 });
 
 export const authenticationProcedure = t.procedure.use(isAuthentified);
+
+// middleware to log
+export const loggedProcedure = authenticationProcedure.use(async (opts) => {
+	const start = Date.now();
+
+	const result = await opts.next();
+
+	const durationMs = Date.now() - start;
+	const meta = { path: opts.path, type: opts.type, durationMs };
+
+	result.ok
+		? console.log("OK request timing:", meta)
+		: console.error("Non-OK request timing", meta);
+
+	return result;
+});

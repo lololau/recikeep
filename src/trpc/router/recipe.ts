@@ -11,7 +11,11 @@ import {
 	tagsToRecipes,
 } from "recikeep/database/schema";
 import { z } from "zod";
-import { authenticationProcedure, publicProcedure } from "../trpc";
+import {
+	authenticationProcedure,
+	loggedProcedure,
+	publicProcedure,
+} from "../trpc";
 
 const ingredientsSchema = z.object({
 	name: z.string(),
@@ -409,7 +413,7 @@ export const recipeRouter = {
 		}),
 
 	// get all recipes
-	getRecipesByUserId: authenticationProcedure.query(async ({ ctx }) => {
+	getRecipesByUserId: loggedProcedure.query(async ({ ctx }) => {
 		const recipesByUser = await ctx.db.query.recipes.findMany({
 			where: eq(recipes.userId, ctx.user.id),
 			with: {
