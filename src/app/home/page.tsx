@@ -18,13 +18,12 @@ export default async function HomePage() {
 	// Prefetch the list of recipes for the current user to improve loading time on the client side.
 	console.log("getRecipesByUserId - prefetch");
 	try {
+		console.log("getMe - prefetch");
+		await helpers.auth.getMe.prefetch();
 		await helpers.recipes.getRecipesByUserId.prefetch();
 	} catch (err) {
 		console.error(err);
 	}
-
-	console.log("getMe - prefetch");
-	await helpers.auth.getMe.prefetch();
 
 	const dehydratedState = dehydrate(helpers.queryClient);
 
