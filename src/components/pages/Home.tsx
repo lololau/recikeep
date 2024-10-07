@@ -132,9 +132,6 @@ export function HomePageForm() {
 		if (!isLoading) {
 			return <>Error</>;
 		}
-		if (isError) {
-			console.log("error");
-		}
 		return <></>;
 	}
 
