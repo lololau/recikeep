@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import { first } from "radash";
 import { buckets } from "recikeep/database/schema";
 import { z } from "zod";
-import { authenticationProcedure } from "../trpc";
+import { authenticationProcedure, loggedProcedure } from "../trpc";
 
 export const bucketRouter = {
 	// new bucket
@@ -44,7 +44,7 @@ export const bucketRouter = {
 				throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" });
 			}
 		}),
-	getBucketsByUserId: authenticationProcedure.query(async ({ ctx }) => {
+	getBucketsByUserId: loggedProcedure.query(async ({ ctx }) => {
 		const bucketsList = await ctx.db.query.buckets.findMany({
 			where: eq(buckets.userId, ctx.user.id),
 		});
