@@ -18,8 +18,8 @@ export default async function HomePage() {
 	console.log("getRecipesByUserId - prefetch");
 	await helpers.recipes.getRecipesByUserId.prefetch();
 
-	console.log("getMe - prefetch");
-	await helpers.auth.getMe.prefetch();
+	// console.log("getMe - prefetch");
+	// await helpers.auth.getMe.prefetch();
 
 	const dehydratedState = dehydrate(helpers.queryClient);
 
