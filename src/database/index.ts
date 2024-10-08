@@ -1,5 +1,7 @@
 import { drizzle as drizzleTurso } from "drizzle-orm/libsql";
 import { type Config, createClient } from "@libsql/client";
+import * as Sentry from "@sentry/node";
+import { libsqlIntegration } from "sentry-integration-libsql-client";
 
 import * as schema from "./schema";
 
@@ -20,5 +22,16 @@ if (!process.env.CI_MODE && process.env.NODE_ENV === "production") {
 }
 const client = createClient(config);
 const db = drizzleTurso(client, { schema });
+
+Sentry.init({
+	dsn: "...",
+	integrations: [
+		libsqlIntegration(client, Sentry, {
+			tracing: false,
+			breadcrumbs: false,
+			errors: false,
+		}),
+	],
+});
 
 export { db };
