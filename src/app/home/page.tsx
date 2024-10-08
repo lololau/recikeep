@@ -5,17 +5,6 @@ import { MaxWidthWrapper } from "recikeep/components/MaxWidthWrapper";
 import { HomePageForm } from "recikeep/components/pages/Home";
 import { createServerHelper } from "recikeep/app/api/trpc/[trpc]/route";
 
-function timeoutPromise(ms: number, promise: Promise<void>) {
-	const timeout = new Promise((resolve, reject) => {
-		const id = setTimeout(() => {
-			clearTimeout(id);
-			reject(new Error(`Timed out in ${ms}ms.`));
-		}, ms);
-	});
-
-	return Promise.race([promise, timeout]);
-}
-
 export default async function HomePage() {
 	const { session } = await validateRequest();
 	if (!session) {
@@ -32,15 +21,7 @@ export default async function HomePage() {
 	await helpers.auth.getMe.prefetch();
 
 	console.log("getRecipesByUserId - prefetch");
-	const getRecipesPromise = helpers.recipes.getRecipesByUserId.prefetch();
-	timeoutPromise(5000, getRecipesPromise)
-		.then(() => {
-			console.log("success getRecipesByUserId");
-		})
-		.catch((e) => {
-			console.log(e.stack);
-			console.error(e); // Print the stack trace
-		});
+	// await helpers.recipes.getRecipesByUserId.prefetch();
 
 	const dehydratedState = dehydrate(helpers.queryClient);
 
