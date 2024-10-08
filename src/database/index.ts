@@ -24,7 +24,7 @@ const client = createClient(config);
 const db = drizzleTurso(client, { schema });
 
 Sentry.init({
-	dsn: "...",
+	dsn: "https://8ca7361b680e2e1d37c67865aef44df0@o4508087813996544.ingest.de.sentry.io/4508087823761488",
 	integrations: [
 		libsqlIntegration(client, Sentry, {
 			tracing: false,
