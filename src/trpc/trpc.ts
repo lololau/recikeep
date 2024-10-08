@@ -37,6 +37,7 @@ export const authenticationProcedure = t.procedure.use(isAuthentified);
 export const loggedProcedure = authenticationProcedure.use(async (opts) => {
 	const start = Date.now();
 
+	console.log("Starting request", { path: opts.path, type: opts.type });
 	const result = await opts.next();
 
 	const durationMs = Date.now() - start;
