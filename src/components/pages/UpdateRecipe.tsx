@@ -8,6 +8,7 @@ export default function UpdateRecipeForm({ recipeId }: { recipeId: string }) {
 	const { data: recipe } = api.recipes.getRecipeById.useQuery(recipeId);
 	const { data: ingredients } =
 		api.recipes.getIngredientsByRecipeId.useQuery(recipeId);
+	console.log("UpdateRecipe.tsx - ingredients initial:", ingredients);
 	const { data: tags } = api.recipes.getTagsByRecipeId.useQuery(recipeId);
 
 	if (!recipe || !ingredients) {

@@ -112,9 +112,7 @@ export const recipeRouter = {
 				// Ingredients part
 				for (const el of ingredients) {
 					// Get ingredient with its quantity
-					const ingredientName = (
-						el.name[0].toUpperCase() + el.name.slice(1).toLowerCase()
-					).trim();
+					const ingredientName = el.name.toLowerCase().trim();
 					console.log("createRecipe - ingredient name", ingredientName);
 					const quantity = el.quantity;
 
