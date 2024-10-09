@@ -5,7 +5,7 @@ import * as schema from "./schema";
 
 let config: Config;
 
-if (!process.env.CI_MODE && process.env.NODE_ENV === "production") {
+if (!process.env.CI_MODE && process.env.NODE_ENV === "development") {
 	if (!process.env.TURSO_CONNECTION_URL || !process.env.TURSO_AUTH_TOKEN) {
 		throw new Error("missing turso token");
 	}
@@ -21,4 +21,4 @@ if (!process.env.CI_MODE && process.env.NODE_ENV === "production") {
 const client = createClient(config);
 const db = drizzleTurso(client, { schema, logger: true });
 
-export { db };
+export { db, client };

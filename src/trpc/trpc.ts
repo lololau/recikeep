@@ -1,11 +1,12 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 import { validateRequest } from "recikeep/auth/auth";
-import { db } from "recikeep/database";
+import { db, client as dbClient } from "recikeep/database";
 import superjson from "superjson";
 
 export const createTRPCContext = async () => {
 	const { session, user } = await validateRequest();
 	return {
+		dbClient,
 		db,
 		session,
 		user,
