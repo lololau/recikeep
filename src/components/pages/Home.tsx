@@ -74,12 +74,6 @@ function HomePageFormContent() {
 	return (
 		<div className="sm:pb-0 pb-14">
 			<div className="flex flex-row items-center pt-14 w-full text-center justify-center gap-3 px-0">
-				{/* {!user?.personalPicture && (
-					<div className="items-center w-24 h-24 content-center rounded-full bg-gray-200 ">
-						<p className="text-sm">Ajouter une photo</p>
-					</div>
-				)}
-				{user?.personalPicture && <img src={user?.personalPicture} alt="" />} */}
 				<div>
 					<h1 className="text-3xl font-semibold font-gupter tracking-wide text-gray-800 sm:text-5xl">
 						Les recettes de {user?.pseudo}
@@ -89,33 +83,24 @@ function HomePageFormContent() {
 					</p>
 				</div>
 			</div>
-			<div className="flex flex-col gap-4 w-full py-10 items-center text-center">
+			<div className="flex flex-col gap-4 py-10 items-center text-center">
 				<SearchBar handleSearchChange={handleSearchChange} />
 			</div>
-
 			<div className="flex flex-row gap-3 items-center px-2.5 sm:px-0">
 				<h1 className="text-xl sm:text-2xl font-semibold mb-2 pb-2 text-gray-800">
 					TES RECETTES
 				</h1>
 				<hr className="flex-grow border-gray-400" />
+				<div className="sm:hidden">
+					<Link href={"/recipe"}>
+						<button type="button">
+							<IoIosAddCircle color="065f46" size="25px" />
+						</button>
+					</Link>
+				</div>
 			</div>
-
 			<div className="py-4  px-2.5 sm:px-0">
-				<ul className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-					<li className="p-2 sm:p-3 flex flex-row items-center border border-slate-300 rounded-lg bg-emerald-800 hover:bg-emerald-900">
-						<div className="font-medium text-gray-800 text-start px-2 grid flex-grow">
-							<Link href={"/recipe"}>
-								<div className="flex flex-row gap-4 justify-between">
-									<p className="text-sm sm:text-base font-base text-white">
-										Nouvelle recette
-									</p>
-									<button type="button">
-										<IoIosAddCircle color="white" size="25px" />
-									</button>
-								</div>
-							</Link>
-						</div>
-					</li>
+				<ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
 					<HomePageRecipe recipes={query === "" ? recipes : filteredRecipes} />
 				</ul>
 			</div>

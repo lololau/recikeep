@@ -56,7 +56,7 @@ export const NavBar = async () => {
 									</li>
 								</Link>
 								<Link href="/recipe">
-									<li className="px-3 flex items-center gap-1 hover:text-gray-800 hover:font-semibold">
+									<li className="px-3 flex items-center gap-1 text-emerald-800 hover:text-gray-800 font-semibold">
 										<IoIosAddCircle />
 										<p>Recette</p>
 									</li>
