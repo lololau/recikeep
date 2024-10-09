@@ -82,7 +82,7 @@ function HomePageFormContent() {
 				{user?.personalPicture && <img src={user?.personalPicture} alt="" />} */}
 				<div>
 					<h1 className="text-3xl font-semibold font-gupter tracking-wide text-gray-800 sm:text-5xl">
-						Les recettes de "user.pseudo"
+						Les recettes de {user?.pseudo}
 					</h1>
 					<p className="mt-3 text-xs font-light sm:text-lg">
 						Toutes tes recettes à disposition pour t'inspirer en cuisine.

@@ -21,7 +21,7 @@ export default async function HomePage() {
 	await helpers.auth.getMe.prefetch();
 
 	console.log("getRecipesByUserId - prefetch");
-	// await helpers.recipes.getRecipesByUserId.prefetch();
+	await helpers.recipes.getRecipesByUserId.prefetch();
 
 	const dehydratedState = dehydrate(helpers.queryClient);
 
