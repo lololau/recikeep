@@ -15,8 +15,8 @@ importers:
         specifier: ^1.0.7
         version: 1.0.7(lucia@3.1.1)
       '@lucia-auth/adapter-sqlite':
-        specifier: ^3.0.1
-        version: 3.0.1(@libsql/client@0.14.0)(better-sqlite3@9.5.0)(lucia@3.1.1)
+        specifier: ^3.0.2
+        version: 3.0.2(@libsql/client@0.14.0)(better-sqlite3@9.5.0)(lucia@3.1.1)
       '@node-rs/argon2':
         specifier: ^1.8.3
         version: 1.8.3
@@ -597,11 +597,11 @@ packages:
     peerDependencies:
       lucia: 3.x
 
-  '@lucia-auth/adapter-sqlite@3.0.1':
-    resolution: {integrity: sha512-bzr8+HALrbiYMb/+oL1SAnjbgFqlPs/Kj4lO57t/VvbXzmbpQEKk5Nv6hMpvWSkGAR9LbxYeQAtecikpKZVB0w==}
+  '@lucia-auth/adapter-sqlite@3.0.2':
+    resolution: {integrity: sha512-UlXpF+2UoFEdm1AsriJii5BOARwqko6SX29rQ8T8Za7rnjj9KLXLaRVQUgBhGmggAyvzCtguJ2+XOZDsfWm6Sw==}
     peerDependencies:
       '@libsql/client': ^0.3.0
-      better-sqlite3: 8.x - 9.x
+      better-sqlite3: 8.x - 11.x
       lucia: 3.x
     peerDependenciesMeta:
       '@libsql/client':
@@ -3379,7 +3379,7 @@ snapshots:
     dependencies:
       lucia: 3.1.1
 
-  '@lucia-auth/adapter-sqlite@3.0.1(@libsql/client@0.14.0)(better-sqlite3@9.5.0)(lucia@3.1.1)':
+  '@lucia-auth/adapter-sqlite@3.0.2(@libsql/client@0.14.0)(better-sqlite3@9.5.0)(lucia@3.1.1)':
     dependencies:
       lucia: 3.1.1
     optionalDependencies:
