@@ -10,11 +10,8 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 		<>
 			{recipes.map((recipe, index) => {
 				return (
-					<li
-						key={`${recipe.id}—${index}`}
-						className="p-3 items-center border border-slate-300 rounded-lg hover:bg-gray-100"
-					>
-						<Link href={`/recipe/${recipe.id}`}>
+					<Link href={`/recipe/${recipe.id}`} key={`${recipe.id}—${index}`}>
+						<li className="p-3 items-center border border-slate-300 rounded-lg hover:bg-gray-100">
 							<div className="flex flex-col">
 								<div className="self-center">
 									{recipe.main_image && (
@@ -36,23 +33,23 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 									</div>
 								</div>
 							</div>
-						</Link>
 
-						<div className="flex flex-row gap-1 flex-wrap mt-1">
-							{recipe.filters?.map((filter, index) => (
-								<Tag
-									tagName={filter}
-									textColor="text-emerald-800"
-									bgColor="bg-rose-50"
-									key={`${filter}-${
-										// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-										index
-									}`}
-									textSize="xs"
-								/>
-							))}
-						</div>
-					</li>
+							<div className="flex flex-row gap-1 flex-wrap mt-1">
+								{recipe.filters?.map((filter, index) => (
+									<Tag
+										tagName={filter}
+										textColor="text-emerald-800"
+										bgColor="bg-rose-50"
+										key={`${filter}-${
+											// biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
+											index
+										}`}
+										textSize="xs"
+									/>
+								))}
+							</div>
+						</li>
+					</Link>
 				);
 			})}
 		</>
