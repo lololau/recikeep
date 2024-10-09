@@ -19,6 +19,6 @@ if (!process.env.CI_MODE && process.env.NODE_ENV === "production") {
 	};
 }
 const client = createClient(config);
-const db = drizzleTurso(client, { schema });
+const db = drizzleTurso(client, { schema, logger: true });
 
 export { db };

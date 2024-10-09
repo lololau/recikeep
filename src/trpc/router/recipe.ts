@@ -428,63 +428,61 @@ export const recipeRouter = {
 	getRecipesByUserId: loggedProcedure.query(async ({ ctx }) => {
 		console.log("getRecipesByUserId - start of the request");
 		try {
-			return [];
-			// const recipesByUser = []
-			// await ctx.db.query.recipes.findMany({
-			// 	where: eq(recipes.userId, ctx.user.id),
-			// 	with: {
-			// 		ingredientsToRecipes: {
-			// 			with: {
-			// 				ingredient: true,
-			// 			},
-			// 		},
-			// 		tagsToRecipes: {
-			// 			with: {
-			// 				tag: true,
-			// 			},
-			// 		},
-			// 	},
-			// });
+			const recipesByUser = await ctx.db.query.recipes.findMany({
+				where: eq(recipes.userId, ctx.user.id),
+				with: {
+					ingredientsToRecipes: {
+						with: {
+							ingredient: true,
+						},
+					},
+					tagsToRecipes: {
+						with: {
+							tag: true,
+						},
+					},
+				},
+			});
 
-			// console.log("recipes", recipesByUser);
-			// return recipesByUser.map((recipe) => {
-			// 	const recipeFormated: RecipesFormated = {
-			// 		id: recipe.id,
-			// 		title: recipe.title,
-			// 		preparation: recipe.preparation,
-			// 		main_image: recipe.main_image,
-			// 		source: recipe.source,
-			// 		description: recipe.description,
-			// 		portions: recipe.portions,
-			// 		glucides: recipe.glucides,
-			// 		ingredients: [],
-			// 		tags: [],
-			// 	};
+			console.log("recipes", recipesByUser);
+			return recipesByUser.map((recipe) => {
+				const recipeFormated: RecipesFormated = {
+					id: recipe.id,
+					title: recipe.title,
+					preparation: recipe.preparation,
+					main_image: recipe.main_image,
+					source: recipe.source,
+					description: recipe.description,
+					portions: recipe.portions,
+					glucides: recipe.glucides,
+					ingredients: [],
+					tags: [],
+				};
 
-			// 	for (const ingredient of recipe.ingredientsToRecipes) {
-			// 		const ingredientFormated = {
-			// 			id: ingredient.ingredientId,
-			// 			quantity: ingredient.quantity,
-			// 			name: ingredient.ingredient.name,
-			// 		};
+				for (const ingredient of recipe.ingredientsToRecipes) {
+					const ingredientFormated = {
+						id: ingredient.ingredientId,
+						quantity: ingredient.quantity,
+						name: ingredient.ingredient.name,
+					};
 
-			// 		recipeFormated.ingredients.push(ingredientFormated);
-			// 	}
+					recipeFormated.ingredients.push(ingredientFormated);
+				}
 
-			// 	for (const tag of recipe.tagsToRecipes) {
-			// 		const tagFormated = {
-			// 			id: tag.tagId,
-			// 			name: tag.tag.name,
-			// 		};
+				for (const tag of recipe.tagsToRecipes) {
+					const tagFormated = {
+						id: tag.tagId,
+						name: tag.tag.name,
+					};
 
-			// 		recipeFormated.tags.push(tagFormated);
-			// 	}
+					recipeFormated.tags.push(tagFormated);
+				}
 
-			// 	console.log(
-			// 		`getRecipesByUserId - recipes fetch from userId : ${ctx.user.id}`,
-			// 	);
-			// 	return recipeFormated;
-			// });
+				console.log(
+					`getRecipesByUserId - recipes fetch from userId : ${ctx.user.id}`,
+				);
+				return recipeFormated;
+			});
 		} catch (err) {
 			console.error(err);
 		}
