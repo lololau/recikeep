@@ -69,6 +69,7 @@ export const recipeRouter = {
 
 			return await ctx.db.transaction(async (tx) => {
 				// New recipe created
+				console.log("createRecipe - ingredients list from input", ingredients);
 				const recipe = first(
 					await tx
 						.insert(recipes)
@@ -114,6 +115,7 @@ export const recipeRouter = {
 					const ingredientName = (
 						el.name[0].toUpperCase() + el.name.slice(1).toLowerCase()
 					).trim();
+					console.log("createRecipe - ingredient name", ingredientName);
 					const quantity = el.quantity;
 
 					// Check if ingredient already exist
@@ -123,6 +125,7 @@ export const recipeRouter = {
 
 					// Create ingredient if not exist
 					if (ingredientAlreadyExist == null) {
+						console.log("createRecipe - ingredient not already exists");
 						const ingredient = first(
 							await tx
 								.insert(ingredientsTable)
@@ -152,6 +155,10 @@ export const recipeRouter = {
 							.returning();
 					} else {
 						// Link between recipe, ingredient, quantity
+						console.log(
+							"createRecipe - ingredient already exists",
+							ingredientAlreadyExist,
+						);
 						await tx
 							.insert(ingredientsToRecipes)
 							.values({
@@ -263,6 +270,7 @@ export const recipeRouter = {
 
 			return await ctx.db.transaction(async (tx) => {
 				// Get recipe by id
+				console.log("updateRecipe - ingredients list from input", ingredients);
 				const recipeFound = first(
 					await tx
 						.update(recipes)
@@ -296,6 +304,7 @@ export const recipeRouter = {
 				for (const el of ingredients) {
 					// Get ingredient with its quantity
 					const ingredientName = el.name.toLowerCase().trim();
+					console.log("updateRecipe - ingredientName", ingredientName);
 					const quantity = el.quantity;
 
 					// Check if ingredient already exist
@@ -305,6 +314,7 @@ export const recipeRouter = {
 
 					// Create ingredient if not exist
 					if (ingredientAlreadyExist == null) {
+						console.log("updateRecipe - ingredient not already exists");
 						const ingredient = first(
 							await tx
 								.insert(ingredientsTable)
@@ -334,6 +344,10 @@ export const recipeRouter = {
 							.returning();
 					} else {
 						// Link between recipe, ingredient, quantity
+						console.log(
+							"updateRecipe - ingredient already exists",
+							ingredientAlreadyExist,
+						);
 						await tx
 							.insert(ingredientsToRecipes)
 							.values({
