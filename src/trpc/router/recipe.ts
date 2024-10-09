@@ -428,30 +428,30 @@ export const recipeRouter = {
 	getRecipesByUserId: loggedProcedure.query(async ({ ctx }) => {
 		console.log("getRecipesByUserId - start of the request");
 		try {
-			// const recipes = await ctx.dbClient.execute(
-			// 	`SELECT "id", "title", "preparation", "source", "description", "portions", "glucides", "main_image", "user_id", (select coalesce(json_group_array(json_array("ingredient_id", "recipe_id", "quantity", (select json_array("id", "name") as "data" from (select * from "ingredient" "recipes_ingredientsToRecipes_ingredient" where "recipes_ingredientsToRecipes_ingredient"."id" = "recipes_ingredientsToRecipes"."ingredient_id" limit 1) "recipes_ingredientsToRecipes_ingredient"))), json_array()) as "data" from "ingredients_to_recipes" "recipes_ingredientsToRecipes" where "recipes_ingredientsToRecipes"."recipe_id" = "recipes"."id") as "ingredientsToRecipes", (select coalesce(json_group_array(json_array("tag_id", "recipe_id", (select json_array("id", "name") as "data" from (select * from "tag" "recipes_tagsToRecipes_tag" where "recipes_tagsToRecipes_tag"."id" = "recipes_tagsToRecipes"."tag_id" limit 1) "recipes_tagsToRecipes_tag"))), json_array()) as "data" from "tags_to_recipes" "recipes_tagsToRecipes" where "recipes_tagsToRecipes"."recipe_id" = "recipes"."id") as "tagsToRecipes" from "recipe" "recipes" where "recipes"."user_id" = 'hr811abi2brwnn69hsfog6wr'`,
-			// );
-			// const recipesByUser = recipes.rows as any;
+			const recipes = await ctx.dbClient.execute(
+				`SELECT "id", "title", "preparation", "source", "description", "portions", "glucides", "main_image", "user_id", (select coalesce(json_group_array(json_array("ingredient_id", "recipe_id", "quantity", (select json_array("id", "name") as "data" from (select * from "ingredient" "recipes_ingredientsToRecipes_ingredient" where "recipes_ingredientsToRecipes_ingredient"."id" = "recipes_ingredientsToRecipes"."ingredient_id" limit 1) "recipes_ingredientsToRecipes_ingredient"))), json_array()) as "data" from "ingredients_to_recipes" "recipes_ingredientsToRecipes" where "recipes_ingredientsToRecipes"."recipe_id" = "recipes"."id") as "ingredientsToRecipes", (select coalesce(json_group_array(json_array("tag_id", "recipe_id", (select json_array("id", "name") as "data" from (select * from "tag" "recipes_tagsToRecipes_tag" where "recipes_tagsToRecipes_tag"."id" = "recipes_tagsToRecipes"."tag_id" limit 1) "recipes_tagsToRecipes_tag"))), json_array()) as "data" from "tags_to_recipes" "recipes_tagsToRecipes" where "recipes_tagsToRecipes"."recipe_id" = "recipes"."id") as "tagsToRecipes" from "recipe" "recipes" where "recipes"."user_id" = 'hr811abi2brwnn69hsfog6wr'`,
+			);
+			const recipesByUser = recipes.rows as any;
 
-			const recipesByUser = await ctx.db.query.recipes.findMany({
-				where: eq(recipes.userId, ctx.user.id),
-				with: {
-					ingredientsToRecipes: {
-						with: {
-							ingredient: true,
-						},
-					},
-					tagsToRecipes: {
-						with: {
-							tag: true,
-						},
-					},
-				},
-			});
+			// const recipesByUser = await ctx.db.query.recipes.findMany({
+			// 	where: eq(recipes.userId, ctx.user.id),
+			// 	with: {
+			// 		ingredientsToRecipes: {
+			// 			with: {
+			// 				ingredient: true,
+			// 			},
+			// 		},
+			// 		tagsToRecipes: {
+			// 			with: {
+			// 				tag: true,
+			// 			},
+			// 		},
+			// 	},
+			// });
 
 			console.log("recipes", recipesByUser);
 
-			return recipesByUser.map((recipe) => {
+			return recipesByUser.map((recipe: any) => {
 				const recipeFormated: RecipesFormated = {
 					id: recipe.id,
 					title: recipe.title,
