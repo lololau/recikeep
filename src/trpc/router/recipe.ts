@@ -430,42 +430,44 @@ export const recipeRouter = {
 				},
 			});
 
-			return recipesByUser.map((recipe) => {
-				const recipeFormated: RecipesFormated = {
-					id: recipe.id,
-					title: recipe.title,
-					preparation: recipe.preparation,
-					main_image: recipe.main_image,
-					source: recipe.source,
-					description: recipe.description,
-					portions: recipe.portions,
-					glucides: recipe.glucides,
-					ingredients: [],
-					tags: [],
-				};
-
-				for (const ingredient of recipe.ingredientsToRecipes) {
-					const ingredientFormated = {
-						id: ingredient.ingredientId,
-						quantity: ingredient.quantity,
-						name: ingredient.ingredient.name,
+			return recipesByUser
+				.map((recipe) => {
+					const recipeFormated: RecipesFormated = {
+						id: recipe.id,
+						title: recipe.title,
+						preparation: recipe.preparation,
+						main_image: recipe.main_image,
+						source: recipe.source,
+						description: recipe.description,
+						portions: recipe.portions,
+						glucides: recipe.glucides,
+						ingredients: [],
+						tags: [],
 					};
 
-					recipeFormated.ingredients.push(ingredientFormated);
-				}
+					for (const ingredient of recipe.ingredientsToRecipes) {
+						const ingredientFormated = {
+							id: ingredient.ingredientId,
+							quantity: ingredient.quantity,
+							name: ingredient.ingredient.name,
+						};
 
-				for (const tag of recipe.tagsToRecipes) {
-					const tagFormated = {
-						id: tag.tagId,
-						name: tag.tag.name,
-					};
+						recipeFormated.ingredients.push(ingredientFormated);
+					}
 
-					recipeFormated.tags.push(tagFormated);
-				}
+					for (const tag of recipe.tagsToRecipes) {
+						const tagFormated = {
+							id: tag.tagId,
+							name: tag.tag.name,
+						};
 
-				console.log(`getRecipesByUserId - recipe fetch : ${recipe.id}`);
-				return recipeFormated;
-			});
+						recipeFormated.tags.push(tagFormated);
+					}
+
+					console.log(`getRecipesByUserId - recipe fetch : ${recipe.id}`);
+					return recipeFormated;
+				})
+				.reverse();
 		} catch (err) {
 			console.error(err);
 		}

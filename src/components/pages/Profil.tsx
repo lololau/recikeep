@@ -157,9 +157,11 @@ export default function ProfilForm() {
 						</div>
 
 						{/* Photo */}
-						<label htmlFor="main_image" className="">
-							Photo de profil
-						</label>
+						{(image || !isDisabled) && (
+							<label htmlFor="main_image" className="">
+								Photo de profil
+							</label>
+						)}
 						<div className="flex flex-col items-start justify-between gap-3">
 							{!isDisabled && (
 								<UploadButton
