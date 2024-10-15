@@ -28,6 +28,7 @@ export type RecipesFormated = {
 	preparation: string | null;
 	main_image: string | null;
 	source: string;
+	sourceLink: string | null;
 	description: string | null;
 	portions: number;
 	glucides: string | null;
@@ -45,6 +46,7 @@ export const recipeRouter = {
 				description: z.string().nullable(),
 				preparation: z.string().nullable(),
 				source: z.string(),
+				sourceLink: z.string().nullable(),
 				portions: z.number(),
 				glucides: z.string().nullable(),
 				ingredients: z.array(ingredientsSchema),
@@ -59,6 +61,7 @@ export const recipeRouter = {
 				description,
 				preparation,
 				source,
+				sourceLink,
 				portions,
 				glucides,
 				ingredients,
@@ -77,6 +80,7 @@ export const recipeRouter = {
 							description,
 							preparation,
 							source,
+							sourceLink,
 							portions,
 							glucides,
 							userId: ctx.user.id,
@@ -231,6 +235,7 @@ export const recipeRouter = {
 				description: z.string().nullable(),
 				preparation: z.string().nullable(),
 				source: z.string(),
+				sourceLink: z.string().nullable(),
 				portions: z.number(),
 				glucides: z.string().nullable(),
 				ingredients: z.array(ingredientsSchema),
@@ -245,6 +250,7 @@ export const recipeRouter = {
 				description,
 				preparation,
 				source,
+				sourceLink,
 				portions,
 				glucides,
 				ingredients,
@@ -269,6 +275,7 @@ export const recipeRouter = {
 							description,
 							preparation,
 							source,
+							sourceLink,
 							portions,
 							glucides,
 							main_image: imageUrl,
@@ -438,6 +445,7 @@ export const recipeRouter = {
 						preparation: recipe.preparation,
 						main_image: recipe.main_image,
 						source: recipe.source,
+						sourceLink: recipe.sourceLink,
 						description: recipe.description,
 						portions: recipe.portions,
 						glucides: recipe.glucides,

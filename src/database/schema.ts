@@ -51,6 +51,7 @@ export const recipes = sqliteTable("recipe", {
 	title: text("title").notNull(),
 	preparation: text("preparation"),
 	source: text("source").notNull(),
+	sourceLink: text("source_link"),
 	description: text("description"),
 	portions: integer("portions").notNull(),
 	glucides: text("glucides"),
@@ -67,6 +68,7 @@ export const buckets = sqliteTable("bucket", {
 		.$defaultFn(() => createId()),
 	recipeTitle: text("recipe_title").notNull(),
 	source: text("source").notNull(),
+	sourceLink: text("source_link"),
 	recipeId: text("recipe_id").references(() => recipes.id),
 	userId: text("user_id").references(() => users.id),
 });

@@ -13,16 +13,17 @@ export const bucketRouter = {
 			z.object({
 				recipeTitle: z.string(),
 				source: z.string(),
+				sourceLink: z.string().nullable(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
-			const { recipeTitle, source } = input;
+			const { recipeTitle, source, sourceLink } = input;
 
 			try {
 				const bucket = first(
 					await ctx.db
 						.insert(buckets)
-						.values({ recipeTitle, source, userId: ctx.user.id })
+						.values({ recipeTitle, source, userId: ctx.user.id, sourceLink })
 						.returning(),
 				);
 

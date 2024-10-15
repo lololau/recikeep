@@ -23,6 +23,7 @@ export default function BucketForm() {
 				bucketId: string;
 				recipeTitle: string;
 				source: string;
+				sourceLink: string | null;
 		  }
 		| undefined
 	>(undefined);
@@ -59,12 +60,14 @@ export default function BucketForm() {
 									<BucketCard
 										source={bucket.source}
 										recipeTitle={bucket.recipeTitle}
+										sourceLink={bucket.sourceLink}
 										bucketId={bucket.id}
 										onClick={() => {
 											setBucket({
 												bucketId: bucket.id,
 												source: bucket.source,
 												recipeTitle: bucket.recipeTitle,
+												sourceLink: bucket.sourceLink,
 											});
 										}}
 									/>

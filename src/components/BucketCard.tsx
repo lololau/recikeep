@@ -8,6 +8,7 @@ import { toast } from "sonner";
 export function BucketCard({
 	recipeTitle,
 	source,
+	sourceLink,
 	bucketId,
 	onClick,
 }: {
@@ -15,6 +16,7 @@ export function BucketCard({
 	source: string;
 	bucketId: string;
 	onClick: () => void;
+	sourceLink: string | null;
 }) {
 	const utils = api.useUtils();
 
@@ -46,6 +48,7 @@ export function BucketCard({
 					<p className="text-left font-base text-gray-500 text-xs ">
 						Reference: {source}
 					</p>
+					{sourceLink && <p>Lien: {sourceLink}</p>}
 				</div>
 			</button>
 

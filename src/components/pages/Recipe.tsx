@@ -13,6 +13,26 @@ import { BiChevronDown, BiChevronUp } from "react-icons/bi";
 import Link from "next/link";
 import { useState } from "react";
 
+function openInNewTab(url: string) {
+	const win = window.open(url, "_blank");
+	win?.focus();
+}
+
+function SourceLink({ source, link }: { source: string; link: string | null }) {
+	if (link) {
+		return (
+			<button
+				type="button"
+				className="italic underline underline-offset-4 decoration-emerald-800 hover:text-emerald-800 text-sm sm:text-base text-left"
+				onClick={() => openInNewTab(link)}
+			>
+				by {source}
+			</button>
+		);
+	}
+	return <p className="italic text-sm sm:text-base">by {source}</p>;
+}
+
 export default function RecipeForm({
 	recipeId,
 	isOwner,
@@ -57,7 +77,7 @@ export default function RecipeForm({
 						<h1 className="font-gupter text-3xl font-semibold tracking-wide text-gray-800 sm:text-5xl">
 							{recipe.title}
 						</h1>
-						<p className="italic text-sm sm:text-base">by {recipe.source}</p>
+						<SourceLink source={recipe.source} link={recipe.sourceLink} />
 						<div className="text-end py-1.5">
 							{isOwner && (
 								<Link href={`/recipe/${recipe.id}/update`}>

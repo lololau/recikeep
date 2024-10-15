@@ -17,6 +17,7 @@ export interface IFormRecipe {
 	title: string;
 	description: string | null;
 	source: string;
+	sourceLink: string | null;
 	portions: number;
 	glucides: string | null;
 	ingredients: { name: string; quantity: string }[];
@@ -27,6 +28,7 @@ type NewRecipeFormProps = {
 	bucketId: string;
 	recipeTitle: string;
 	source: string;
+	sourceLink: string | null;
 };
 
 type UpdateRecipeFormProps = {
@@ -61,6 +63,8 @@ export default function NewRecipeForm({
 			tags: updateInitialData?.tags ?? [],
 			title: initialData?.recipeTitle ?? updateInitialData?.title ?? "",
 			source: initialData?.source ?? updateInitialData?.source ?? "",
+			sourceLink:
+				initialData?.sourceLink ?? updateInitialData?.sourceLink ?? null,
 			description: updateInitialData?.description ?? null,
 			portions: updateInitialData?.portions,
 			glucides: updateInitialData?.glucides ?? null,
@@ -157,6 +161,10 @@ export default function NewRecipeForm({
 			initialData?.recipeTitle ?? updateInitialData?.title ?? "",
 		);
 		setValue("source", initialData?.source ?? updateInitialData?.source ?? "");
+		setValue(
+			"sourceLink",
+			initialData?.sourceLink ?? updateInitialData?.sourceLink ?? null,
+		);
 	}, [initialData, updateInitialData, setValue]);
 
 	return (
@@ -201,6 +209,26 @@ export default function NewRecipeForm({
 							<p>{errors.source?.message}</p>
 						</div>
 					</div>
+					{/* === Source link === */}
+					<div className="grid gap-1 py-2">
+						<label
+							htmlFor="sourceLink"
+							className="text-base font-light text-emerald-800"
+						>
+							Lien de ta source
+						</label>
+						<div className="rounded-md shadow-sm border-2 sm:max-w-md">
+							<input
+								id="sourceLink"
+								aria-invalid={errors.sourceLink ? "true" : "false"}
+								className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
+								placeholder="https://www.recipe-website.fr"
+								{...register("sourceLink", { required: true })}
+							/>
+							<p>{errors.sourceLink?.message}</p>
+						</div>
+					</div>
+					{/* Photo principal */}
 					<div>
 						<label
 							htmlFor="personal_picture"

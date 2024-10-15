@@ -23,6 +23,7 @@ const customStyles = {
 interface IFormBucket {
 	recipeTitle: string;
 	source: string;
+	sourceLink: string | null;
 }
 
 // Modal to register quickly a recipe for adding later with name and source
@@ -106,7 +107,7 @@ export function BucketModal() {
 							{/* Title */}
 							<div className="flex flex-col text-gray-800 gap-2 rounded-xl">
 								<label htmlFor="recipeTitle" className="font-light">
-									Titre
+									Titre *
 								</label>
 								<div className="flex-grow rounded-md shadow-sm border-2">
 									<input
@@ -122,7 +123,7 @@ export function BucketModal() {
 							{/* Source */}
 							<div className="flex flex-col text-gray-800 gap-2 rounded-xl">
 								<label htmlFor="source" className="font-light">
-									Source
+									Source *
 								</label>
 								<div className="flex-grow rounded-md shadow-sm border-2">
 									<input
@@ -131,6 +132,22 @@ export function BucketModal() {
 										className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
 										placeholder="La source"
 										{...register("source", { required: true })}
+									/>
+								</div>
+							</div>
+
+							{/* Lien */}
+							<div className="flex flex-col text-gray-800 gap-2 rounded-xl">
+								<label htmlFor="source_link" className="font-light">
+									Lien
+								</label>
+								<div className="flex-grow rounded-md shadow-sm border-2">
+									<input
+										id="source_link"
+										aria-invalid={errors.source ? "true" : "false"}
+										className="border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 sm:text-sm w-full"
+										placeholder="https://www.recipe-website.fr"
+										{...register("sourceLink", { required: false })}
 									/>
 								</div>
 							</div>
