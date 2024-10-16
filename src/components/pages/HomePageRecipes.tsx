@@ -13,7 +13,7 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 				return (
 					<li
 						key={`${recipe.id}—${index}`}
-						className="p-3 items-center border border-slate-300 rounded-lg hover:bg-gray-100"
+						className="p-1 sm:p-3 items-center hover:bg-gray-100 border border-gray-200 sm:rounded-lg"
 					>
 						<Link href={`/recipe/${recipe.id}`}>
 							<div className="grid grid-cols-1 h-full content-between">
@@ -23,11 +23,11 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 											<img
 												src={`https://utfs.io/f/${recipe.main_image}`}
 												alt="salade"
-												className="w-[144px] max-h-[191px] sm:w-[262px] sm:max-h-[350px]"
+												className="w-[169px] max-h-[225px] sm:w-[262px] sm:max-h-[350px]"
 											/>
 										)}
 										{!recipe.main_image && (
-											<div className="w-[144px] h-[191px] sm:w-[262px] sm:h-[350px] bg-gray-200 flex flex-col items-center justify-center">
+											<div className="w-[167.5px] h-[225px] sm:w-[262px] sm:h-[350px] bg-gray-200 flex flex-col items-center justify-center">
 												<p className="italic text-gray-800 text-sm sm:text-base">
 													Image manquante
 												</p>
@@ -40,8 +40,8 @@ export function HomePageRecipe({ recipes }: { recipes: RecipesFormated[] }) {
 								</div>
 
 								<div className="flex flex-col text-start text-gray-800 font-light">
-									<p className="sm:text-base text-sm">{recipe.title}</p>
-									<p className="font-base text-gray-600 sm:text-sm text-xs">
+									<p className="sm:text-base text-xs">{recipe.title}</p>
+									<p className="hidden font-base text-gray-600 sm:flex sm:text-sm text-xs">
 										Ref: {recipe.source}
 									</p>
 								</div>

@@ -40,7 +40,7 @@ export function BucketCard({
 
 	return (
 		<div className="flex flex-row justify-between">
-			<button type="button" onClick={onClick}>
+			<button type="button" onClick={onClick} className="flex flex-grow">
 				<div className="text-left font-light text-gray-800">
 					<p>{recipeTitle}</p>
 					<p className="text-left font-base text-gray-500 text-xs ">

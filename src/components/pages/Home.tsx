@@ -99,10 +99,13 @@ function HomePageFormContent() {
 					</Link>
 				</div>
 			</div>
-			<div className="py-4  px-2.5 sm:px-0">
-				<ul className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+			<div className="py-4 px-2.5 sm:px-0">
+				<ul className="grid grid-cols-2 sm:grid-cols-4 sm:gap-4">
 					<HomePageRecipe recipes={query === "" ? recipes : filteredRecipes} />
 				</ul>
+				{/* <table>
+					<HomePageRecipe recipes={query === "" ? recipes : filteredRecipes} />
+				</table> */}
 			</div>
 		</div>
 	);
